@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5f2e1f35-7406-4b07-8209-49bc0d258164" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="472747933">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="_ts" value="7" />
+          <entry key="css" value="1" />
+          <entry key="js" value="2" />
+          <entry key="json" value="5" />
+          <entry key="less" value="7" />
+          <entry key="php" value="2" />
+          <entry key="ts" value="46" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="1" />
+          <entry key="JSON" value="3" />
+          <entry key="JavaScript" value="2" />
+          <entry key="Less" value="7" />
+          <entry key="PHP" value="2" />
+          <entry key="TypeScript" value="53" />
+          <entry key="tsconfig" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="_ts" value="1" />
+          <entry key="js" value="12" />
+          <entry key="json" value="24" />
+          <entry key="less" value="344" />
+          <entry key="php" value="175" />
+          <entry key="ts" value="18736" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="2" />
+          <entry key="JavaScript" value="12" />
+          <entry key="Less" value="344" />
+          <entry key="PHP" value="175" />
+          <entry key="TypeScript" value="18735" />
+          <entry key="tsconfig" value="24" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="TypeScriptServerServiceImpl" value="6" />
+        </counts>
+      </usages-collector>
+    </session>
+    <session id="-974156127">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="8" />
+          <entry key="project.open.time.1" value="3" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.7" value="3" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="11" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts">
+        <counts>
+          <entry key="ESLintLanguageService" value="5" />
+          <entry key="TsLintLanguageService" value="3" />
+          <entry key="TypeScriptServerServiceImpl" value="10" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="css" value="2" />
+          <entry key="eslintrc" value="2" />
+          <entry key="gitignore" value="1" />
+          <entry key="js" value="39" />
+          <entry key="json" value="17" />
+          <entry key="less" value="9" />
+          <entry key="php" value="12" />
+          <entry key="ts" value="194" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="2" />
+          <entry key="ESLint" value="2" />
+          <entry key="JSON" value="9" />
+          <entry key="JavaScript" value="39" />
+          <entry key="Less" value="9" />
+          <entry key="PHP" value="12" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="TypeScript" value="194" />
+          <entry key="tsconfig" value="8" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="css" value="10" />
+          <entry key="dummy" value="68" />
+          <entry key="eslintrc" value="16" />
+          <entry key="gitignore" value="25" />
+          <entry key="js" value="170" />
+          <entry key="json" value="77" />
+          <entry key="less" value="78" />
+          <entry key="php" value="481" />
+          <entry key="ts" value="33980" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CSS" value="10" />
+          <entry key="ESLint" value="16" />
+          <entry key="JSON" value="62" />
+          <entry key="JavaScript" value="170" />
+          <entry key="Less" value="78" />
+          <entry key="PHP" value="481" />
+          <entry key="PLAIN_TEXT" value="93" />
+          <entry key="TypeScript" value="33980" />
+          <entry key="tsconfig" value="15" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="31" column="47" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>getCordsFromTwoPoint</find>
+      <find>20</find>
+      <find>true</find>
+      <find>leftPoint</find>
+      <find>this.render.getRect()</find>
+      <find>getPageWidth()</find>
+      <find>this.render.getRect().height</find>
+      <find>this.getPageWidth() / 2</find>
+      <find>this.calc.calc</find>
+      <find>stf__w</find>
+      <find>asyn</find>
+      <find>render</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>this.getPageHeight()</replace>
+      <replace>this.getPageWidth()</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Loader/ImageLoader.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Loader/ImagePageCollection.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Loader/PageCollection.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StFlipper/StRender/Element/CanvasElementRect.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipAction.ts" />
+        <option value="$PROJECT_DIR$/front/tslint.json" />
+        <option value="$PROJECT_DIR$/front/style/blocks/canvasBlock.less" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipCalculator.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipСalculation.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/BasicTypes.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Page/Page.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipCalculation.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Collection/PageCollection.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Collection/ImagePageCollection.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Helper.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/App.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Flip/Flip.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/UI/UI.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Render/Render.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Render/CanvasRender.ts" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/Page/ImagePage.ts" />
+        <option value="$PROJECT_DIR$/front/gulpfile.js" />
+        <option value="$PROJECT_DIR$/public/index.php" />
+        <option value="$PROJECT_DIR$/front/scripts/StPageFlip/StPageFlip.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/StPageFlip.ts" />
+        <option value="$PROJECT_DIR$/src/webpack.config.js" />
+        <option value="$PROJECT_DIR$/src/Style/blocks/canvasBlock.less" />
+        <option value="$PROJECT_DIR$/src/Style/app.less" />
+        <option value="$PROJECT_DIR$/src/Style/blocks/stfWrapper.less" />
+        <option value="$PROJECT_DIR$/dist/js/StPageFlip.bundle.js" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/BasicTypes.ts" />
+        <option value="$PROJECT_DIR$/.eslintrc" />
+        <option value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/languageService/eslint/bin/eslint-plugin.js" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Helper.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/UI/UI.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Collection/PageCollection.ts" />
+        <option value="$PROJECT_DIR$/tsconfig.json" />
+        <option value="$PROJECT_DIR$/webpack.config.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Event/EventObject.ts" />
+        <option value="$PROJECT_DIR$/dist/css/app.css" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/App.ts" />
+        <option value="$PROJECT_DIR$/dist/index.php" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Flip/FlipCalculation.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Flip/Flip.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Page/ImagePage.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Page/Page.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Render/Render.ts" />
+        <option value="$PROJECT_DIR$/src/StPageFlip/Render/CanvasRender.ts" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/index.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <node-interpreter value="project" />
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="Unnamed" pattern="file[www]:front/scripts/StPageFlip/*" />
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1920" />
+    <option name="height" value="1200" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Code quality toolsJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Eslint</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="www" type="b2602c69:ProjectViewProjectNode" />
+              <item name="www" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="www" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.jscs" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/node_modules/eslint" />
+    <property name="node.js.selected.package.jscs" value="" />
+    <property name="node.js.selected.package.standard" value="$PROJECT_DIR$/node_modules/eslint" />
+    <property name="node.js.selected.package.tslint" value="$PROJECT_DIR$/front/node_modules/tslint" />
+    <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="typescript-compiler-editor-notification" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/_" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/front/scripts" />
+      <recent name="$PROJECT_DIR$/front/scripts/StPageFlip/Flip" />
+      <recent name="$PROJECT_DIR$/front/scripts/StPageFlip" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f2e1f35-7406-4b07-8209-49bc0d258164" name="Default Changelist" comment="" />
+      <created>1586521433974</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586521433974</updated>
+      <workItem from="1586521436602" duration="1007000" />
+      <workItem from="1587299959950" duration="18185000" />
+      <workItem from="1588258818804" duration="28932000" />
+      <workItem from="1588427886661" duration="205000" />
+      <workItem from="1588428236281" duration="514000" />
+      <workItem from="1588430140627" duration="74000" />
+      <workItem from="1588431174844" duration="16334000" />
+      <workItem from="1588672190290" duration="41357000" />
+      <workItem from="1588948279812" duration="40123000" />
+      <workItem from="1589208122784" duration="43020000" />
+      <workItem from="1589535075928" duration="1331000" />
+      <workItem from="1589543741415" duration="3323000" />
+      <workItem from="1589547450345" duration="1223000" />
+      <workItem from="1589548810511" duration="612000" />
+      <workItem from="1589550007862" duration="159000" />
+      <workItem from="1589550185014" duration="74000" />
+      <workItem from="1589550276268" duration="12344000" />
+      <workItem from="1589631714661" duration="401000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="209218000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15548456" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32920355" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32937685" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49893504" visible="true" weight="0.23451327" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50106496" side_tool="true" weight="0.12462908" />
+      <window_info anchor="bottom" id="TypeScript" order="12" weight="0.18318585" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.32920355" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="PlantUML" order="3" weight="0.32960597" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1687966" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32920355" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.108849555" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32920355" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="13" weight="0.32920355" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="PlantUML" order="3" weight="0.32960597" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Render/Render.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Render/CanvasRender.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Page/Page.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Page/ImagePage.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipCalculation.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Collection/ImagePageCollection.ts" />
+    <entry file="file://$PROJECT_DIR$/public/js/app.js" />
+    <entry file="file://$PROJECT_DIR$/front/gulpfile.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/BasicTypes.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/Helper.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/Collection/PageCollection.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/Flip/Flip.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/UI/UI.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/Collection/ImagePageCollection.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/StPageFlip.js" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/StPageFlip.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Flip/Flip.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StFlipper/App.ts" />
+    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Collection/PageCollection.ts" />
+    <entry file="file://$PROJECT_DIR$/public/index.php" />
+    <entry file="file://$PROJECT_DIR$/src/Style/blocks/selectBar.less" />
+    <entry file="file://$PROJECT_DIR$/src/Style/blocks/wrapper.less" />
+    <entry file="file://$PROJECT_DIR$/src/Style/lib/mixin.less" />
+    <entry file="file://$PROJECT_DIR$/src/Style/app.less" />
+    <entry file="file://$PROJECT_DIR$/src/Style/blocks/stfWrapper.less" />
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/languageService/eslint/bin/eslint-plugin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Helper.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="28" column="26" lean-forward="true" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/BasicTypes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Collection/ImagePageCollection.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Collection/PageCollection.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="34" column="38" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/stPageFlip.bundle.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/url/url.js" />
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Event/EventObject.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/app.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/App.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="42" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StPageFlip_/UI/UI.ts" />
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Flip/FlipCalculation.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/UI/UI.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="37" column="5" lean-forward="true" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/typescript/lib/lib.dom.d.ts" />
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Flip/Flip.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="233" column="16" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Page/Page.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="63" selection-start-line="46" selection-start-column="63" selection-end-line="46" selection-end-column="63" />
+          <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Page/ImagePage.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1342">
+          <caret line="5" column="32" lean-forward="true" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Render/Render.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1688">
+          <caret line="173" column="49" selection-start-line="173" selection-start-column="49" selection-end-line="173" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StPageFlip/Render/CanvasRender.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="175" column="52" selection-start-line="175" selection-start-column="52" selection-end-line="175" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.eslintrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1449" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="1" selection-start-column="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webpack.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsconfig.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="31" column="47" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>Unnamed</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="Unnamed" />
+          </order>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
