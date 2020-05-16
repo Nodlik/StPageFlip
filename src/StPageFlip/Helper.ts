@@ -26,7 +26,7 @@ export class Helper {
     }
 
     public static PointInRect(rect: Rect, pos: Point): Point {
-        if (pos == null) {
+        if (pos === null) {
            return null;
         }
 
