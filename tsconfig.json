@@ -1,0 +1,12 @@
+{
+  "files": [
+    "src/StPageFlip/App.ts"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "lib": ["es2016", "dom"],
+    "module": "es6",
+    "target": "es2017"
+  },
+  "reference": []
+}
