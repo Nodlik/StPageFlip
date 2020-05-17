@@ -1,5 +1,5 @@
-import { Render } from './Render';
-import { FlipSetting } from '../App';
+import {Orientation, Render} from './Render';
+import {FlipSetting} from '../App';
 import {FlipDirection} from "../Flip/Flip";
 import {PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
@@ -32,7 +32,7 @@ export class CanvasRender extends Render {
         this.shadow = {
             pos,
             angle,
-            width: (this.getRect().width / 2 * 3 / 4) * t / 100,
+            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
             opacity: (100 - t) / 100,
             direction
         };
@@ -45,27 +45,33 @@ export class CanvasRender extends Render {
     public drawFrame(timer: number): void {
         this.clear();
 
-        if (this.leftPage != null) {
-            this.leftPage.simpleDraw(PageOrientation.Left);
-        }
 
-        if (this.rightPage != null) {
+        if (this.orientation !== Orientation.PORTRAIT)
+            if (this.leftPage != null)
+                this.leftPage.simpleDraw(PageOrientation.Left);
+
+        if (this.rightPage != null)
             this.rightPage.simpleDraw(PageOrientation.Right);
-        }
 
-        if (this.bottomPage != null) {
+        if (this.bottomPage != null)
             this.bottomPage.draw();
-        }
 
         this.drawBookShadow();
 
-        if (this.flippingPage != null) {
+        if (this.flippingPage != null)
             this.flippingPage.draw();
-        }
 
         if (this.shadow != null) {
             this.drawOuterShadow();
             this.drawInnerShadow();
+        }
+
+        const rect = this.getRect();
+
+        if (this.orientation === Orientation.PORTRAIT) {
+            this.ctx.beginPath();
+            this.ctx.rect(rect.left + rect.pageWidth, rect.top, rect.width, rect.height);
+            this.ctx.clip();
         }
     }
 

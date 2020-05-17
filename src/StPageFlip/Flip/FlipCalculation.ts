@@ -176,12 +176,10 @@ export class FlipCalculation {
 
         let angle = 2 * Math.acos(left / Math.sqrt(top * top + left * left));
 
-        if ((Math.abs(left) + Math.abs(top)) < 0.5)
-            angle = Infinity;
-
         if (top < 0) angle = - angle;
 
-        if (!isFinite(angle))
+        const da = Math.PI - angle;
+        if ( !isFinite(angle) || ((da >= 0) && (da < 0.003)) )
             throw new Error('The G point is too small');
 
         if (this.corner === FlipCorner.BOTTOM)

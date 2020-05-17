@@ -7,6 +7,7 @@ import {UI}  from './UI/UI';
 import {Helper}  from './Helper';
 import {Page}  from './Page/Page';
 import {EventObject} from "./Event/EventObject";
+import {Orientation} from "./Render/Render";
 
 export enum SizeType {
     FIXED,
@@ -63,18 +64,20 @@ export class App extends EventObject {
     }
 
     public turnToPrevPage(): void {
-        if (this.currentPage < 2) return;
+        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
+        if (this.currentPage < dp) return;
 
-        this.currentPage -= 2;
+        this.currentPage -= dp;
         this.pages.show(this.currentPage);
 
         this.trigger('flip', this, this.currentPage);
     }
 
     public turnToNextPage(): void {
-        if (this.currentPage > this.pages.getPageCount() - 2) return;
+        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
+        if (this.currentPage > this.pages.getPageCount() - dp) return;
 
-        this.currentPage += 2;
+        this.currentPage += dp;
         this.pages.show(this.currentPage);
 
         this.trigger('flip', this, this.currentPage);

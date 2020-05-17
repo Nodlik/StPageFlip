@@ -27,5 +27,4 @@ export class ImagePageCollection extends  PageCollection {
 
     }
 
-
 }

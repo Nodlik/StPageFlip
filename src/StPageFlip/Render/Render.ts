@@ -1,5 +1,5 @@
 import {FlipSetting, SizeType} from '../App';
-import {Point, Rect, RectPoints} from "../BasicTypes";
+import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
 
@@ -43,7 +43,7 @@ export abstract class Render {
     protected timer = 0;
     protected direction: FlipDirection = null;
 
-    protected orientation: Orientation = Orientation.LANDSCAPE;
+    protected orientation: Orientation = null;
 
     protected constructor(setting: FlipSetting) {
         this.setting = setting;
@@ -60,6 +60,9 @@ export abstract class Render {
     }
 
     public getOrientation(): Orientation {
+        if (this.orientation === null)
+            this.orientation = this.findOrientation();
+
         return this.orientation;
     }
 
@@ -104,37 +107,54 @@ export abstract class Render {
         this.drawFrame(timer);
     }
 
-    public getRect(): Rect {
+    private findOrientation(): Orientation {
+        return this.getBlockHeight() > this.getBlockWidth()
+            ? Orientation.PORTRAIT
+            : Orientation.LANDSCAPE;
+    }
+
+    public getRect(): PageRect {
+        const orientation = this.findOrientation();
         const middlePoint: Point = {
             x: this.getBlockWidth() / 2, y: this.getBlockHeight() / 2
         };
 
-        let w = this.setting.width;
-        let h = this.setting.height;
+        const ratio = this.setting.width / this.setting.height;
 
-        const ratio = w / h;
+        let pageWidth = this.setting.width;
+        let pageHeight = this.setting.height;
+        let left = middlePoint.x - pageWidth;
 
         if (this.setting.size === SizeType.STRETCH) {
-            w = this.setting.maxWidth;
-            if ((this.getBlockWidth() / 2) <= this.setting.maxWidth) {
-                w = this.getBlockWidth() / 2;
+            pageWidth = (orientation === Orientation.LANDSCAPE)
+                ? this.getBlockWidth() / 2
+                : this.getBlockWidth();
+
+            if (pageWidth > this.setting.maxWidth)
+                pageWidth = this.setting.maxWidth;
+
+            pageHeight = pageWidth / ratio;
+            if (pageHeight > this.getBlockHeight()) {
+                pageHeight = this.getBlockHeight();
+                pageWidth = pageHeight * ratio;
             }
 
-            h = w / ratio;
-
-            if (h > this.getBlockHeight()) {
-                h = this.getBlockHeight();
-                w = h * ratio;
-            }
+            left = (orientation === Orientation.LANDSCAPE)
+                ? middlePoint.x - pageWidth
+                : middlePoint.x - pageWidth / 2 - pageWidth;
         }
+
+        this.orientation = orientation;
 
         return {
-            left: middlePoint.x - w,
-            top: middlePoint.y - (h / 2),
-            width: w * 2,
-            height: h
+            left: left,
+            top: middlePoint.y - (pageHeight / 2),
+            width: pageWidth * 2,
+            height: pageHeight,
+            pageWidth: pageWidth
         }
     }
+
 
     public convertToBook(pos: Point): Point {
         const rect = this.getRect();

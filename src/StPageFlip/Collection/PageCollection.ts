@@ -1,4 +1,4 @@
-import {Render} from "../Render/Render";
+import {Orientation, Render} from "../Render/Render";
 import {Page} from "../Page/Page";
 
 export abstract class PageCollection {
@@ -37,11 +37,17 @@ export abstract class PageCollection {
             return;
         }
 
-        if (pageNum === (this.pages.length - 1)) {
-            pageNum--;
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            this.render.setLeftPage(null);
+            this.render.setRightPage(this.pages[pageNum]);
         }
+        else {
+            if (pageNum === (this.pages.length - 1)) {
+                pageNum--;
+            }
 
-        this.render.setLeftPage(this.pages[pageNum]);
-        this.render.setRightPage(this.pages[pageNum + 1]);
+            this.render.setLeftPage(this.pages[pageNum]);
+            this.render.setRightPage(this.pages[pageNum + 1]);
+        }
     }
 }

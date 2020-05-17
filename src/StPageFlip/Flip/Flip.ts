@@ -1,9 +1,10 @@
 import {CanvasRender} from "../Render/CanvasRender";
 import {App} from "../App";
 import {Helper} from "../Helper";
-import {Point, Rect} from "../BasicTypes";
+import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
 import {Page} from "../Page/Page";
+import {Orientation} from "../Render/Render";
 
 export enum FlipDirection {
     FORWARD,
@@ -48,9 +49,14 @@ export class Flip {
         const bookPos = this.render.convertToBook(globalPos);
         const rect = this.getBoundsRect();
 
-        const direction = (bookPos.x >= rect.width / 2)
-            ? FlipDirection.FORWARD
-            : FlipDirection.BACK;
+        let direction = FlipDirection.FORWARD;
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            if ((bookPos.x - rect.pageWidth) <=  rect.width / 5)
+                direction = FlipDirection.BACK;
+        }
+        else if (bookPos.x < rect.width / 2) {
+            direction = FlipDirection.BACK;
+        }
 
         const flipCorner = (bookPos.y >= rect.height / 2)
             ? FlipCorner.BOTTOM
@@ -70,7 +76,7 @@ export class Flip {
             this.calc = new FlipCalculation(
                 direction,
                 flipCorner,
-                rect.width / 2,
+                rect.pageWidth,
                 rect.height
             );
 
@@ -86,7 +92,7 @@ export class Flip {
             return;
 
         const rect = this.getBoundsRect();
-        const pageWidth = rect.width / 2;
+        const pageWidth = rect.pageWidth;
 
         const operatingDistance = Math.sqrt( Math.pow(pageWidth, 2) + Math.pow( rect.height, 2) ) / 5;
 
@@ -160,11 +166,11 @@ export class Flip {
             ? rect.height
             : 0;
 
-        this.calc.calc({x: rect.width / 2 - topMargins, y: yStart});
+        this.calc.calc({x: rect.pageWidth - topMargins, y: yStart});
 
         this.animateFlippingTo(
-            {x: rect.width / 2 - topMargins, y: yStart},
-            {x: -rect.width / 2, y: yDest}, true);
+            {x: rect.pageWidth - topMargins, y: yStart},
+            {x: -rect.pageWidth, y: yDest}, true);
     }
 
     public stopMove(): void {
@@ -179,9 +185,9 @@ export class Flip {
             : 0;
 
         if (pos.x <= 0)
-            this.animateFlippingTo(pos, {x: -rect.width / 2, y }, true);
+            this.animateFlippingTo(pos, {x: -rect.pageWidth, y }, true);
         else
-            this.animateFlippingTo(pos, {x: rect.width / 2, y }, false);
+            this.animateFlippingTo(pos, {x: rect.pageWidth, y }, false);
     }
 
     private do(pagePos: Point): void {
@@ -252,12 +258,17 @@ export class Flip {
     private getFlippingPage(direction: FlipDirection): Page {
         const current = this.app.getCurrentPageIndex();
 
-        if ( (current < (this.app.getPageCount() - 1)) && (current >= 0) ) {
-            if (direction === FlipDirection.FORWARD)
-                return this.app.getPage(current + 2);
-            else
-                if (current > 0)
-                    return this.app.getPage(current - 1);
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            return (direction === FlipDirection.FORWARD)
+                ? this.app.getPage(current)
+                : this.app.getPage(current - 1);
+        }
+        else {
+            if ((current < (this.app.getPageCount() - 1)) && (current >= 0)) {
+                return (direction === FlipDirection.FORWARD)
+                    ? this.app.getPage(current + 2)
+                    : this.app.getPage(current - 1);
+            }
         }
 
         return null;
@@ -266,8 +277,10 @@ export class Flip {
     private getNextPage(): Page {
         const current = this.app.getCurrentPageIndex();
 
-        if (current < (this.app.getPageCount() - 2))
-            return this.app.getPage(current + 3);
+        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+
+        if (current < (this.app.getPageCount() - dp))
+            return this.app.getPage(current + dp + 1);
 
         return null;
     }
@@ -275,8 +288,10 @@ export class Flip {
     private getPrevPage(): Page {
         const current = this.app.getCurrentPageIndex();
 
-        if (current > 1)
-            return this.app.getPage(current - 2);
+        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+
+        if (current - dp >= 0)
+            return this.app.getPage(current - dp);
 
         return null;
     }
@@ -292,7 +307,7 @@ export class Flip {
         if (direction === FlipDirection.FORWARD)
             return (this.app.getCurrentPageIndex() <= (this.app.getPageCount() - 1));
 
-        return (this.app.getCurrentPageIndex() > 1);
+        return (this.app.getCurrentPageIndex() >= 1);
     }
 
     private reset(): void {
@@ -301,7 +316,7 @@ export class Flip {
         this.bottomPage = null;
     }
 
-    private getBoundsRect(): Rect {
+    private getBoundsRect(): PageRect {
         return this.render.getRect();
     }
 
