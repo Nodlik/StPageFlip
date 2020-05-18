@@ -2,6 +2,7 @@ import {PageCollection} from './Collection/PageCollection';
 import {ImagePageCollection} from './Collection/ImagePageCollection';
 import {Point}  from './BasicTypes';
 import {Flip, FlippingState} from './Flip/Flip';
+import {Render}  from './Render/Render';
 import {CanvasRender}  from './Render/CanvasRender';
 import {UI}  from './UI/UI';
 import {Helper}  from './Helper';
@@ -40,14 +41,14 @@ export class App extends EventObject {
         height: 800,
         size: SizeType.STRETCH,
         minWidth: 150,
-        maxWidth: 600,
+        maxWidth: 900,
         minHeight: 300,
         maxHeight: 2200,
         startPage: 2
     };
 
     private readonly flip: Flip;
-    private readonly render: CanvasRender;
+    private readonly render: Render;
     private readonly canvas: HTMLCanvasElement;
 
     constructor(inBlock: HTMLElement, setting: FlipSetting) {
@@ -61,6 +62,10 @@ export class App extends EventObject {
         this.flip = new Flip(this.render, this);
 
         this.render.start();
+    }
+
+    public update(): void {
+        this.pages.show(this.currentPage);
     }
 
     public turnToPrevPage(): void {

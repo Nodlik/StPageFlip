@@ -54,6 +54,7 @@ export abstract class Render {
     public abstract drawFrame(timer: number): void;
     public abstract getBlockWidth(): number;
     public abstract getBlockHeight(): number;
+    public abstract clearShadow(): void;
 
     public setPageRect(pageRect: RectPoints): void {
         this.pageRect = this.convertRectToGlobal(pageRect);

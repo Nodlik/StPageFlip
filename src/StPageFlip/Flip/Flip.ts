@@ -1,10 +1,9 @@
-import {CanvasRender} from "../Render/CanvasRender";
+import {Render, Orientation} from "../Render/Render";
 import {App} from "../App";
 import {Helper} from "../Helper";
 import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
 import {Page} from "../Page/Page";
-import {Orientation} from "../Render/Render";
 
 export enum FlipDirection {
     FORWARD,
@@ -24,7 +23,7 @@ export enum FlippingState {
 }
 
 export class Flip {
-    private readonly render: CanvasRender;
+    private readonly render: Render;
     private readonly app: App;
 
     private flippingPage: Page = null;
@@ -34,7 +33,7 @@ export class Flip {
 
     private state: FlippingState = FlippingState.READ;
 
-    constructor(render: CanvasRender, app: App) {
+    constructor(render: Render, app: App) {
         this.render = render;
         this.app = app;
     }
