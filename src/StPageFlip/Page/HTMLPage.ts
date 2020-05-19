@@ -19,6 +19,7 @@ export class HTMLPage extends Page {
         const pageWidth = this.render.getRect().pageWidth;
         const pageHeight = this.render.getRect().height;
 
+        this.element.classList.remove('--simple');
         this.element.style.display = "block";
         this.element.style.transformOrigin = "0 0";
         this.element.style.left = "0";
@@ -52,6 +53,9 @@ export class HTMLPage extends Page {
     }
 
     public simpleDraw(orient: PageOrientation): void {
+        if (this.element.classList.contains('--simple'))
+            return;
+
         const rect = this.render.getRect();
 
         const pageWidth = rect.pageWidth;
@@ -63,6 +67,7 @@ export class HTMLPage extends Page {
 
         const y = rect.top;
 
+        this.element.classList.add('--simple');
         this.element.style.cssText = "display: block; height: " + pageHeight + "px; left: " +
             x + "px; top: " + y + "px; width: " + pageWidth + "px; z-index: 2";
     }

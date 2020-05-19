@@ -31,7 +31,6 @@ export class CanvasRender extends Render {
     public drawFrame(timer: number): void {
         this.clear();
 
-
         if (this.orientation !== Orientation.PORTRAIT)
             if (this.leftPage != null)
                 this.leftPage.simpleDraw(PageOrientation.Left);

@@ -187,12 +187,13 @@ export class HTMLRender extends Render {
         }
     }
 
-
     private clear(): void {
         for (const item of this.items) {
-            item.style.display = "none";
-            item.style.zIndex = "1";
-            item.style.transform = "";
+            if ((item !== (this.leftPage as HTMLPage).getElement()) && (item !== (this.rightPage as HTMLPage).getElement())) {
+                item.style.display = "none";
+                item.style.zIndex = "1";
+                item.style.transform = "";
+            }
         }
     }
 

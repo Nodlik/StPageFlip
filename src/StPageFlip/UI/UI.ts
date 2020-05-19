@@ -31,9 +31,8 @@ export abstract class UI {
                 const t = e.changedTouches[0];
 
                 this.app.startUserTouch(this.getMousePos(t.clientX, t.clientY));
+                return false;
             }
-
-            return false;
         };
 
         window.onmousemove = (e: MouseEvent) => {
@@ -56,6 +55,8 @@ export abstract class UI {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.userStop(pos);
+
+            return false;
         };
 
         window.ontouchend = (e: TouchEvent) => {
