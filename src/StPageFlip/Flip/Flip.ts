@@ -212,7 +212,8 @@ export class Flip {
             this.calc.getShadowStartPoint(),
             this.calc.getShadowAngle(),
             this.calc.getFlippingProgress(),
-            this.calc.getDirection()
+            this.calc.getDirection(),
+            this.calc.getShadowLength()
         );
     }
 

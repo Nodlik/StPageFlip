@@ -44,6 +44,10 @@ export abstract class Page {
         this.state.corners = corners;
     }
 
+    public getAngle(): number {
+        return this.state.angle;
+    }
+
     public abstract  simpleDraw(orient: PageOrientation): void;
     public abstract  draw(): void;
     public abstract async load(): Promise<Page>;

@@ -12,6 +12,7 @@ type Shadow = {
     width: number;
     opacity: number;
     direction: FlipDirection;
+    length: number;
 }
 
 type Animation = {
@@ -49,15 +50,29 @@ export abstract class Render {
         this.setting = setting;
     }
 
-    public abstract drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection): void;
-
     public abstract drawFrame(timer: number): void;
     public abstract getBlockWidth(): number;
     public abstract getBlockHeight(): number;
-    public abstract clearShadow(): void;
+
+
+    public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
+        this.shadow = {
+            pos,
+            angle,
+            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
+            opacity: (100 - t) / 100,
+            direction,
+            length
+        };
+    }
+
+    public clearShadow(): void {
+        this.shadow = null;
+    }
+
 
     public setPageRect(pageRect: RectPoints): void {
-        this.pageRect = this.convertRectToGlobal(pageRect);
+        this.pageRect = pageRect;
     }
 
     public getOrientation(): Orientation {
@@ -223,6 +238,10 @@ export abstract class Render {
 
     public setDirection(direction: FlipDirection): void {
         this.direction = direction;
+    }
+
+    public getDirection(): FlipDirection {
+        return this.direction;
     }
 
     public setLeftPage(page: Page): void {

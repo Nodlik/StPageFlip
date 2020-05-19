@@ -127,11 +127,6 @@ export class ImagePage extends Page {
         }
 
         return new Promise<Page>((resolve) => {
-            /*setTimeout(() => {
-                this.isLoad = true;
-                resolve(this);
-            }, 5000); */
-
             this.image.onload = () => {
                 this.isLoad = true;
                 resolve(this);

@@ -63,7 +63,10 @@ export class FlipCalculation {
         }
     }
 
-    private getRotatedPoint(transformedPoint: Point, startPoint: Point): Point {
+    private getRotatedPoint(transformedPoint: Point, startPoint: Point, angle: number = null): Point {
+        if (angle === null)
+            angle = this.angle;
+
         return {
             x: transformedPoint.x * Math.cos(this.angle) + transformedPoint.y * Math.sin(this.angle) + startPoint.x,
             y: transformedPoint.y * Math.cos(this.angle) - transformedPoint.x * Math.sin(this.angle) + startPoint.y
@@ -256,6 +259,10 @@ export class FlipCalculation {
         }
 
         return Math.PI - angle;
+    }
+
+    public getShadowLength(): number {
+        return Helper.GetSegmentLenght(this.getSegmentToShadowLine());
     }
 
     public getFlippingProgress(): number {

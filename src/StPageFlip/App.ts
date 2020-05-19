@@ -1,14 +1,17 @@
 import {PageCollection} from './Collection/PageCollection';
 import {ImagePageCollection} from './Collection/ImagePageCollection';
+import {HTMLPageCollection} from './Collection/HTMLPageCollection';
 import {Point}  from './BasicTypes';
 import {Flip, FlippingState} from './Flip/Flip';
 import {Render}  from './Render/Render';
 import {CanvasRender}  from './Render/CanvasRender';
-import {UI}  from './UI/UI';
+import {HTMLUI}  from './UI/HTMLUI';
+import {CanvasUI}  from './UI/CanvasUI';
 import {Helper}  from './Helper';
 import {Page}  from './Page/Page';
 import {EventObject} from "./Event/EventObject";
 import {Orientation} from "./Render/Render";
+import {HTMLRender} from "./Render/HTMLRender";
 
 export enum SizeType {
     FIXED,
@@ -47,21 +50,14 @@ export class App extends EventObject {
         startPage: 2
     };
 
-    private readonly flip: Flip;
-    private readonly render: Render;
-    private readonly canvas: HTMLCanvasElement;
+    private readonly block: HTMLElement;
+    private flip: Flip;
+    private render: Render;
 
     constructor(inBlock: HTMLElement, setting: FlipSetting) {
         super();
 
-        const ui = new UI(inBlock, this, this.setting);
-
-        this.canvas = ui.getCanvas();
-        this.render = new CanvasRender(this.canvas, this.setting);
-
-        this.flip = new Flip(this.render, this);
-
-        this.render.start();
+        this.block = inBlock;
     }
 
     public update(): void {
@@ -98,7 +94,34 @@ export class App extends EventObject {
     }
 
     public loadFromImages(imagesHref: string[]): void {
+        const ui = new CanvasUI(this.block, this, this.setting);
+
+        const canvas = ui.getCanvas();
+        this.render = new CanvasRender(canvas, this.setting);
+
+        this.flip = new Flip(this.render, this);
+
+        this.render.start();
+
         this.pages = new ImagePageCollection(this.render, imagesHref);
+        this.pages.load();
+
+        this.pages.show(this.setting.startPage);
+        this.currentPage = this.setting.startPage;
+
+        this.trigger('flip', this, this.currentPage);
+    }
+
+    public loadFromHTML(): void {
+        const ui = new HTMLUI(this.block, this, this.setting);
+
+        this.render = new HTMLRender(ui.getDistElement(), this.setting);
+
+        this.flip = new Flip(this.render, this);
+
+        this.render.start();
+
+        this.pages = new HTMLPageCollection(this.render, ui.getDistElement());
         this.pages.load();
 
         this.pages.show(this.setting.startPage);

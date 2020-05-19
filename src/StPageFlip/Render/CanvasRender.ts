@@ -28,20 +28,6 @@ export class CanvasRender extends Render {
         return this.ctx;
     }
 
-    public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection): void {
-        this.shadow = {
-            pos,
-            angle,
-            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
-            opacity: (100 - t) / 100,
-            direction
-        };
-    }
-
-    public clearShadow(): void {
-        this.shadow = null;
-    }
-
     public drawFrame(timer: number): void {
         this.clear();
 
@@ -148,10 +134,11 @@ export class CanvasRender extends Render {
 
         const shadowPos = this.convertToGlobal({x: this.shadow.pos.x, y: this.shadow.pos.y});
 
-        this.ctx.moveTo(this.pageRect.topLeft.x, this.pageRect.topLeft.y);
-        this.ctx.lineTo(this.pageRect.topRight.x, this.pageRect.topRight.y);
-        this.ctx.lineTo(this.pageRect.bottomRight.x, this.pageRect.bottomRight.y);
-        this.ctx.lineTo(this.pageRect.bottomLeft.x, this.pageRect.bottomLeft.y);
+        const pageRect = this.convertRectToGlobal(this.pageRect);
+        this.ctx.moveTo(pageRect.topLeft.x, pageRect.topLeft.y);
+        this.ctx.lineTo(pageRect.topRight.x, pageRect.topRight.y);
+        this.ctx.lineTo(pageRect.bottomRight.x, pageRect.bottomRight.y);
+        this.ctx.lineTo(pageRect.bottomLeft.x, pageRect.bottomLeft.y);
         this.ctx.translate(shadowPos.x, shadowPos.y);
 
         this.ctx.rotate(Math.PI + this.shadow.angle + Math.PI / 2);
