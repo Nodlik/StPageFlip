@@ -9,7 +9,7 @@ export class Helper {
         return Math.sqrt( Math.pow(point2.x - point1.x,2) + Math.pow(point2.y - point1.y,2) );
     }
 
-    public static GetSegmentLenght(line: Segment): number {
+    public static GetSegmentLength(line: Segment): number {
         return Helper.GetDestinationFromTwoPoint(line[0], line[1]);
     }
 

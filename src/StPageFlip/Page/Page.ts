@@ -8,7 +8,7 @@ export interface PageState {
     position: Point;
 }
 
-export enum PageOrientation {
+export const enum PageOrientation {
     Left,
     Right
 }
@@ -48,7 +48,7 @@ export abstract class Page {
         return this.state.angle;
     }
 
-    public abstract  simpleDraw(orient: PageOrientation): void;
-    public abstract  draw(): void;
+    public abstract simpleDraw(orient: PageOrientation): void;
+    public abstract draw(): void;
     public abstract async load(): Promise<Page>;
 }

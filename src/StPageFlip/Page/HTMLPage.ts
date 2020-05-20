@@ -5,6 +5,7 @@ import {FlipDirection} from "../Flip/Flip";
 
 export class HTMLPage extends Page {
     private readonly element: HTMLElement;
+    private copiedElement: HTMLElement = null;
 
     private isLoad = false;
 
@@ -19,6 +20,7 @@ export class HTMLPage extends Page {
         const pageWidth = this.render.getRect().pageWidth;
         const pageHeight = this.render.getRect().height;
 
+        this.copiedElement = null;
         this.element.classList.remove('--simple');
         this.element.style.display = "block";
         this.element.style.transformOrigin = "0 0";
@@ -48,6 +50,7 @@ export class HTMLPage extends Page {
         polygon += ')';
 
         this.element.style.clipPath = polygon;
+        this.element.style.setProperty('-webkit-clip-path', polygon);
 
         this.element.style.transform = "translate(" + pagePos.x + "px, " + pagePos.y + "px) rotate(" + this.state.angle + "rad)";
     }
@@ -55,6 +58,11 @@ export class HTMLPage extends Page {
     public simpleDraw(orient: PageOrientation): void {
         if (this.element.classList.contains('--simple'))
             return;
+
+        if (this.copiedElement === null) {
+            this.copiedElement = this.element.cloneNode(true) as HTMLElement;
+            this.element.parentElement.appendChild(this.copiedElement);
+        }
 
         const rect = this.render.getRect();
 
@@ -68,8 +76,9 @@ export class HTMLPage extends Page {
         const y = rect.top;
 
         this.element.classList.add('--simple');
-        this.element.style.cssText = "display: block; height: " + pageHeight + "px; left: " +
+        this.copiedElement.style.cssText = "position: absolute; display: block; height: " + pageHeight + "px; left: " +
             x + "px; top: " + y + "px; width: " + pageWidth + "px; z-index: 2";
+        this.element.style.cssText = "display: none";
     }
 
     public getElement(): HTMLElement {

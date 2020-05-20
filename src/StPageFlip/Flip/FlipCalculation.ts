@@ -262,7 +262,7 @@ export class FlipCalculation {
     }
 
     public getShadowLength(): number {
-        return Helper.GetSegmentLenght(this.getSegmentToShadowLine());
+        return Helper.GetSegmentLength(this.getSegmentToShadowLine());
     }
 
     public getFlippingProgress(): number {

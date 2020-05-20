@@ -105,6 +105,7 @@ export class HTMLRender extends Render {
         polygon += ')';
 
         this.innerShadow.style.clipPath = polygon;
+        this.innerShadow.style.setProperty('-webkit-clip-path', polygon);
     }
 
     private drawOuterShadow(): void {
@@ -159,6 +160,7 @@ export class HTMLRender extends Render {
         polygon = polygon.slice(0, -2);
         polygon += ')';
         this.outerShadow.style.clipPath = polygon;
+        this.outerShadow.style.setProperty('-webkit-clip-path', polygon);
     }
 
     public drawFrame(timer: number): void {
@@ -182,14 +184,27 @@ export class HTMLRender extends Render {
         }
 
         if (this.shadow != null) {
-            this.drawOuterShadow();
-            this.drawInnerShadow();
+            //this.drawOuterShadow();
+            //this.drawInnerShadow();
         }
     }
 
     private clear(): void {
+        const workedPages = [];
+        if (this.leftPage)
+            workedPages.push((this.leftPage as HTMLPage).getElement());
+
+        if (this.rightPage)
+            workedPages.push((this.rightPage as HTMLPage).getElement());
+
+        if (this.flippingPage)
+            workedPages.push((this.flippingPage as HTMLPage).getElement());
+
+        if (this.bottomPage)
+            workedPages.push((this.bottomPage as HTMLPage).getElement());
+
         for (const item of this.items) {
-            if ((item !== (this.leftPage as HTMLPage).getElement()) && (item !== (this.rightPage as HTMLPage).getElement())) {
+            if (!workedPages.includes(item)) {
                 item.style.display = "none";
                 item.style.zIndex = "1";
                 item.style.transform = "";
@@ -197,6 +212,13 @@ export class HTMLRender extends Render {
         }
     }
 
+    public setRightPage(page: Page): void {
+        super.setRightPage(page);
+    }
+
+    public setLeftPage(page: Page): void {
+        super.setLeftPage(page);
+    }
 
     public setFlippingPage(page: Page): void {
         super.setFlippingPage(page);

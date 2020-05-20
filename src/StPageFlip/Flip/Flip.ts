@@ -5,17 +5,17 @@ import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
 import {Page} from "../Page/Page";
 
-export enum FlipDirection {
+export const enum FlipDirection {
     FORWARD,
     BACK
 }
 
-export enum FlipCorner {
+export const enum FlipCorner {
     TOP,
     BOTTOM
 }
 
-export enum FlippingState {
+export const enum FlippingState {
     USER_FOLD = 'user_fold',
     FOLD_CORNER = 'fold_corner',
     FLIPPING = 'flipping',

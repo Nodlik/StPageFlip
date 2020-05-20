@@ -13,7 +13,7 @@ import {EventObject} from "./Event/EventObject";
 import {Orientation} from "./Render/Render";
 import {HTMLRender} from "./Render/HTMLRender";
 
-export enum SizeType {
+export const enum SizeType {
     FIXED,
     STRETCH
 }

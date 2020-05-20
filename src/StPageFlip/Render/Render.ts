@@ -23,7 +23,7 @@ type Animation = {
     startedAt: number;
 }
 
-export enum Orientation {
+export const enum Orientation {
     PORTRAIT,
     LANDSCAPE
 }
@@ -53,6 +53,11 @@ export abstract class Render {
     public abstract drawFrame(timer: number): void;
     public abstract getBlockWidth(): number;
     public abstract getBlockHeight(): number;
+
+
+    private fps = 0;
+    private startTimer = 0;
+    private _startTimer = 0;
 
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
@@ -228,9 +233,25 @@ export abstract class Render {
     }
 
     public start(): void {
+        this._startTimer = 0;
         const loop = (timer: number): void => {
+            if (this._startTimer == 0) {
+                this._startTimer = timer;
+            }
+            if ((timer - this.startTimer) >= 1000) {
+                this.startTimer = timer;
+            }
+
+            if ((timer - this._startTimer) > 1000) {
+                document.getElementById('fps').innerHTML = this.fps.toString(10);
+                this.fps = 0;
+                this._startTimer = timer;
+            }
+
             this.render(timer);
             requestAnimationFrame(loop);
+
+            this.fps++;
         };
 
         requestAnimationFrame(loop);
@@ -244,10 +265,6 @@ export abstract class Render {
         return this.direction;
     }
 
-    public setLeftPage(page: Page): void {
-        this.leftPage = page;
-    }
-
     public setFlippingPage(page: Page): void {
         this.flippingPage = page;
     }
@@ -258,5 +275,9 @@ export abstract class Render {
 
     public setRightPage(page: Page): void {
         this.rightPage = page;
+    }
+
+    public setLeftPage(page: Page): void {
+        this.leftPage = page;
     }
 }
