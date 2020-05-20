@@ -1,5 +1,5 @@
 import {Orientation, Render} from './Render';
-import {FlipSetting} from '../App';
+import {App, FlipSetting} from '../App';
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
@@ -13,8 +13,8 @@ export class HTMLRender extends Render {
     private outerShadow: HTMLElement = null;
     private innerShadow: HTMLElement = null;
 
-    constructor(element: HTMLElement, setting: FlipSetting) {
-        super(setting);
+    constructor(app: App, setting: FlipSetting, element: HTMLElement) {
+        super(app, setting);
 
         this.element = element;
         this.items = element.querySelectorAll('.stf__item');
@@ -31,8 +31,8 @@ export class HTMLRender extends Render {
     public clearShadow(): void {
         super.clearShadow();
 
-        this.element.querySelector('.stf__outerShadow').remove();
-        this.element.querySelector('.stf__innerShadow').remove();
+        this.outerShadow.remove();
+        this.innerShadow.remove();
 
         this.outerShadow = null;
         this.innerShadow = null;
@@ -68,10 +68,11 @@ export class HTMLRender extends Render {
 
         const angle = this.shadow.angle + 3 * Math.PI / 2;
 
-        this.innerShadow.style.left = shadowPos.x + 'px';
-        this.innerShadow.style.top = shadowPos.y + 'px';
+        this.innerShadow.style.position = "absolute";
         this.innerShadow.style.width = innerShadowSize  + 'px';
         this.innerShadow.style.height = rect.height * 2 + 'px';
+        this.outerShadow.style.left = "0px";
+        this.outerShadow.style.top = "0px";
         this.innerShadow.style.background = "linear-gradient(" + shadowDirection + ", " +
             "rgba(0, 0, 0, " + this.shadow.opacity + ") 5%, " +
             "rgba(0, 0, 0, 0.05) 15%," +
@@ -80,7 +81,7 @@ export class HTMLRender extends Render {
             ")";
 
         this.innerShadow.style.transformOrigin = shadowTranslate + "px 100px";
-        this.innerShadow.style.transform = "translate(" + (-shadowTranslate) + "px, -100px) rotate(" + angle + "rad)";
+        this.innerShadow.style.transform = "translate3d(" + (shadowPos.x - shadowTranslate) + "px, " + (shadowPos.y - 100) + "px, 0) rotate(" + angle + "rad)";
 
         const clip = [this.pageRect.topLeft, this.pageRect.topRight,
             this.pageRect.bottomRight, this.pageRect.bottomLeft];
@@ -122,13 +123,13 @@ export class HTMLRender extends Render {
             ? "to right"
             : "to left";
 
-        this.outerShadow.style.left = shadowPos.x + 'px';
-        this.outerShadow.style.top = shadowPos.y + 'px';
         this.outerShadow.style.width = this.shadow.width + 'px';
         this.outerShadow.style.height = rect.height * 2 + 'px';
+        this.outerShadow.style.left = "0px";
+        this.outerShadow.style.top = "0px";
         this.outerShadow.style.background = "linear-gradient(" + shadowDirection + ", rgba(0, 0, 0, " + this.shadow.opacity + "), rgba(0, 0, 0, 0))";
         this.outerShadow.style.transformOrigin = shadowTranslate + "px 100px"; //
-        this.outerShadow.style.transform = "translate(" + (-shadowTranslate) + "px, -100px) rotate(" + angle + "rad)";
+        this.outerShadow.style.transform = "translate3d(" + (shadowPos.x -shadowTranslate) + "px, " + (shadowPos.y -100) + "px, 0) rotate(" + angle + "rad)";
 
         const clip = [];
         clip.push(
@@ -166,16 +167,23 @@ export class HTMLRender extends Render {
     public drawFrame(timer: number): void {
         this.clear();
 
-        if (this.orientation !== Orientation.PORTRAIT)
+        if (this.orientation !== Orientation.PORTRAIT) {
             if (this.leftPage != null)
                 this.leftPage.simpleDraw(PageOrientation.Left);
+        }
+        else {
+            if (this.leftPage != null)
+                (this.leftPage as HTMLPage).clearSaved();
+        }
 
         if (this.rightPage != null)
             this.rightPage.simpleDraw(PageOrientation.Right);
 
         if (this.bottomPage != null) {
-            (this.bottomPage as HTMLPage).getElement().style.zIndex = "3";
-            this.bottomPage.draw();
+            if ( !((this.orientation === Orientation.PORTRAIT) && (this.direction === FlipDirection.BACK)) ) {
+                (this.bottomPage as HTMLPage).getElement().style.zIndex = "3";
+                this.bottomPage.draw();
+            }
         }
 
         if (this.flippingPage != null) {
@@ -184,8 +192,8 @@ export class HTMLRender extends Render {
         }
 
         if (this.shadow != null) {
-            //this.drawOuterShadow();
-            //this.drawInnerShadow();
+            this.drawOuterShadow();
+            this.drawInnerShadow();
         }
     }
 
@@ -213,14 +221,30 @@ export class HTMLRender extends Render {
     }
 
     public setRightPage(page: Page): void {
+        if ((this.rightPage !== null) && (page !== this.rightPage))
+            (this.rightPage as HTMLPage).clearSaved();
+
         super.setRightPage(page);
     }
 
     public setLeftPage(page: Page): void {
+        if ((this.leftPage !== null) && (page !== this.rightPage))
+            (this.leftPage as HTMLPage).clearSaved();
+
         super.setLeftPage(page);
     }
 
     public setFlippingPage(page: Page): void {
         super.setFlippingPage(page);
+    }
+
+    public update(): void {
+        super.update();
+
+        if (this.rightPage !== null)
+            (this.rightPage as HTMLPage).clearSaved();
+
+        if (this.leftPage !== null)
+            (this.leftPage as HTMLPage).clearSaved();
     }
 }

@@ -7,7 +7,7 @@ module.exports = {
         filename: 'stPageFlip.bundle.js',
         library: 'StPageFlip'
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [
             { test: /\.less$/, use: ['css-loader', 'less-loader'] },

@@ -13,6 +13,10 @@ export class HTMLPage extends Page {
         super(render);
 
         this.element = element;
+        this.element.style.position = 'absolute';
+        this.element.style.left = '0';
+        this.element.style.top = '0';
+        this.element.style.boxSizing = 'border-box';
     }
 
     public draw(): void {
@@ -20,12 +24,12 @@ export class HTMLPage extends Page {
         const pageWidth = this.render.getRect().pageWidth;
         const pageHeight = this.render.getRect().height;
 
-        this.copiedElement = null;
         this.element.classList.remove('--simple');
+
         this.element.style.display = "block";
-        this.element.style.transformOrigin = "0 0";
         this.element.style.left = "0";
         this.element.style.top = "0";
+        this.element.style.transformOrigin = "0 0";
         this.element.style.width = pageWidth + "px";
         this.element.style.height = pageHeight + "px";
 
@@ -52,7 +56,7 @@ export class HTMLPage extends Page {
         this.element.style.clipPath = polygon;
         this.element.style.setProperty('-webkit-clip-path', polygon);
 
-        this.element.style.transform = "translate(" + pagePos.x + "px, " + pagePos.y + "px) rotate(" + this.state.angle + "rad)";
+        this.element.style.transform = "translate3d(" + pagePos.x + "px, " + pagePos.y + "px, 0) rotate(" + this.state.angle + "rad)";
     }
 
     public simpleDraw(orient: PageOrientation): void {
@@ -79,6 +83,15 @@ export class HTMLPage extends Page {
         this.copiedElement.style.cssText = "position: absolute; display: block; height: " + pageHeight + "px; left: " +
             x + "px; top: " + y + "px; width: " + pageWidth + "px; z-index: 2";
         this.element.style.cssText = "display: none";
+    }
+
+    public clearSaved(): void {
+        this.element.classList.remove('--simple');
+
+        if (this.copiedElement !== null) {
+            this.copiedElement.remove();
+            this.copiedElement = null;
+        }
     }
 
     public getElement(): HTMLElement {

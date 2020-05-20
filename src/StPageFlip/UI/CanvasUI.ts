@@ -14,6 +14,7 @@ export class CanvasUI extends UI {
 
         window.addEventListener('resize', () => {
             this.resizeCanvas();
+            this.app.getRender().update();
         }, false);
 
         this.distElement = this.canvas;

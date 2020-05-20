@@ -1,12 +1,15 @@
 import {Orientation, Render} from "../Render/Render";
 import {Page} from "../Page/Page";
+import {App} from "../App";
 
 export abstract class PageCollection {
     protected pages: Page[] = [];
+    protected readonly app: App;
     protected readonly render: Render;
 
-    protected constructor(render: Render) {
+    protected constructor(app: App, render: Render) {
         this.render = render;
+        this.app = app;
     }
 
     public getPageCount(): number {
@@ -36,6 +39,8 @@ export abstract class PageCollection {
         if ((pageNum < 0) || (pageNum >= this.pages.length)) {
             return;
         }
+
+        this.app.updatePage(pageNum);
 
         if (this.render.getOrientation() === Orientation.PORTRAIT) {
             this.render.setLeftPage(null);

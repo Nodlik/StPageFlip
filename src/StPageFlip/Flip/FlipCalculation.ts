@@ -63,10 +63,7 @@ export class FlipCalculation {
         }
     }
 
-    private getRotatedPoint(transformedPoint: Point, startPoint: Point, angle: number = null): Point {
-        if (angle === null)
-            angle = this.angle;
-
+    private getRotatedPoint(transformedPoint: Point, startPoint: Point): Point {
         return {
             x: transformedPoint.x * Math.cos(this.angle) + transformedPoint.y * Math.sin(this.angle) + startPoint.x,
             y: transformedPoint.y * Math.cos(this.angle) - transformedPoint.x * Math.sin(this.angle) + startPoint.y

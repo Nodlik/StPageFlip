@@ -1,4 +1,4 @@
-import {FlipSetting, SizeType} from '../App';
+import {App, FlipSetting, SizeType} from '../App';
 import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
@@ -24,8 +24,8 @@ type Animation = {
 }
 
 export const enum Orientation {
-    PORTRAIT,
-    LANDSCAPE
+    PORTRAIT = 'portrait',
+    LANDSCAPE = 'landscape'
 }
 
 export abstract class Render {
@@ -37,7 +37,9 @@ export abstract class Render {
 
     protected shadow: Shadow = null;
     protected pageRect: RectPoints = null;
+
     protected readonly setting: FlipSetting;
+    protected readonly app: App;
 
     protected animation: Animation = null;
 
@@ -46,19 +48,16 @@ export abstract class Render {
 
     protected orientation: Orientation = null;
 
-    protected constructor(setting: FlipSetting) {
+    private boundsRect: PageRect = null;
+
+    protected constructor(app: App, setting: FlipSetting) {
         this.setting = setting;
+        this.app = app;
     }
 
     public abstract drawFrame(timer: number): void;
     public abstract getBlockWidth(): number;
     public abstract getBlockHeight(): number;
-
-
-    private fps = 0;
-    private startTimer = 0;
-    private _startTimer = 0;
-
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
         this.shadow = {
@@ -75,15 +74,14 @@ export abstract class Render {
         this.shadow = null;
     }
 
-
     public setPageRect(pageRect: RectPoints): void {
         this.pageRect = pageRect;
     }
 
     public getOrientation(): Orientation {
-        if (this.orientation === null)
+       /* if (this.orientation === null) {
             this.orientation = this.findOrientation();
-
+        }*/
         return this.orientation;
     }
 
@@ -128,25 +126,41 @@ export abstract class Render {
         this.drawFrame(timer);
     }
 
+    /*
     private findOrientation(): Orientation {
-        return this.getBlockHeight() > this.getBlockWidth()
+        const orientation = this.getBlockHeight() > this.getBlockWidth()
             ? Orientation.PORTRAIT
             : Orientation.LANDSCAPE;
-    }
+
+        return orientation;
+    }*/
 
     public getRect(): PageRect {
-        const orientation = this.findOrientation();
+        if (this.boundsRect === null)
+            this.calculateBoundsRect();
+
+        return this.boundsRect;
+    }
+
+    private calculateBoundsRect(): Orientation {
+        let orientation = Orientation.LANDSCAPE;//this.findOrientation();
+
+        const blockWidth = this.getBlockWidth();
         const middlePoint: Point = {
-            x: this.getBlockWidth() / 2, y: this.getBlockHeight() / 2
+            x: blockWidth / 2, y: this.getBlockHeight() / 2
         };
 
         const ratio = this.setting.width / this.setting.height;
 
         let pageWidth = this.setting.width;
         let pageHeight = this.setting.height;
+
         let left = middlePoint.x - pageWidth;
 
         if (this.setting.size === SizeType.STRETCH) {
+            if (blockWidth < this.setting.minWidth * 2)
+                orientation = Orientation.PORTRAIT;
+
             pageWidth = (orientation === Orientation.LANDSCAPE)
                 ? this.getBlockWidth() / 2
                 : this.getBlockWidth();
@@ -164,18 +178,33 @@ export abstract class Render {
                 ? middlePoint.x - pageWidth
                 : middlePoint.x - pageWidth / 2 - pageWidth;
         }
+        else {
+            if (blockWidth < pageWidth * 2) {
+                orientation = Orientation.PORTRAIT;
+                left = middlePoint.x - pageWidth / 2 - pageWidth;
+            }
+        }
 
-        this.orientation = orientation;
-
-        return {
+        this.boundsRect = {
             left: left,
             top: middlePoint.y - (pageHeight / 2),
             width: pageWidth * 2,
             height: pageHeight,
             pageWidth: pageWidth
-        }
+        };
+
+        return orientation;
     }
 
+    public update(): void {
+        this.boundsRect = null;
+        const orientation = this.calculateBoundsRect();
+
+        if (this.orientation !== orientation) {
+            this.orientation = orientation;
+            this.app.updateOrientation(orientation);
+        }
+    }
 
     public convertToBook(pos: Point): Point {
         const rect = this.getRect();
@@ -233,25 +262,11 @@ export abstract class Render {
     }
 
     public start(): void {
-        this._startTimer = 0;
+        this.update();
+
         const loop = (timer: number): void => {
-            if (this._startTimer == 0) {
-                this._startTimer = timer;
-            }
-            if ((timer - this.startTimer) >= 1000) {
-                this.startTimer = timer;
-            }
-
-            if ((timer - this._startTimer) > 1000) {
-                document.getElementById('fps').innerHTML = this.fps.toString(10);
-                this.fps = 0;
-                this._startTimer = timer;
-            }
-
             this.render(timer);
             requestAnimationFrame(loop);
-
-            this.fps++;
         };
 
         requestAnimationFrame(loop);

@@ -1,16 +1,15 @@
 import {PageCollection} from './Collection/PageCollection';
 import {ImagePageCollection} from './Collection/ImagePageCollection';
 import {HTMLPageCollection} from './Collection/HTMLPageCollection';
-import {Point}  from './BasicTypes';
+import {PageRect, Point} from './BasicTypes';
 import {Flip, FlippingState} from './Flip/Flip';
-import {Render}  from './Render/Render';
-import {CanvasRender}  from './Render/CanvasRender';
-import {HTMLUI}  from './UI/HTMLUI';
-import {CanvasUI}  from './UI/CanvasUI';
-import {Helper}  from './Helper';
-import {Page}  from './Page/Page';
+import {Orientation, Render} from './Render/Render';
+import {CanvasRender} from './Render/CanvasRender';
+import {HTMLUI} from './UI/HTMLUI';
+import {CanvasUI} from './UI/CanvasUI';
+import {Helper} from './Helper';
+import {Page} from './Page/Page';
 import {EventObject} from "./Event/EventObject";
-import {Orientation} from "./Render/Render";
 import {HTMLRender} from "./Render/HTMLRender";
 
 export const enum SizeType {
@@ -43,8 +42,8 @@ export class App extends EventObject {
         width: 600,
         height: 800,
         size: SizeType.STRETCH,
-        minWidth: 150,
-        maxWidth: 900,
+        minWidth: 350,
+        maxWidth: 650,
         minHeight: 300,
         maxHeight: 2200,
         startPage: 2
@@ -61,6 +60,7 @@ export class App extends EventObject {
     }
 
     public update(): void {
+        this.render.update();
         this.pages.show(this.currentPage);
     }
 
@@ -70,8 +70,6 @@ export class App extends EventObject {
 
         this.currentPage -= dp;
         this.pages.show(this.currentPage);
-
-        this.trigger('flip', this, this.currentPage);
     }
 
     public turnToNextPage(): void {
@@ -80,8 +78,6 @@ export class App extends EventObject {
 
         this.currentPage += dp;
         this.pages.show(this.currentPage);
-
-        this.trigger('flip', this, this.currentPage);
     }
 
     public turnToPage(pageNum: number): void {
@@ -89,49 +85,70 @@ export class App extends EventObject {
 
         this.currentPage = pageNum;
         this.pages.show(this.currentPage);
+    }
 
-        this.trigger('flip', this, this.currentPage);
+    public flipNext(): void {
+        this.flip.flipNext();
+    }
+
+    public flipPrev(): void {
+        this.flip.flipPrev();
     }
 
     public loadFromImages(imagesHref: string[]): void {
         const ui = new CanvasUI(this.block, this, this.setting);
 
         const canvas = ui.getCanvas();
-        this.render = new CanvasRender(canvas, this.setting);
+        this.render = new CanvasRender(this, this.setting, canvas);
 
         this.flip = new Flip(this.render, this);
 
-        this.render.start();
-
-        this.pages = new ImagePageCollection(this.render, imagesHref);
+        this.pages = new ImagePageCollection(this, this.render, imagesHref);
         this.pages.load();
 
-        this.pages.show(this.setting.startPage);
-        this.currentPage = this.setting.startPage;
+        this.render.start();
 
-        this.trigger('flip', this, this.currentPage);
+        this.currentPage = this.setting.startPage;
+        this.pages.show(this.setting.startPage);
     }
 
     public loadFromHTML(): void {
         const ui = new HTMLUI(this.block, this, this.setting);
 
-        this.render = new HTMLRender(ui.getDistElement(), this.setting);
+        this.render = new HTMLRender(this, this.setting, ui.getDistElement());
 
         this.flip = new Flip(this.render, this);
 
-        this.render.start();
-
-        this.pages = new HTMLPageCollection(this.render, ui.getDistElement());
+        this.pages = new HTMLPageCollection(this, this.render, ui.getDistElement());
         this.pages.load();
 
-        this.pages.show(this.setting.startPage);
-        this.currentPage = this.setting.startPage;
+        this.render.start();
 
-        this.trigger('flip', this, this.currentPage);
+        this.currentPage = this.setting.startPage;
+        this.pages.show(this.setting.startPage);
     }
 
     public updateState(newState: FlippingState): void {
         this.trigger('changeState', this, newState);
+    }
+
+    public updatePage(newPage: number): void {
+        this.trigger('flip', this, newPage);
+    }
+
+    public updateOrientation(newOrientation: Orientation): void {
+        if (newOrientation === Orientation.LANDSCAPE) {
+            if ((this.currentPage % 2) !== 0)
+                this.currentPage--;
+
+            this.update();
+        }
+        else {
+            this.currentPage++;
+            this.update();
+        }
+
+        this.trigger('changeOrientation', this, newOrientation);
     }
 
     public getPageCount(): number {
@@ -149,6 +166,23 @@ export class App extends EventObject {
     public getPage(pageNum: number): Page {
         return this.pages.getPage(pageNum);
     }
+
+    public getRender(): Render {
+        return this.render;
+    }
+
+    public getFlipObject(): Flip {
+        return this.flip;
+    }
+
+    public getOrientation(): Orientation {
+        return this.render.getOrientation();
+    }
+
+    public getBoundsRect(): PageRect {
+        return this.render.getRect();
+    }
+
 
     public startUserTouch(pos: Point): void {
         this.mousePosition = pos;

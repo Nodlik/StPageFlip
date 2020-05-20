@@ -2,16 +2,17 @@ import {App, FlipSetting, SizeType} from "../App";
 import {Point} from "../BasicTypes";
 
 export abstract class UI {
-    private readonly app: App;
+    protected readonly app: App;
     protected distElement: HTMLElement;
 
     protected constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
         inBlock.classList.add('stf__wrapper');
 
-        inBlock.setAttribute("style", "min-width: " + setting.minWidth * 2 +
+        inBlock.setAttribute("style", "min-width: " + setting.minWidth +
             'px; min-height: ' + setting.minHeight + 'px');
+
         if (setting.size === SizeType.FIXED) {
-            inBlock.setAttribute("style", "min-width: " + setting.width * 2 +
+            inBlock.setAttribute("style", "min-width: " + setting.width +
                 'px; min-height: ' + setting.height + 'px');
         }
 

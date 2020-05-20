@@ -172,6 +172,20 @@ export class Flip {
             {x: -rect.pageWidth, y: yDest}, true);
     }
 
+    public flipNext(): void {
+        this.flip({
+            x: this.render.getRect().left + this.render.getRect().pageWidth * 2,
+            y: 1
+        });
+    }
+
+    public flipPrev(): void {
+        this.flip({
+            x: 10,
+            y: 1
+        });
+    }
+
     public stopMove(): void {
         if (this.calc === null)
             return;
@@ -227,6 +241,9 @@ export class Flip {
         const duration = this.getAnimationDuration(points.length);
 
         this.render.startAnimation(frames, duration, () => {
+            if (!this.calc)
+                return;
+
             if (isTurned) {
                 if (this.calc.getDirection() === FlipDirection.BACK)
                     this.app.turnToPrevPage();

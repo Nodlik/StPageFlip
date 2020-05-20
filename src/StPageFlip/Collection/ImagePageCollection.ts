@@ -2,12 +2,13 @@ import {ImagePage} from "../Page/ImagePage";
 import {Render} from "../Render/Render";
 import {Page} from "../Page/Page";
 import {PageCollection} from "./PageCollection";
+import {App} from "../App";
 
 export class ImagePageCollection extends  PageCollection {
     private readonly imagesHref: string[];
 
-    constructor(render: Render, imagesHref: string[]) {
-        super(render);
+    constructor(app: App, render: Render, imagesHref: string[]) {
+        super(app, render);
 
         this.imagesHref = imagesHref;
     }

@@ -9,6 +9,13 @@ export class HTMLUI extends UI {
         super(inBlock, app, setting);
 
         this.distElement = inBlock.querySelector('.stf__block');
+        this.distElement.style.width = '100%';
+        this.distElement.style.height = '100%';
+        this.distElement.style.position = 'relative';
+
+        window.addEventListener('resize', () => {
+            this.app.getRender().update();
+        }, false);
 
         this.setHandlers();
     }
