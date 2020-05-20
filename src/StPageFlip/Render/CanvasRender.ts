@@ -1,8 +1,9 @@
 import {Orientation, Render} from './Render';
-import {App, FlipSetting} from '../App';
+import {App} from '../App';
 import {FlipDirection} from "../Flip/Flip";
 import {PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
+import {FlipSetting} from "../Settings";
 
 
 export class CanvasRender extends Render {

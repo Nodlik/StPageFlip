@@ -1,7 +1,8 @@
-import {App, FlipSetting, SizeType} from '../App';
+import {App} from '../App';
 import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
+import {FlipSetting, SizeType} from "../Settings";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -60,14 +61,16 @@ export abstract class Render {
     public abstract getBlockHeight(): number;
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
-        this.shadow = {
-            pos,
-            angle,
-            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
-            opacity: (100 - t) / 100,
-            direction,
-            length
-        };
+        if (this.app.getSettings().drawShadow) {
+            this.shadow = {
+                pos,
+                angle,
+                width: (this.getRect().pageWidth * 3 / 4) * t / 100,
+                opacity: (100 - t) / 100,
+                direction,
+                length
+            };
+        }
     }
 
     public clearShadow(): void {
@@ -79,9 +82,6 @@ export abstract class Render {
     }
 
     public getOrientation(): Orientation {
-       /* if (this.orientation === null) {
-            this.orientation = this.findOrientation();
-        }*/
         return this.orientation;
     }
 
@@ -125,15 +125,6 @@ export abstract class Render {
         this.timer = timer;
         this.drawFrame(timer);
     }
-
-    /*
-    private findOrientation(): Orientation {
-        const orientation = this.getBlockHeight() > this.getBlockWidth()
-            ? Orientation.PORTRAIT
-            : Orientation.LANDSCAPE;
-
-        return orientation;
-    }*/
 
     public getRect(): PageRect {
         if (this.boundsRect === null)

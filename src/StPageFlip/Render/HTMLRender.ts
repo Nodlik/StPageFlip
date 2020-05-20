@@ -1,10 +1,11 @@
 import {Orientation, Render} from './Render';
-import {App, FlipSetting} from '../App';
+import {App} from '../App';
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
 import {HTMLPage} from "../Page/HTMLPage";
 import {Helper} from "../Helper";
+import {FlipSetting} from "../Settings";
 
 export class HTMLRender extends Render {
     private readonly element: HTMLElement;

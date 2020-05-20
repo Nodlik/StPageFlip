@@ -1,5 +1,6 @@
-import {App, FlipSetting, SizeType} from "../App";
+import {App} from "../App";
 import {Point} from "../BasicTypes";
+import {FlipSetting, SizeType} from "../Settings";
 
 export abstract class UI {
     protected readonly app: App;

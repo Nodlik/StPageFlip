@@ -263,13 +263,12 @@ export class Flip {
     }
 
     private getAnimationDuration(size: number): number {
-        if (size < 200)
-            return 400;
+        const defaultTime = this.app.getSettings().flippingTime;
 
-        if (size < 500)
-            return 470;
+        if (size >= 1000)
+            return defaultTime;
 
-        return 1000;
+        return (size / 1000) * defaultTime;
     }
 
     private getFlippingPage(direction: FlipDirection): Page {

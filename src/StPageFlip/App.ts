@@ -11,24 +11,7 @@ import {Helper} from './Helper';
 import {Page} from './Page/Page';
 import {EventObject} from "./Event/EventObject";
 import {HTMLRender} from "./Render/HTMLRender";
-
-export const enum SizeType {
-    FIXED,
-    STRETCH
-}
-
-export type FlipSetting = {
-    startPage: number;
-    size: SizeType;
-
-    width: number;
-    height: number;
-
-    minWidth: number;
-    maxWidth: number;
-    minHeight: number;
-    maxHeight: number;
-}
+import {FlipSetting, Settings, SizeType} from "./Settings";
 
 export class App extends EventObject {
     private mousePosition: Point;
@@ -38,25 +21,25 @@ export class App extends EventObject {
     private pages: PageCollection = null;
     private currentPage = 0;
 
-    private readonly setting: FlipSetting = {
-        width: 600,
-        height: 800,
-        size: SizeType.STRETCH,
-        minWidth: 350,
-        maxWidth: 650,
-        minHeight: 300,
-        maxHeight: 2200,
-        startPage: 2
-    };
+    private readonly setting: FlipSetting = null;
 
     private readonly block: HTMLElement;
     private flip: Flip;
     private render: Render;
 
-    constructor(inBlock: HTMLElement, setting: FlipSetting) {
+    constructor(inBlock: HTMLElement, setting: Record<string, number | string | boolean>) {
         super();
 
-        this.block = inBlock;
+        try {
+            this.setting = Settings.GetSettings(setting);
+
+            console.log(this.setting);
+
+            this.block = inBlock;
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     public update(): void {
@@ -183,6 +166,9 @@ export class App extends EventObject {
         return this.render.getRect();
     }
 
+    public getSettings(): FlipSetting {
+        return this.setting;
+    }
 
     public startUserTouch(pos: Point): void {
         this.mousePosition = pos;

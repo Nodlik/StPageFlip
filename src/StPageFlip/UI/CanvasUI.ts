@@ -1,6 +1,7 @@
 import {UI} from "./UI";
-import {App, FlipSetting, SizeType} from "../App";
+import {App} from "../App";
 import {Point} from "../BasicTypes";
+import {FlipSetting} from "../Settings";
 
 export class CanvasUI extends UI {
     private readonly canvas: HTMLCanvasElement;
