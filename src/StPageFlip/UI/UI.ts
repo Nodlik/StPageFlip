@@ -1,10 +1,20 @@
 import {App} from "../App";
 import {Point} from "../BasicTypes";
 import {FlipSetting, SizeType} from "../Settings";
+import {FlipCorner} from "../Flip/Flip";
+
+type SwipeData = {
+    point: Point;
+    time: number;
+}
 
 export abstract class UI {
     protected readonly app: App;
     protected distElement: HTMLElement;
+
+    private touchPoint: SwipeData = null;
+    private readonly swipeTimeout = 250;
+    private readonly swipeDistance = 80;
 
     protected constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
         inBlock.classList.add('stf__wrapper');
@@ -25,49 +35,87 @@ export abstract class UI {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.startUserTouch(pos);
-            return false;
+
+            e.preventDefault();
         };
 
-        this.distElement.ontouchstart = (e: TouchEvent) => {
+        this.distElement.addEventListener('touchstart',(e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
 
-                this.app.startUserTouch(this.getMousePos(t.clientX, t.clientY));
-                return false;
+                this.touchPoint = {
+                    point: pos,
+                    time: Date.now()
+                };
+
+                setTimeout(() => {
+                    if (this.touchPoint !== null)
+                        this.app.startUserTouch(pos);
+
+                }, this.swipeTimeout);
+
+                e.preventDefault();
             }
-        };
+        });
 
-        window.onmousemove = (e: MouseEvent) => {
+        window.addEventListener('mousemove', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
-            this.app.userMove(pos);
+            this.app.userMove(pos, false);
 
-            return false;
-        };
+            e.preventDefault();
+        });
 
-        window.ontouchmove = (e: TouchEvent) => {
+        window.addEventListener('touchmove', (e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
 
-                this.app.userMove(this.getMousePos(t.clientX, t.clientY));
+                this.app.userMove(this.getMousePos(t.clientX, t.clientY), true);
             }
-        };
+        });
 
-        window.onmouseup = (e: MouseEvent) => {
+        window.addEventListener('mouseup', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.userStop(pos);
 
-            return false;
-        };
+            e.preventDefault();
+        });
 
-        window.ontouchend = (e: TouchEvent) => {
+        window.addEventListener('touchend', (e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
+                let isSwipe = false;
 
-                this.app.userStop(this.getMousePos(t.clientX, t.clientY));
+                if (this.touchPoint !== null) {
+                    const dx = pos.x - this.touchPoint.point.x;
+                    const distY = Math.abs(pos.y - this.touchPoint.point.y);
+
+                    if ( (Math.abs(dx) > this.swipeDistance) &&
+                         (distY < this.swipeDistance * 2) &&
+                         ((Date.now() - this.touchPoint.time) < this.swipeTimeout) )
+                    {
+                        if (dx > 0) {
+                            this.app.flipPrev( (this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                                ? FlipCorner.TOP
+                                : FlipCorner.BOTTOM );
+                        }
+                        else {
+                            this.app.flipNext((this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                                ? FlipCorner.TOP
+                                : FlipCorner.BOTTOM );
+                        }
+                        isSwipe = true;
+                    }
+
+                    this.touchPoint = null;
+                }
+
+                this.app.userStop(pos, isSwipe);
             }
-        };
+        });
     }
 
     public getDistElement(): HTMLElement {

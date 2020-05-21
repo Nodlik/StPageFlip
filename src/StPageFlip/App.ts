@@ -2,7 +2,7 @@ import {PageCollection} from './Collection/PageCollection';
 import {ImagePageCollection} from './Collection/ImagePageCollection';
 import {HTMLPageCollection} from './Collection/HTMLPageCollection';
 import {PageRect, Point} from './BasicTypes';
-import {Flip, FlippingState} from './Flip/Flip';
+import {Flip, FlipCorner, FlippingState} from './Flip/Flip';
 import {Orientation, Render} from './Render/Render';
 import {CanvasRender} from './Render/CanvasRender';
 import {HTMLUI} from './UI/HTMLUI';
@@ -11,7 +11,7 @@ import {Helper} from './Helper';
 import {Page} from './Page/Page';
 import {EventObject} from "./Event/EventObject";
 import {HTMLRender} from "./Render/HTMLRender";
-import {FlipSetting, Settings, SizeType} from "./Settings";
+import {FlipSetting, Settings} from "./Settings";
 
 export class App extends EventObject {
     private mousePosition: Point;
@@ -70,12 +70,12 @@ export class App extends EventObject {
         this.pages.show(this.currentPage);
     }
 
-    public flipNext(): void {
-        this.flip.flipNext();
+    public flipNext(corner: FlipCorner = FlipCorner.TOP): void {
+        this.flip.flipNext(corner);
     }
 
-    public flipPrev(): void {
-        this.flip.flipPrev();
+    public flipPrev(corner: FlipCorner = FlipCorner.TOP): void {
+        this.flip.flipPrev(corner);
     }
 
     public loadFromImages(imagesHref: string[]): void {
@@ -176,11 +176,11 @@ export class App extends EventObject {
         this.isUserMove = false;
     }
 
-    public userMove(pos: Point): void {
-        if (!this.isUserTouch) {
+    public userMove(pos: Point, isTouch: boolean): void {
+        if ((!this.isUserTouch) && (!isTouch)) {
             this.flip.showCorner(pos);
         }
-        else {
+        else if (this.isUserTouch) {
             if (Helper.GetDestinationFromTwoPoint(this.mousePosition, pos) > 5) {
                 this.isUserMove = true;
                 this.flip.fold(pos);
@@ -188,14 +188,16 @@ export class App extends EventObject {
         }
     }
 
-    public userStop(pos: Point): void {
+    public userStop(pos: Point, isSwipe = false): void {
         if (this.isUserTouch) {
             this.isUserTouch = false;
 
-            if (!this.isUserMove)
-                this.flip.flip(pos);
-            else
-                this.flip.stopMove();
+            if (!isSwipe) {
+                if (!this.isUserMove)
+                    this.flip.flip(pos);
+                else
+                    this.flip.stopMove();
+            }
         }
     }
 

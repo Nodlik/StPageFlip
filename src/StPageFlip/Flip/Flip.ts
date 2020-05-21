@@ -172,17 +172,17 @@ export class Flip {
             {x: -rect.pageWidth, y: yDest}, true);
     }
 
-    public flipNext(): void {
+    public flipNext(corner: FlipCorner): void {
         this.flip({
             x: this.render.getRect().left + this.render.getRect().pageWidth * 2,
-            y: 1
+            y: (corner === FlipCorner.TOP) ? 1 : this.render.getRect().height - 2
         });
     }
 
-    public flipPrev(): void {
+    public flipPrev(corner: FlipCorner): void {
         this.flip({
             x: 10,
-            y: 1
+            y: (corner === FlipCorner.TOP) ? 1 : this.render.getRect().height - 2
         });
     }
 
