@@ -11,8 +11,9 @@ export class HTMLPage extends Page {
 
     constructor(render: Render, element: HTMLElement) {
         super(render);
-
         this.element = element;
+        this.element.classList.add('stf__item');
+
         this.element.style.position = 'absolute';
         this.element.style.left = '0';
         this.element.style.top = '0';
@@ -98,9 +99,7 @@ export class HTMLPage extends Page {
         return this.element;
     }
 
-    public async load(): Promise<Page> {
+    public load(): void {
         this.isLoad = true;
-
-        return this;
     }
 }

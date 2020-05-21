@@ -2,6 +2,7 @@ import {App} from "../App";
 import {Point} from "../BasicTypes";
 import {FlipSetting, SizeType} from "../Settings";
 import {FlipCorner} from "../Flip/Flip";
+import {Orientation} from "../Render/Render";
 
 type SwipeData = {
     point: Point;
@@ -10,6 +11,7 @@ type SwipeData = {
 
 export abstract class UI {
     protected readonly app: App;
+    protected readonly wrapper: HTMLElement;
     protected distElement: HTMLElement;
 
     private touchPoint: SwipeData = null;
@@ -17,17 +19,39 @@ export abstract class UI {
     private readonly swipeDistance = 80;
 
     protected constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
-        inBlock.classList.add('stf__wrapper');
+        this.wrapper = inBlock;
+        this.wrapper.classList.add('stf__wrapper');
 
-        inBlock.setAttribute("style", "min-width: " + setting.minWidth +
+        this.app = app;
+
+        const k = this.app.getSettings().usePortrait
+            ? 1
+            : 2;
+
+        this.wrapper.setAttribute("style", "min-width: " + setting.minWidth * k +
             'px; min-height: ' + setting.minHeight + 'px');
 
         if (setting.size === SizeType.FIXED) {
-            inBlock.setAttribute("style", "min-width: " + setting.width +
+            this.wrapper.setAttribute("style", "min-width: " + setting.width * k +
                 'px; min-height: ' + setting.height + 'px');
         }
+    }
 
-        this.app = app;
+    protected abstract update(): void;
+
+    public getDistElement(): HTMLElement {
+        return this.distElement;
+    }
+
+    public setOrientationStyle(orientation: Orientation): void {
+        this.wrapper.classList.remove('--portrait', '--landscape');
+
+        if (orientation === Orientation.PORTRAIT)
+            this.wrapper.classList.add('--portrait');
+        else
+            this.wrapper.classList.add('--landscape');
+
+        this.update();
     }
 
     protected setHandlers(): void {
@@ -116,10 +140,6 @@ export abstract class UI {
                 this.app.userStop(pos, isSwipe);
             }
         });
-    }
-
-    public getDistElement(): HTMLElement {
-        return this.distElement;
     }
 
     private getMousePos(x: number, y: number): Point {

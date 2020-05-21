@@ -17,11 +17,11 @@ export class CanvasRender extends Render {
     }
 
     public getBlockWidth(): number {
-        return this.canvas.width;
+        return this.canvas.offsetWidth;
     }
 
     public getBlockHeight(): number {
-        return this.canvas.height;
+        return this.canvas.offsetHeight;
     }
 
     public getContext(): CanvasRenderingContext2D {

@@ -16,7 +16,7 @@ export abstract class PageCollection {
         return this.pages.length;
     }
 
-    public async abstract load(): Promise<Page[]>;
+    public abstract load(): void;
 
     public getPages(): Page[] {
         return this.pages;

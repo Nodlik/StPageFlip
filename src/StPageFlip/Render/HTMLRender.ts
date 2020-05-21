@@ -9,16 +9,16 @@ import {FlipSetting} from "../Settings";
 
 export class HTMLRender extends Render {
     private readonly element: HTMLElement;
-    private readonly items: NodeListOf<HTMLElement>;
+    private readonly items: NodeListOf<HTMLElement> | HTMLElement[];
 
     private outerShadow: HTMLElement = null;
     private innerShadow: HTMLElement = null;
 
-    constructor(app: App, setting: FlipSetting, element: HTMLElement) {
+    constructor(app: App, setting: FlipSetting, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, setting);
 
         this.element = element;
-        this.items = element.querySelectorAll('.stf__item');
+        this.items = items;
     }
 
     public getBlockWidth(): number {

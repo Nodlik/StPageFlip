@@ -12,6 +12,7 @@ import {Page} from './Page/Page';
 import {EventObject} from "./Event/EventObject";
 import {HTMLRender} from "./Render/HTMLRender";
 import {FlipSetting, Settings} from "./Settings";
+import {UI} from "./UI/UI";
 
 export class App extends EventObject {
     private mousePosition: Point;
@@ -26,6 +27,8 @@ export class App extends EventObject {
     private readonly block: HTMLElement;
     private flip: Flip;
     private render: Render;
+
+    private ui: UI;
 
     constructor(inBlock: HTMLElement, setting: Record<string, number | string | boolean>) {
         super();
@@ -79,9 +82,9 @@ export class App extends EventObject {
     }
 
     public loadFromImages(imagesHref: string[]): void {
-        const ui = new CanvasUI(this.block, this, this.setting);
+        this.ui = new CanvasUI(this.block, this, this.setting);
 
-        const canvas = ui.getCanvas();
+        const canvas = (this.ui as CanvasUI).getCanvas();
         this.render = new CanvasRender(this, this.setting, canvas);
 
         this.flip = new Flip(this.render, this);
@@ -95,14 +98,14 @@ export class App extends EventObject {
         this.pages.show(this.setting.startPage);
     }
 
-    public loadFromHTML(): void {
-        const ui = new HTMLUI(this.block, this, this.setting);
+    public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
+        this.ui = new HTMLUI(this.block, this, this.setting, items);
 
-        this.render = new HTMLRender(this, this.setting, ui.getDistElement());
+        this.render = new HTMLRender(this, this.setting, this.ui.getDistElement(), items);
 
         this.flip = new Flip(this.render, this);
 
-        this.pages = new HTMLPageCollection(this, this.render, ui.getDistElement());
+        this.pages = new HTMLPageCollection(this, this.render, this.ui.getDistElement(), items);
         this.pages.load();
 
         this.render.start();
@@ -131,6 +134,7 @@ export class App extends EventObject {
             this.update();
         }
 
+        this.ui.setOrientationStyle(newOrientation);
         this.trigger('changeOrientation', this, newOrientation);
     }
 
@@ -168,6 +172,10 @@ export class App extends EventObject {
 
     public getSettings(): FlipSetting {
         return this.setting;
+    }
+
+    public getUI(): UI {
+        return this.ui;
     }
 
     public startUserTouch(pos: Point): void {

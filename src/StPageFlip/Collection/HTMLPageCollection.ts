@@ -6,27 +6,22 @@ import {App} from "../App";
 
 export class HTMLPageCollection extends  PageCollection {
     private readonly element: HTMLElement;
-    private readonly pagesElement: NodeListOf<HTMLElement>;
+    private readonly pagesElement: NodeListOf<HTMLElement> | HTMLElement[];
 
-    constructor(app: App, render: Render, element: HTMLElement) {
+    constructor(app: App, render: Render, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, render);
 
         this.element = element;
-        this.pagesElement = element.querySelectorAll(".stf__item");
+        this.pagesElement = items;
     }
 
-    public async load(): Promise<Page[]> {
-        const loadPromises: Promise<Page>[] = [];
-
+    public load(): void {
         for (const pageElement of this.pagesElement) {
             const page = new HTMLPage(this.render, pageElement);
 
-            loadPromises.push(page.load());
-
+            page.load();
             this.pages.push(page);
         }
-
-        return Promise.all(loadPromises);
     }
 
 }

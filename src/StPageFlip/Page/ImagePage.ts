@@ -4,9 +4,7 @@ import {Orientation, Render} from "../Render/Render";
 import {Point} from "../BasicTypes";
 
 export class ImagePage extends Page {
-    private readonly href: string;
-
-    private image: HTMLImageElement = null;
+    private readonly image: HTMLImageElement = null;
     private isLoad = false;
 
     private loadingAngle = 0;
@@ -14,7 +12,8 @@ export class ImagePage extends Page {
     constructor(render: Render, href: string) {
         super(render);
 
-        this.href = href;
+        this.image = new Image();
+        this.image.src = href;
     }
 
     public draw(): void {
@@ -116,21 +115,11 @@ export class ImagePage extends Page {
         }
     }
 
-    public async load(): Promise<Page> {
-        if (this.image == null) {
-            this.image = new Image();
-            this.image.src = this.href;
-        }
-
-        if (this.isLoad) {
-            return Promise.resolve(this);
-        }
-
-        return new Promise<Page>((resolve) => {
+    public load(): void {
+        if (!this.isLoad)
             this.image.onload = () => {
+                console.log(this.image);
                 this.isLoad = true;
-                resolve(this);
             };
-        });
     }
 }

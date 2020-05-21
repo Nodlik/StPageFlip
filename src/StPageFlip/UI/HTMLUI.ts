@@ -6,18 +6,28 @@ import {FlipSetting} from "../Settings";
 export class HTMLUI extends UI {
     private readonly canvas: HTMLCanvasElement;
 
-    constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
+    constructor(inBlock: HTMLElement, app: App, setting: FlipSetting, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(inBlock, app, setting);
+
+        inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
 
         this.distElement = inBlock.querySelector('.stf__block');
         this.distElement.style.width = '100%';
         this.distElement.style.height = '100%';
-        this.distElement.style.position = 'relative';
+        this.distElement.style.position = 'absolute';
+
+        for (const item of items) {
+            this.distElement.appendChild(item);
+        }
 
         window.addEventListener('resize', () => {
-            this.app.getRender().update();
+            this.update();
         }, false);
 
         this.setHandlers();
+    }
+
+    protected update(): void {
+        this.app.getRender().update();
     }
 }

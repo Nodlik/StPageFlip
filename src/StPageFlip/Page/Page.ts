@@ -50,5 +50,5 @@ export abstract class Page {
 
     public abstract simpleDraw(orient: PageOrientation): void;
     public abstract draw(): void;
-    public abstract async load(): Promise<Page>;
+    public abstract load(): void;
 }

@@ -13,19 +13,13 @@ export class ImagePageCollection extends  PageCollection {
         this.imagesHref = imagesHref;
     }
 
-    public async load(): Promise<Page[]> {
-        const loadPromises: Promise<Page>[] = [];
-
+    public load(): void {
         for (const href of this.imagesHref) {
             const page = new ImagePage(this.render, href);
 
-            loadPromises.push(page.load());
-
+            page.load();
             this.pages.push(page);
         }
-
-        return Promise.all(loadPromises);
-
     }
 
 }

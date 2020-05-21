@@ -19,6 +19,8 @@ export interface FlipSetting {
 
     drawShadow: boolean;
     flippingTime: number;
+
+    usePortrait: boolean;
 }
 
 export class Settings {
@@ -33,7 +35,8 @@ export class Settings {
         minHeight: 0,
         maxHeight: 0,
         drawShadow: true,
-        flippingTime: 1000
+        flippingTime: 1000,
+        usePortrait: true
     };
 
     public static GetSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {

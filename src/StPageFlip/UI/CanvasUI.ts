@@ -9,13 +9,12 @@ export class CanvasUI extends UI {
     constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
         super(inBlock, app, setting);
 
-        inBlock.innerHTML = '<canvas></canvas>';
+        inBlock.innerHTML = '<canvas class="stf__canvas"></canvas>';
 
         this.canvas = inBlock.querySelectorAll('canvas')[0];
 
         window.addEventListener('resize', () => {
-            this.resizeCanvas();
-            this.app.getRender().update();
+            this.update();
         }, false);
 
         this.distElement = this.canvas;
@@ -35,5 +34,10 @@ export class CanvasUI extends UI {
 
     public getCanvas(): HTMLCanvasElement {
         return this.canvas;
+    }
+
+    protected update(): void {
+        this.resizeCanvas();
+        this.app.getRender().update();
     }
 }
