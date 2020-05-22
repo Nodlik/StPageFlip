@@ -12,9 +12,6 @@ export class HTMLUI extends UI {
         inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
 
         this.distElement = inBlock.querySelector('.stf__block');
-        this.distElement.style.width = '100%';
-        this.distElement.style.height = '100%';
-        this.distElement.style.position = 'absolute';
 
         for (const item of items) {
             this.distElement.appendChild(item);

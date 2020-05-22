@@ -45,11 +45,17 @@ export class HTMLRender extends Render {
         if (this.outerShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__outerShadow"></div>');
             this.outerShadow = this.element.querySelector('.stf__outerShadow');
+            this.outerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
+            this.outerShadow.style.left = "0px";
+            this.outerShadow.style.top = "0px";
         }
 
         if (this.innerShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__innerShadow"></div>');
             this.innerShadow = this.element.querySelector('.stf__innerShadow');
+            this.innerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
+            this.innerShadow.style.left = "0px";
+            this.innerShadow.style.top = "0px";
         }
     }
 
@@ -69,11 +75,8 @@ export class HTMLRender extends Render {
 
         const angle = this.shadow.angle + 3 * Math.PI / 2;
 
-        this.innerShadow.style.position = "absolute";
         this.innerShadow.style.width = innerShadowSize  + 'px';
         this.innerShadow.style.height = rect.height * 2 + 'px';
-        this.outerShadow.style.left = "0px";
-        this.outerShadow.style.top = "0px";
         this.innerShadow.style.background = "linear-gradient(" + shadowDirection + ", " +
             "rgba(0, 0, 0, " + this.shadow.opacity + ") 5%, " +
             "rgba(0, 0, 0, 0.05) 15%," +
@@ -126,8 +129,6 @@ export class HTMLRender extends Render {
 
         this.outerShadow.style.width = this.shadow.width + 'px';
         this.outerShadow.style.height = rect.height * 2 + 'px';
-        this.outerShadow.style.left = "0px";
-        this.outerShadow.style.top = "0px";
         this.outerShadow.style.background = "linear-gradient(" + shadowDirection + ", rgba(0, 0, 0, " + this.shadow.opacity + "), rgba(0, 0, 0, 0))";
         this.outerShadow.style.transformOrigin = shadowTranslate + "px 100px"; //
         this.outerShadow.style.transform = "translate3d(" + (shadowPos.x -shadowTranslate) + "px, " + (shadowPos.y -100) + "px, 0) rotate(" + angle + "rad)";
@@ -182,13 +183,17 @@ export class HTMLRender extends Render {
 
         if (this.bottomPage != null) {
             if ( !((this.orientation === Orientation.PORTRAIT) && (this.direction === FlipDirection.BACK)) ) {
-                (this.bottomPage as HTMLPage).getElement().style.zIndex = "3";
+                (this.bottomPage as HTMLPage).getElement().style.zIndex =
+                    (this.getSettings().startZIndex + 3).toString(10);
+
                 this.bottomPage.draw();
             }
         }
 
         if (this.flippingPage != null) {
-            (this.flippingPage as HTMLPage).getElement().style.zIndex = "4";
+            (this.flippingPage as HTMLPage).getElement().style.zIndex =
+                (this.getSettings().startZIndex + 4).toString(10);
+
             this.flippingPage.draw();
         }
 
@@ -215,27 +220,61 @@ export class HTMLRender extends Render {
         for (const item of this.items) {
             if (!workedPages.includes(item)) {
                 item.style.display = "none";
-                item.style.zIndex = "1";
+                item.style.zIndex =  (this.getSettings().startZIndex + 1).toString(10);
                 item.style.transform = "";
             }
         }
     }
 
+    private clearClass(page: HTMLPage) {
+        if (page !== null) {
+            page.getElement().classList.remove('--left', '--right');
+        }
+    }
+
     public setRightPage(page: Page): void {
+        this.clearClass(this.rightPage as HTMLPage);
+
         if ((this.rightPage !== null) && (page !== this.rightPage))
             (this.rightPage as HTMLPage).clearSaved();
+
+        if (page !== null)
+            (page as HTMLPage).getElement().classList.add('--right');
 
         super.setRightPage(page);
     }
 
     public setLeftPage(page: Page): void {
+        this.clearClass(this.leftPage as HTMLPage);
+
         if ((this.leftPage !== null) && (page !== this.rightPage))
             (this.leftPage as HTMLPage).clearSaved();
+
+        if (page !== null)
+            (page as HTMLPage).getElement().classList.add('--left');
 
         super.setLeftPage(page);
     }
 
+    public setBottomPage(page: Page): void {
+        if (page !== null)
+            (page as HTMLPage).getElement().classList.add(
+                (this.direction === FlipDirection.BACK)
+                    ? '--left'
+                    : '--right'
+            );
+
+        super.setBottomPage(page);
+    }
+
     public setFlippingPage(page: Page): void {
+        if (page !== null)
+            (page as HTMLPage).getElement().classList.add(
+                (this.direction === FlipDirection.BACK)
+                    ? '--right'
+                    : '--left'
+            );
+
         super.setFlippingPage(page);
     }
 

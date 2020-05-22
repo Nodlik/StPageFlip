@@ -28,12 +28,17 @@ export abstract class UI {
             ? 1
             : 2;
 
-        this.wrapper.setAttribute("style", "min-width: " + setting.minWidth * k +
-            'px; min-height: ' + setting.minHeight + 'px');
+        this.wrapper.style.minWidth = setting.minWidth * k + 'px';
+        this.wrapper.style.minHeight = setting.minHeight * k + 'px';
 
         if (setting.size === SizeType.FIXED) {
-            this.wrapper.setAttribute("style", "min-width: " + setting.width * k +
-                'px; min-height: ' + setting.height + 'px');
+            this.wrapper.style.minWidth = setting.width * k + 'px';
+            this.wrapper.style.minHeight = setting.height * k + 'px';
+        }
+
+        if (setting.autoSize) {
+            this.wrapper.style.width = '100%';
+            this.wrapper.style.maxWidth = setting.maxWidth * 2 + 'px';
         }
     }
 
@@ -46,10 +51,18 @@ export abstract class UI {
     public setOrientationStyle(orientation: Orientation): void {
         this.wrapper.classList.remove('--portrait', '--landscape');
 
-        if (orientation === Orientation.PORTRAIT)
+        if (orientation === Orientation.PORTRAIT) {
+            if (this.app.getSettings().autoSize)
+                this.wrapper.style.paddingBottom = (this.app.getSettings().height / this.app.getSettings().width) * 100 + '%';
+
             this.wrapper.classList.add('--portrait');
-        else
+        }
+        else {
+            if (this.app.getSettings().autoSize)
+                this.wrapper.style.paddingBottom = (this.app.getSettings().height / (this.app.getSettings().width * 2)) * 100 + '%';
+
             this.wrapper.classList.add('--landscape');
+        }
 
         this.update();
     }

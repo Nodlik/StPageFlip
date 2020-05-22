@@ -1,0 +1,34 @@
+.stf__wrapper {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  transform: translateZ(0);
+
+  canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+}
+
+.stf__block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+
+  .stf__item {
+    display: none;
+    position: absolute;
+  }
+
+  .stf__outerShadow {
+    position: absolute;
+  }
+
+  .stf__innerShadow {
+    position: absolute;
+  }
+}

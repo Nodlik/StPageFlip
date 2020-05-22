@@ -10,7 +10,16 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [
-            { test: /\.less$/, use: ['css-loader', 'less-loader'] },
+            {
+                test: /\.scss$/,
+                use: [{
+                        loader: "style-loader"
+                    }, {
+                        loader: "css-loader"
+                    }, {
+                        loader: "sass-loader"
+                    }]
+            },
             { test: /\.ts$/, use: 'ts-loader' },
         ],
     },

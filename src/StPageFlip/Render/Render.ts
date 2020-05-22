@@ -3,6 +3,7 @@ import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
+import compile = WebAssembly.compile;
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -288,5 +289,9 @@ export abstract class Render {
 
     public setLeftPage(page: Page): void {
         this.leftPage = page;
+    }
+
+    public getSettings(): FlipSetting {
+        return this.app.getSettings();
     }
 }

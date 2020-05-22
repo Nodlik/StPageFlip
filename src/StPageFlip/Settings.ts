@@ -1,5 +1,3 @@
-import {PageRect, Point} from './BasicTypes';
-
 export const enum SizeType {
     FIXED = 'fixed',
     STRETCH = 'stretch'
@@ -21,6 +19,8 @@ export interface FlipSetting {
     flippingTime: number;
 
     usePortrait: boolean;
+    startZIndex: number;
+    autoSize: boolean;
 }
 
 export class Settings {
@@ -36,7 +36,9 @@ export class Settings {
         maxHeight: 0,
         drawShadow: true,
         flippingTime: 1000,
-        usePortrait: true
+        usePortrait: true,
+        startZIndex: 0,
+        autoSize: false
     };
 
     public static GetSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {

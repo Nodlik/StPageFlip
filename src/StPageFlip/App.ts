@@ -14,6 +14,8 @@ import {HTMLRender} from "./Render/HTMLRender";
 import {FlipSetting, Settings} from "./Settings";
 import {UI} from "./UI/UI";
 
+import './Style/stPagePlip.scss';
+
 export class App extends EventObject {
     private mousePosition: Point;
     private isUserTouch = false;
@@ -35,8 +37,6 @@ export class App extends EventObject {
 
         try {
             this.setting = Settings.GetSettings(setting);
-
-            console.log(this.setting);
 
             this.block = inBlock;
         }
