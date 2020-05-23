@@ -1,16 +1,23 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/StPageFlip/App.ts',
+    entry: './src/StPageFlip/PageFlip.ts',
     output: {
         path: path.resolve(__dirname, 'dist/js'),
         filename: 'stPageFlip.bundle.js',
-        library: 'StPageFlip'
+        library: 'St'
     },
     mode: 'production',
     module: {
         rules: [
-            { test: /\.less$/, use: ['css-loader', 'less-loader'] },
+            {
+                test: /\.css/,
+                use: [{
+                        loader: "style-loader"
+                    }, {
+                        loader: "css-loader"
+                    }]
+            },
             { test: /\.ts$/, use: 'ts-loader' },
         ],
     },

@@ -1,31 +1,24 @@
 import {ImagePage} from "../Page/ImagePage";
 import {Render} from "../Render/Render";
-import {Page} from "../Page/Page";
 import {PageCollection} from "./PageCollection";
+import {PageFlip} from "../PageFlip";
 
 export class ImagePageCollection extends  PageCollection {
     private readonly imagesHref: string[];
 
-    constructor(render: Render, imagesHref: string[]) {
-        super(render);
+    constructor(app: PageFlip, render: Render, imagesHref: string[]) {
+        super(app, render);
 
         this.imagesHref = imagesHref;
     }
 
-    public async load(): Promise<Page[]> {
-        const loadPromises: Promise<Page>[] = [];
-
+    public load(): void {
         for (const href of this.imagesHref) {
             const page = new ImagePage(this.render, href);
 
-            loadPromises.push(page.load());
-
+            page.load();
             this.pages.push(page);
         }
-
-        return Promise.all(loadPromises);
-
     }
-
 
 }

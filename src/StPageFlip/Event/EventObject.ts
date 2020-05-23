@@ -1,8 +1,10 @@
-import {App} from "../App";
+import {PageFlip} from "../PageFlip";
+
+export type DataType = number | string | boolean;
 
 export interface WidgetEvent {
-    data: any;
-    object: App;
+    data: DataType;
+    object: PageFlip;
 }
 
 type EventCallback = (e: WidgetEvent) => any;
@@ -25,7 +27,7 @@ export abstract class EventObject {
         delete this.events[event]
     }
 
-    protected trigger(eventName: string, app: App, data: any = null): void {
+    protected trigger(eventName: string, app: PageFlip, data: DataType = null): void {
         if (eventName in this.events) {
             this.events[eventName].forEach((callback) => {
                 callback({

@@ -1,7 +1,8 @@
-import {FlipSetting, SizeType} from '../App';
-import {Point, Rect, RectPoints} from "../BasicTypes";
+import {PageFlip} from '../PageFlip';
+import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
+import {FlipSetting, SizeType} from "../Settings";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -12,6 +13,7 @@ type Shadow = {
     width: number;
     opacity: number;
     direction: FlipDirection;
+    length: number;
 }
 
 type Animation = {
@@ -22,9 +24,9 @@ type Animation = {
     startedAt: number;
 }
 
-export enum Orientation {
-    PORTRAIT,
-    LANDSCAPE
+export const enum Orientation {
+    PORTRAIT = 'portrait',
+    LANDSCAPE = 'landscape'
 }
 
 export abstract class Render {
@@ -36,27 +38,50 @@ export abstract class Render {
 
     protected shadow: Shadow = null;
     protected pageRect: RectPoints = null;
+
     protected readonly setting: FlipSetting;
+    protected readonly app: PageFlip;
 
     protected animation: Animation = null;
 
     protected timer = 0;
     protected direction: FlipDirection = null;
 
-    protected orientation: Orientation = Orientation.LANDSCAPE;
+    protected orientation: Orientation = null;
 
-    protected constructor(setting: FlipSetting) {
+    private boundsRect: PageRect = null;
+
+    protected constructor(app: PageFlip, setting: FlipSetting) {
         this.setting = setting;
+        this.app = app;
     }
-
-    public abstract drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection): void;
 
     public abstract drawFrame(timer: number): void;
     public abstract getBlockWidth(): number;
     public abstract getBlockHeight(): number;
 
+    public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
+        if (!this.app.getSettings().drawShadow)
+            return;
+
+        const maxShadowOpacity = 100 * this.getSettings().maxShadowOpacity;
+
+        this.shadow = {
+            pos,
+            angle,
+            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
+            opacity: (100 - t) * maxShadowOpacity / 100 / 100,
+            direction,
+            length
+        };
+    }
+
+    public clearShadow(): void {
+        this.shadow = null;
+    }
+
     public setPageRect(pageRect: RectPoints): void {
-        this.pageRect = this.convertRectToGlobal(pageRect);
+        this.pageRect = pageRect;
     }
 
     public getOrientation(): Orientation {
@@ -104,35 +129,77 @@ export abstract class Render {
         this.drawFrame(timer);
     }
 
-    public getRect(): Rect {
+    public getRect(): PageRect {
+        if (this.boundsRect === null)
+            this.calculateBoundsRect();
+
+        return this.boundsRect;
+    }
+
+    private calculateBoundsRect(): Orientation {
+        let orientation = Orientation.LANDSCAPE;
+
+        const blockWidth = this.getBlockWidth();
         const middlePoint: Point = {
-            x: this.getBlockWidth() / 2, y: this.getBlockHeight() / 2
+            x: blockWidth / 2, y: this.getBlockHeight() / 2
         };
 
-        let w = this.setting.width;
-        let h = this.setting.height;
+        const ratio = this.setting.width / this.setting.height;
 
-        const ratio = w / h;
+        let pageWidth = this.setting.width;
+        let pageHeight = this.setting.height;
+
+        let left = middlePoint.x - pageWidth;
 
         if (this.setting.size === SizeType.STRETCH) {
-            w = this.setting.maxWidth;
-            if ((this.getBlockWidth() / 2) <= this.setting.maxWidth) {
-                w = this.getBlockWidth() / 2;
+            if (blockWidth < this.setting.minWidth * 2)
+                if (this.app.getSettings().usePortrait)
+                    orientation = Orientation.PORTRAIT;
+
+            pageWidth = (orientation === Orientation.LANDSCAPE)
+                ? this.getBlockWidth() / 2
+                : this.getBlockWidth();
+
+            if (pageWidth > this.setting.maxWidth)
+                pageWidth = this.setting.maxWidth;
+
+            pageHeight = pageWidth / ratio;
+            if (pageHeight > this.getBlockHeight()) {
+                pageHeight = this.getBlockHeight();
+                pageWidth = pageHeight * ratio;
             }
 
-            h = w / ratio;
-
-            if (h > this.getBlockHeight()) {
-                h = this.getBlockHeight();
-                w = h * ratio;
+            left = (orientation === Orientation.LANDSCAPE)
+                ? middlePoint.x - pageWidth
+                : middlePoint.x - pageWidth / 2 - pageWidth;
+        }
+        else {
+            if (blockWidth < pageWidth * 2) {
+                if (this.app.getSettings().usePortrait) {
+                    orientation = Orientation.PORTRAIT;
+                    left = middlePoint.x - pageWidth / 2 - pageWidth;
+                }
             }
         }
 
-        return {
-            left: middlePoint.x - w,
-            top: middlePoint.y - (h / 2),
-            width: w * 2,
-            height: h
+        this.boundsRect = {
+            left: left,
+            top: middlePoint.y - (pageHeight / 2),
+            width: pageWidth * 2,
+            height: pageHeight,
+            pageWidth: pageWidth
+        };
+
+        return orientation;
+    }
+
+    public update(): void {
+        this.boundsRect = null;
+        const orientation = this.calculateBoundsRect();
+
+        if (this.orientation !== orientation) {
+            this.orientation = orientation;
+            this.app.updateOrientation(orientation);
         }
     }
 
@@ -192,6 +259,8 @@ export abstract class Render {
     }
 
     public start(): void {
+        this.update();
+
         const loop = (timer: number): void => {
             this.render(timer);
             requestAnimationFrame(loop);
@@ -204,8 +273,8 @@ export abstract class Render {
         this.direction = direction;
     }
 
-    public setLeftPage(page: Page): void {
-        this.leftPage = page;
+    public getDirection(): FlipDirection {
+        return this.direction;
     }
 
     public setFlippingPage(page: Page): void {
@@ -218,5 +287,13 @@ export abstract class Render {
 
     public setRightPage(page: Page): void {
         this.rightPage = page;
+    }
+
+    public setLeftPage(page: Page): void {
+        this.leftPage = page;
+    }
+
+    public getSettings(): FlipSetting {
+        return this.app.getSettings();
     }
 }

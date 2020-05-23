@@ -1,10 +1,10 @@
 {
   "files": [
-    "src/StPageFlip/App.ts"
+    "src/StPageFlip/PageFlip.ts"
   ],
   "compilerOptions": {
     "noImplicitAny": true,
-    "lib": ["es2016", "dom"],
+    "lib": ["es6", "es2016", "dom", "dom.iterable"],
     "module": "es6",
     "target": "es2017"
   },

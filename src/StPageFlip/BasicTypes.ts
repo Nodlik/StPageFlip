@@ -18,4 +18,12 @@ export type Rect = {
     height: number;
 }
 
+export type PageRect = {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    pageWidth: number;
+}
+
 export type Segment = Point[];

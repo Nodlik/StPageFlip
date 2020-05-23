@@ -9,7 +9,7 @@ export class Helper {
         return Math.sqrt( Math.pow(point2.x - point1.x,2) + Math.pow(point2.y - point1.y,2) );
     }
 
-    public static GetLineLenght(line: Segment): number {
+    public static GetSegmentLength(line: Segment): number {
         return Helper.GetDestinationFromTwoPoint(line[0], line[1]);
     }
 
@@ -34,8 +34,15 @@ export class Helper {
              (pos.y >= rect.top)  && (pos.y <= rect.top + rect.height) ) {
             return pos;
         }
-
         return null;
+    }
+
+
+    public static GetRotatedPoint(transformedPoint: Point, startPoint: Point, angle: number): Point {
+        return {
+            x: transformedPoint.x * Math.cos(angle) + transformedPoint.y * Math.sin(angle) + startPoint.x,
+            y: transformedPoint.y * Math.cos(angle) - transformedPoint.x * Math.sin(angle) + startPoint.y
+        }
     }
 
     public static GetIntersectByLineAndCircle(startPoint: Point, radius: number, linePoint: Point): Point {

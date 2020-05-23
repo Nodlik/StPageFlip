@@ -1,71 +1,62 @@
-import { Render } from './Render';
-import { FlipSetting } from '../App';
+import {Orientation, Render} from './Render';
+import {PageFlip} from '../PageFlip';
 import {FlipDirection} from "../Flip/Flip";
 import {PageOrientation} from "../Page/Page";
-import {Point} from "../BasicTypes";
+import {FlipSetting} from "../Settings";
 
 
 export class CanvasRender extends Render {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
 
-    constructor(inCanvas: HTMLCanvasElement, setting: FlipSetting) {
-        super(setting);
+    constructor(app: PageFlip, setting: FlipSetting, inCanvas: HTMLCanvasElement) {
+        super(app, setting);
 
         this.canvas = inCanvas;
         this.ctx = inCanvas.getContext('2d');
     }
 
     public getBlockWidth(): number {
-        return this.canvas.width;
+        return this.canvas.offsetWidth;
     }
 
     public getBlockHeight(): number {
-        return this.canvas.height;
+        return this.canvas.offsetHeight;
     }
 
     public getContext(): CanvasRenderingContext2D {
         return this.ctx;
     }
 
-    public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection): void {
-        this.shadow = {
-            pos,
-            angle,
-            width: (this.getRect().width / 2 * 3 / 4) * t / 100,
-            opacity: (100 - t) / 100,
-            direction
-        };
-    }
-
-    public clearShadow(): void {
-        this.shadow = null;
-    }
-
     public drawFrame(timer: number): void {
         this.clear();
 
-        if (this.leftPage != null) {
-            this.leftPage.simpleDraw(PageOrientation.Left);
-        }
+        if (this.orientation !== Orientation.PORTRAIT)
+            if (this.leftPage != null)
+                this.leftPage.simpleDraw(PageOrientation.Left);
 
-        if (this.rightPage != null) {
+        if (this.rightPage != null)
             this.rightPage.simpleDraw(PageOrientation.Right);
-        }
 
-        if (this.bottomPage != null) {
+        if (this.bottomPage != null)
             this.bottomPage.draw();
-        }
 
         this.drawBookShadow();
 
-        if (this.flippingPage != null) {
+        if (this.flippingPage != null)
             this.flippingPage.draw();
-        }
 
         if (this.shadow != null) {
             this.drawOuterShadow();
             this.drawInnerShadow();
+        }
+
+        const rect = this.getRect();
+
+        if (this.orientation === Orientation.PORTRAIT) {
+            this.ctx.beginPath();
+            this.ctx.rect(rect.left + rect.pageWidth, rect.top, rect.width, rect.height);
+            this.ctx.clip();
         }
     }
 
@@ -142,10 +133,11 @@ export class CanvasRender extends Render {
 
         const shadowPos = this.convertToGlobal({x: this.shadow.pos.x, y: this.shadow.pos.y});
 
-        this.ctx.moveTo(this.pageRect.topLeft.x, this.pageRect.topLeft.y);
-        this.ctx.lineTo(this.pageRect.topRight.x, this.pageRect.topRight.y);
-        this.ctx.lineTo(this.pageRect.bottomRight.x, this.pageRect.bottomRight.y);
-        this.ctx.lineTo(this.pageRect.bottomLeft.x, this.pageRect.bottomLeft.y);
+        const pageRect = this.convertRectToGlobal(this.pageRect);
+        this.ctx.moveTo(pageRect.topLeft.x, pageRect.topLeft.y);
+        this.ctx.lineTo(pageRect.topRight.x, pageRect.topRight.y);
+        this.ctx.lineTo(pageRect.bottomRight.x, pageRect.bottomRight.y);
+        this.ctx.lineTo(pageRect.bottomLeft.x, pageRect.bottomLeft.y);
         this.ctx.translate(shadowPos.x, shadowPos.y);
 
         this.ctx.rotate(Math.PI + this.shadow.angle + Math.PI / 2);

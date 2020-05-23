@@ -1,94 +1,162 @@
-import {App, FlipSetting, SizeType} from "../App";
+import {PageFlip} from "../PageFlip";
 import {Point} from "../BasicTypes";
+import {FlipSetting, SizeType} from "../Settings";
+import {FlipCorner} from "../Flip/Flip";
+import {Orientation} from "../Render/Render";
 
-export class UI {
-    private readonly canvas: HTMLCanvasElement;
-    private readonly app: App;
+type SwipeData = {
+    point: Point;
+    time: number;
+}
 
-    constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
-        inBlock.classList.add('stf__wrapper');
+export abstract class UI {
+    protected readonly app: PageFlip;
+    protected readonly wrapper: HTMLElement;
+    protected distElement: HTMLElement;
 
-        inBlock.setAttribute("style", "min-width: " + setting.minWidth * 2 +
-            'px; min-height: ' + setting.minHeight + 'px');
+    private touchPoint: SwipeData = null;
+    private readonly swipeTimeout = 250;
+    private readonly swipeDistance = 80;
+
+    protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
+        this.wrapper = inBlock;
+        this.wrapper.classList.add('stf__wrapper');
+
+        this.app = app;
+
+        const k = this.app.getSettings().usePortrait ? 1 : 2;
+
+        this.wrapper.style.minWidth = setting.minWidth * k + 'px';
+        this.wrapper.style.minHeight = setting.minHeight * k + 'px';
+
         if (setting.size === SizeType.FIXED) {
-            inBlock.setAttribute("style", "min-width: " + setting.width * 2 +
-                'px; min-height: ' + setting.height + 'px');
+            this.wrapper.style.minWidth = setting.width * k + 'px';
+            this.wrapper.style.minHeight = setting.height * k + 'px';
         }
 
-        inBlock.innerHTML = '<canvas></canvas>';
+        if (setting.autoSize) {
+            this.wrapper.style.width = '100%';
+            this.wrapper.style.maxWidth = setting.maxWidth * 2 + 'px';
+        }
 
-        this.canvas = inBlock.querySelectorAll('canvas')[0];
-
-        window.addEventListener('resize', () => {
-            this.resizeCanvas();
-        }, false);
-
-        this.resizeCanvas();
-        this.app = app;
-        this.setHandlers();
+        this.wrapper.style.display = 'block';
     }
 
-    private resizeCanvas(): void {
-        const cs = getComputedStyle(this.canvas);
-        const width = parseInt(cs.getPropertyValue('width'), 10);
-        const height = parseInt(cs.getPropertyValue('height'), 10);
+    public abstract update(): void;
 
-        this.canvas.width = width;
-        this.canvas.height = height;
+    public getDistElement(): HTMLElement {
+        return this.distElement;
     }
 
-    private setHandlers(): void {
-        this.canvas.onmousedown = (e: MouseEvent) => {
+    public getWrapper(): HTMLElement {
+        return this.wrapper;
+    }
+
+    public setOrientationStyle(orientation: Orientation): void {
+        this.wrapper.classList.remove('--portrait', '--landscape');
+
+        if (orientation === Orientation.PORTRAIT) {
+            if (this.app.getSettings().autoSize)
+                this.wrapper.style.paddingBottom = (this.app.getSettings().height / this.app.getSettings().width) * 100 + '%';
+
+            this.wrapper.classList.add('--portrait');
+        }
+        else {
+            if (this.app.getSettings().autoSize)
+                this.wrapper.style.paddingBottom = (this.app.getSettings().height / (this.app.getSettings().width * 2)) * 100 + '%';
+
+            this.wrapper.classList.add('--landscape');
+        }
+
+        this.update();
+    }
+
+    protected setHandlers(): void {
+        this.distElement.addEventListener('mousedown', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.startUserTouch(pos);
-        };
 
-        this.canvas.ontouchstart = (e: TouchEvent) => {
+            e.preventDefault();
+        });
+
+        this.distElement.addEventListener('touchstart',(e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
 
-                this.app.startUserTouch(this.getMousePos(t.clientX, t.clientY));
+                this.touchPoint = {
+                    point: pos,
+                    time: Date.now()
+                };
+
+                setTimeout(() => {
+                    if (this.touchPoint !== null)
+                        this.app.startUserTouch(pos);
+
+                }, this.swipeTimeout);
+
+                e.preventDefault();
             }
+        });
 
-            return false;
-        };
-
-        window.onmousemove = (e: MouseEvent) => {
+        window.addEventListener('mousemove', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
-            this.app.userMove(pos);
-        };
+            this.app.userMove(pos, false);
+        });
 
-        window.ontouchmove = (e: TouchEvent) => {
+        window.addEventListener('touchmove', (e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
 
-                this.app.userMove(this.getMousePos(t.clientX, t.clientY));
+                this.app.userMove(this.getMousePos(t.clientX, t.clientY), true);
             }
-        };
+        });
 
-        window.onmouseup = (e: MouseEvent) => {
+        window.addEventListener('mouseup', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.userStop(pos);
-        };
+        });
 
-        window.ontouchend = (e: TouchEvent) => {
+        window.addEventListener('touchend', (e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
+                let isSwipe = false;
 
-                this.app.userStop(this.getMousePos(t.clientX, t.clientY));
+                if (this.touchPoint !== null) {
+                    const dx = pos.x - this.touchPoint.point.x;
+                    const distY = Math.abs(pos.y - this.touchPoint.point.y);
+
+                    if ( (Math.abs(dx) > this.swipeDistance) &&
+                         (distY < this.swipeDistance * 2) &&
+                         ((Date.now() - this.touchPoint.time) < this.swipeTimeout) )
+                    {
+                        if (dx > 0) {
+                            this.app.flipPrev( (this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                                ? FlipCorner.TOP
+                                : FlipCorner.BOTTOM );
+                        }
+                        else {
+                            this.app.flipNext((this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                                ? FlipCorner.TOP
+                                : FlipCorner.BOTTOM );
+                        }
+                        isSwipe = true;
+                    }
+
+                    this.touchPoint = null;
+                }
+
+                this.app.userStop(pos, isSwipe);
             }
-        };
-    }
-
-    public getCanvas(): HTMLCanvasElement {
-        return this.canvas;
+        });
     }
 
     private getMousePos(x: number, y: number): Point {
-        const rect = this.canvas.getBoundingClientRect();
+        const rect = this.distElement.getBoundingClientRect();
 
         return {
             x: x - rect.left,

@@ -4,9 +4,7 @@ import {Render} from "../Render/Render";
 import {Point} from "../BasicTypes";
 
 export class ImagePage extends Page {
-    private readonly href: string;
-
-    private image: HTMLImageElement = null;
+    private readonly image: HTMLImageElement = null;
     private isLoad = false;
 
     private loadingAngle = 0;
@@ -14,14 +12,15 @@ export class ImagePage extends Page {
     constructor(render: Render, href: string) {
         super(render);
 
-        this.href = href;
+        this.image = new Image();
+        this.image.src = href;
     }
 
     public draw(): void {
         const ctx = (this.render as CanvasRender).getContext();
 
         const pagePos = this.render.convertToGlobal(this.state.position);
-        const pageWidth = this.render.getRect().width / 2;
+        const pageWidth = this.render.getRect().pageWidth;
         const pageHeight = this.render.getRect().height;
 
         ctx.save();
@@ -39,7 +38,7 @@ export class ImagePage extends Page {
 
         ctx.clip();
 
-        ctx.imageSmoothingQuality = 'high';
+        //ctx.imageSmoothingQuality = 'high';
 
         if (!this.isLoad) {
             ctx.beginPath();
@@ -77,15 +76,14 @@ export class ImagePage extends Page {
         const rect = this.render.getRect();
         const ctx = (this.render as CanvasRender).getContext();
 
-        const pageWidth = this.render.getRect().width / 2;
-        const pageHeight = this.render.getRect().height;
+        const pageWidth = rect.pageWidth;
+        const pageHeight = rect.height;
 
         const x = (orient === PageOrientation.Right)
-            ? rect.left + rect.width / 2
+            ? rect.left + rect.pageWidth
             : rect.left;
 
         const y = rect.top;
-
 
         if (!this.isLoad) {
             ctx.beginPath();
@@ -113,31 +111,14 @@ export class ImagePage extends Page {
             }
         }
         else {
-            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(this.image, x, y, pageWidth, pageHeight);
         }
     }
 
-    public async load(): Promise<Page> {
-        if (this.image == null) {
-            this.image = new Image();
-            this.image.src = this.href;
-        }
-
-        if (this.isLoad) {
-            return Promise.resolve(this);
-        }
-
-        return new Promise<Page>((resolve) => {
-            /*setTimeout(() => {
-                this.isLoad = true;
-                resolve(this);
-            }, 5000); */
-
+    public load(): void {
+        if (!this.isLoad)
             this.image.onload = () => {
                 this.isLoad = true;
-                resolve(this);
             };
-        });
     }
 }

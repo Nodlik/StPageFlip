@@ -1,19 +1,22 @@
-import {Render} from "../Render/Render";
+import {Orientation, Render} from "../Render/Render";
 import {Page} from "../Page/Page";
+import {PageFlip} from "../PageFlip";
 
 export abstract class PageCollection {
     protected pages: Page[] = [];
+    protected readonly app: PageFlip;
     protected readonly render: Render;
 
-    protected constructor(render: Render) {
+    protected constructor(app: PageFlip, render: Render) {
         this.render = render;
+        this.app = app;
     }
 
     public getPageCount(): number {
         return this.pages.length;
     }
 
-    public async abstract load(): Promise<Page[]>;
+    public abstract load(): void;
 
     public getPages(): Page[] {
         return this.pages;
@@ -37,11 +40,19 @@ export abstract class PageCollection {
             return;
         }
 
-        if (pageNum === (this.pages.length - 1)) {
-            pageNum--;
-        }
+        this.app.updatePage(pageNum);
 
-        this.render.setLeftPage(this.pages[pageNum]);
-        this.render.setRightPage(this.pages[pageNum + 1]);
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            this.render.setLeftPage(null);
+            this.render.setRightPage(this.pages[pageNum]);
+        }
+        else {
+            if (pageNum === (this.pages.length - 1)) {
+                pageNum--;
+            }
+
+            this.render.setLeftPage(this.pages[pageNum]);
+            this.render.setRightPage(this.pages[pageNum + 1]);
+        }
     }
 }
