@@ -1,65 +1,378 @@
 <!doctype html>
-<html lang="EN">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/style.css">
 
-    <link href="css/assets.min.css" rel="stylesheet">
-    <link href="css/app.css" rel="stylesheet">
-
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-
-    <title>StPageFlip Demo</title>
-
-    <style>
-    </style>
+    <title>StPageFlip - Simple library for creating realistic page turning effects</title>
 </head>
 <body>
 
-<div id="wrapper" style="">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">StPageFlip</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div id="book"></div>
-
-    <div style="text-align: center">
-        Page: <span class="data__currentPage"></span> of <span class="data__total"></span>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            </li>
+        </ul>
     </div>
+</nav>
 
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>St Page Flip</h3>
+            <hr />
+            <p>Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect.</p>
+            <p>Works with simple images on canvas and with complex html blocks</p>
+            <p>Has a simple api and flexible configuration</p>
+            <p>Compatibility with mobile devices</p>
+            <p>Support landscape and portrait screen mode</p>
+            <p>No additional libraries</p>
+        </div>
+
+        <div class="shadow-sm bg-light rounded col-sm-6">
+<pre class="prettyprint"><code>import PageFlip from 'flip-page';
+
+const pageFlip = new PageFlip(document.getElementById('book'),
+    {
+        width: 400,
+        height: 600,
+        size: "fixed" // or "stretch"
+        //...
+    }
+);
+
+pageFlip.loadFromHTML(document.querySelectorAll('.page'));</code></pre></div>
+    </div>
 </div>
 
+<div class="demo-block bg-light pt-3 pb-3 overflow-hidden">
+    <div class="container mb-3 text-center" id="buttonDemoSelection">
+        <div class="btn-group" role="group" aria-label="">
+            <button type="button" class="btn btn-primary" data-dest="html">HTML</button>
+            <button type="button" class="btn btn-secondary" data-dest="canvas">CANVAS</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="htmlBook">
+            <div class="flip-book html-book" id="htmlBookExample">
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 1</h2>
+                    <div class="page-image" style="background-image: url(images/html/1.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">1</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/2.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">2</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 3</h2>
+                    <div class="page-image" style="background-image: url(images/html/3.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">3</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 4</h2>
+                    <div class="page-image" style="background-image: url(images/html/4.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">4</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 5</h2>
+                    <div class="page-image" style="background-image: url(images/html/5.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">5</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 6</h2>
+                    <div class="page-image" style="background-image: url(images/html/6.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">6</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 7</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">7</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 8</h2>
+                    <div class="page-image" style="background-image: url(images/html/8.jpg)"></div>
+                    <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">8</div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <div id="canvasBook" style="display: none">
+            <div class="flip-book canvas-book" id="canvasBookExample"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="text-center mt-3 mb-2">
+            <button type="button" class="btn btn-info btn-sm btn-book-prev">Previous page</button>
+            [<span class="page-count">-</span> of <span class="page-total">-</span>]
+            <button type="button" class="btn btn-info btn-sm btn-book-next">Next page</button>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div>
+        <h2>Installation</h2>
+        <hr />
+        You can install the latest version using npm:
+    </div>
+
+    <div class="bg-light rounded p-2 mt-3 mb-3">
+        <pre class="prettyprint"><code>npm install page-flip</code></pre>
+    </div>
+
+    <div>
+        Or download bundle from <a href="https://github.com/Nodlik/StPageFlip/tree/master/dist/js">Github page</a>
+    </div>
+
+    <div class="mt-4">
+        <h2>Usage</h2>
+        <hr />
+        If you installed the package from npm, you need import <strong>PageFlip</strong> from <strong>page-flip</strong> package,
+        or just use <code class="prettyprint">&lt;script/&gt;</code> tag:
+    </div>
+
+    <div class="bg-light rounded p-2 mt-2 mb-2">
+        <pre class="prettyprint"><code>&lt;script src=&quot;{path/to/scripts}/stPageFlip.bundle.js&quot;&gt;&lt;/script&gt;</code></pre>
+    </div>
+
+    <div>
+        Creation of a new PageFlip object:
+    </div>
+
+    <div class="bg-light rounded p-2 mt-2 mb-2">
+<pre class="prettyprint"><code>import PageFlip from 'flip-page';
+
+const pageFlip = new PageFlip(htmlParentElement, settings);
+
+// or if you using script tag:
+const pageFlip = new St.PageFlip(htmlParentElement, settings);</code>
+</pre>
+    </div>
+
+    <div>
+        Where <i>htmlParentElement</i> - HTMLElement, where the book will be created, <i>settings</i> - configuration object.
+    </div>
+    <hr />
+    <div>
+        To drawing on the canvas, use the following method:
+    </div>
+
+    <div class="bg-light rounded p-2 mt-2 mb-2">
+<pre class="prettyprint"><code>pageFlip.loadFromImages(['path/to/image1.jpg', 'path/to/image2.jpg' ... ]);</code></pre>
+    </div>
+    <div>
+        For html block - use <i>loadFromHtml</i>
+    </div>
+
+    <div class="bg-light rounded p-2 mt-2 mb-2">
+        <pre class="prettyprint"><code>pageFlip.loadFromHtml(items);</code></pre>
+    </div>
+
+    <div>
+        For example:
+    </div>
+    <div class="bg-light rounded p-2 mt-2 mb-2">
+<pre class="prettyprint"><code>&lt;div id=&quot;book&quot;&gt;
+    &lt;div class=&quot;my-page&quot;&gt;
+        Page one
+    &lt;/div&gt;
+    &lt;div class=&quot;my-page&quot;&gt;
+        Page two
+    &lt;/div&gt;
+    &lt;div class=&quot;my-page&quot;&gt;
+        Page three
+    &lt;/div&gt;
+    &lt;div class=&quot;my-page&quot;&gt;
+        Page four
+    &lt;/div&gt;
+&lt;/div&gt;
+    </code></pre>
+<pre class="prettyprint"><code>const pageFlip = new PageFlip(document.getElementById('book'),
+    {
+        width: 400, // required parameter - base page width
+        height: 600  // required parameter - base page height
+    }
+);
+
+pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code>
+</pre>
+    </div>
+    <div class="mt-4">
+        <h2>Config</h2>
+        <hr />
+        Configuration is set when creating an object. Config parameters:
+        <ul class="list-group" style="font-size: 90%">
+            <li class="list-group-item"><strong>width</strong>: <i>number</i> - <u>required</u></li>
+            <li class="list-group-item"><strong>height</strong>: <i>number</i> - <u>required</u></li>
+            <li class="list-group-item"><strong>size</strong>: <i>("fixed", "stretch")</i> - default: <i>"fixed"</i>.
+                Whether the book will be stretched under the parent element</li>
+            <li class="list-group-item"><strong>minWidth, maxWidth, minHeight, maxHeight</strong>: <i>number</i>.
+                You must set threshold values ​​with a <code class="prettyprint">size: "stretch"</code></li>
+
+            <li class="list-group-item"><strong>drawShadow</strong>: <i>bool</i> - default: <i>true</i>. Draw shadows or not</li>
+            <li class="list-group-item"><strong>flippingTime</strong>: <i>number (milliseconds)</i> - default: <i>1000</i>.
+                Flipping animation time</li>
+            <li class="list-group-item"><strong>usePortrait</strong>: <i>bool</i> - default: <i>true</i>.
+                Enable switching to portrait mode</li>
+            <li class="list-group-item"><strong>startZIndex</strong>: <i>number</i> - default: <i>0</i>.
+                Initial value to z-index
+            </li>
+            <li class="list-group-item"><strong>autoSize</strong>: <i>bool</i> - default: <i>true</i>.
+                If this value is true, the parent element will be equal to the size of the book
+            </li>
+            <li class="list-group-item"><strong>maxShadowOpacity</strong>: <i>number [0..1]</i> - default: <i>1</i>.
+                Shadow intensity - 1: max intensity, 0: hidden shadows
+            </li>
+        </ul>
+    </div>
+
+    <div class="mt-4">
+        <h2>Events</h2>
+        <hr />
+        to listen for events using the method <i>on</i>:
+        <div class="bg-light rounded p-2 mt-2 mb-2">
+<pre class="prettyprint"><code>pageFlip.on('eventName', (e) => {
+        // callback code
+    }
+);</code>
+</pre></div>
+        Available events:
+        <ul class="list-group" style="font-size: 90%">
+            <li class="list-group-item"><strong>flip</strong>: <i>number</i> - triggered by page turning</li>
+            <li class="list-group-item"><strong>changeOrientation</strong>: <i>("portrait", "landscape")</i> - triggered when page orientation changes</li>
+            <li class="list-group-item"><strong>changeState</strong>: <i>("user_fold", "fold_corner", "flipping", "read")</i> -
+                triggered when the state of the book changes</li>
+        </ul>
+        <div class="mt-2">
+            Event object has two field: <i>data</i> and <i>object</i>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h2>Methods</h2>
+        <hr />
+        Available methods:
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Parameters</th>
+                <th scope="col">Return value</th>
+                <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><b>getPageCount</b></td>
+                <td><i></i></td>
+                <td>number</td>
+                <td>Get the number of all pages</td>
+            </tr>
+            <tr>
+                <td><b>getCurrentPageIndex</b></td>
+                <td><i></i></td>
+                <td>number</td>
+                <td>Get current page number (starts at 0)</td>
+            </tr>
+            <tr>
+                <td><b>turnToPage</b></td>
+                <td><i>pageNum: number</i></td>
+                <td>void</td>
+                <td>Turns over the page to the specified number (without animation)</td>
+            </tr>
+            <tr>
+                <td><b>turnToNextPage</b></td>
+                <td><i></i></td>
+                <td>void</td>
+                <td>Turn to the next page (without animation)</td>
+            </tr>
+            <tr>
+                <td><b>turnToPrevPage</b></td>
+                <td><i></i></td>
+                <td>void</td>
+                <td>Turn to the previous page (without animation)</td>
+            </tr>
+            <tr>
+                <td><b>flipNext</b></td>
+                <td><i>corner: 'top' | 'bottom'</i></td>
+                <td>void</td>
+                <td>Turn to the next page (with animation)</td>
+            </tr>
+            <tr>
+                <td><b>flipPrev</b></td>
+                <td><i>corner: 'top' | 'bottom'</i></td>
+                <td>void</td>
+                <td>Turn to the previous page (with animation)</td>
+            </tr>
+            <tr>
+                <td><b>loadFromImages</b></td>
+                <td><i>images: ['path-to-image'...]</i></td>
+                <td>void</td>
+                <td>Loading page from images</td>
+            </tr>
+            <tr>
+                <td><b>loadFromHtml</b></td>
+                <td><i>items: NodeListOf | HTMLElement[]</i></td>
+                <td>void</td>
+                <td>Loading page from html elements</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <h2>Contacts</h2>
+        <hr />
+        Oleg, <br />
+        <a href="mailto:oleglitovski9@gmail.com">oleg.litovski9@gmail.com</a> <br />
+        <a href="https://github.com/Nodlik/StPageFlip">Github</a>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script src="static/pages.bundle.js"></script>
 </body>
-<script src="js/stPageFlip.bundle.js"></script>
-
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        const app = new StPageFlip.App(document.getElementById('book'));
-
-        const pageBlock = document.querySelector('.data__currentPage');
-        app.on('flip', (e) => {
-            const page = e.data + 1;
-            pageBlock.innerHTML = page + ' - ' + (page + 1);
-        });
-
-        app.loadFromImages([
-            'images/0.jpg',
-            'images/1.jpg',
-            'images/1-2.jpg',
-            'images/1-2_.jpg',
-            'images/2.jpg',
-            'images/3.jpg',
-            'images/4.jpg',
-            'images/5.jpg',
-            'images/3-4.jpg',
-            'images/3-4_.jpg',
-            'images/6.jpg',
-            'images/7.jpg',
-            'images/8.jpg',
-            'images/9.jpg',
-        ]);
-
-        document.querySelector('.data__total').innerHTML = app.getPageCount();
-    });
-</script>
 
 </html>
