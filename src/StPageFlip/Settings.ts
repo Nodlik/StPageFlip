@@ -21,6 +21,7 @@ export interface FlipSetting {
     usePortrait: boolean;
     startZIndex: number;
     autoSize: boolean;
+    maxShadowOpacity: number;
 }
 
 export class Settings {
@@ -38,7 +39,8 @@ export class Settings {
         flippingTime: 1000,
         usePortrait: true,
         startZIndex: 0,
-        autoSize: false
+        autoSize: true,
+        maxShadowOpacity: 1
     };
 
     public static GetSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {

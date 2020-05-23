@@ -1,14 +1,13 @@
 import {HTMLPage} from "../Page/HTMLPage";
 import {Render} from "../Render/Render";
-import {Page} from "../Page/Page";
 import {PageCollection} from "./PageCollection";
-import {App} from "../App";
+import {PageFlip} from "../PageFlip";
 
 export class HTMLPageCollection extends  PageCollection {
     private readonly element: HTMLElement;
     private readonly pagesElement: NodeListOf<HTMLElement> | HTMLElement[];
 
-    constructor(app: App, render: Render, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
+    constructor(app: PageFlip, render: Render, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, render);
 
         this.element = element;

@@ -83,6 +83,7 @@ export class HTMLPage extends Page {
         this.element.classList.add('--simple');
         this.copiedElement.style.cssText = "position: absolute; display: block; height: " + pageHeight + "px; left: " +
             x + "px; top: " + y + "px; width: " + pageWidth + "px; z-index: " + (this.render.getSettings().startZIndex + 1) + ";";
+
         this.element.style.cssText = "display: none";
     }
 

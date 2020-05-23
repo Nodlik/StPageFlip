@@ -1,5 +1,5 @@
 import {Render, Orientation} from "../Render/Render";
-import {App} from "../App";
+import {PageFlip} from "../PageFlip";
 import {Helper} from "../Helper";
 import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
@@ -11,8 +11,8 @@ export const enum FlipDirection {
 }
 
 export const enum FlipCorner {
-    TOP,
-    BOTTOM
+    TOP = 'top',
+    BOTTOM = 'bottom'
 }
 
 export const enum FlippingState {
@@ -24,7 +24,7 @@ export const enum FlippingState {
 
 export class Flip {
     private readonly render: Render;
-    private readonly app: App;
+    private readonly app: PageFlip;
 
     private flippingPage: Page = null;
     private bottomPage: Page = null;
@@ -33,7 +33,7 @@ export class Flip {
 
     private state: FlippingState = FlippingState.READ;
 
-    constructor(render: Render, app: App) {
+    constructor(render: Render, app: PageFlip) {
         this.render = render;
         this.app = app;
     }

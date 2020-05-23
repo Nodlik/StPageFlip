@@ -1,4 +1,4 @@
-import {App} from "../App";
+import {PageFlip} from "../PageFlip";
 import {Point} from "../BasicTypes";
 import {FlipSetting, SizeType} from "../Settings";
 import {FlipCorner} from "../Flip/Flip";
@@ -10,7 +10,7 @@ type SwipeData = {
 }
 
 export abstract class UI {
-    protected readonly app: App;
+    protected readonly app: PageFlip;
     protected readonly wrapper: HTMLElement;
     protected distElement: HTMLElement;
 
@@ -18,15 +18,13 @@ export abstract class UI {
     private readonly swipeTimeout = 250;
     private readonly swipeDistance = 80;
 
-    protected constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
+    protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
         this.wrapper = inBlock;
         this.wrapper.classList.add('stf__wrapper');
 
         this.app = app;
 
-        const k = this.app.getSettings().usePortrait
-            ? 1
-            : 2;
+        const k = this.app.getSettings().usePortrait ? 1 : 2;
 
         this.wrapper.style.minWidth = setting.minWidth * k + 'px';
         this.wrapper.style.minHeight = setting.minHeight * k + 'px';
@@ -40,12 +38,18 @@ export abstract class UI {
             this.wrapper.style.width = '100%';
             this.wrapper.style.maxWidth = setting.maxWidth * 2 + 'px';
         }
+
+        this.wrapper.style.display = 'block';
     }
 
-    protected abstract update(): void;
+    public abstract update(): void;
 
     public getDistElement(): HTMLElement {
         return this.distElement;
+    }
+
+    public getWrapper(): HTMLElement {
+        return this.wrapper;
     }
 
     public setOrientationStyle(orientation: Orientation): void {
@@ -68,13 +72,13 @@ export abstract class UI {
     }
 
     protected setHandlers(): void {
-        this.distElement.onmousedown = (e: MouseEvent) => {
+        this.distElement.addEventListener('mousedown', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.startUserTouch(pos);
 
             e.preventDefault();
-        };
+        });
 
         this.distElement.addEventListener('touchstart',(e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
@@ -100,8 +104,6 @@ export abstract class UI {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.userMove(pos, false);
-
-            e.preventDefault();
         });
 
         window.addEventListener('touchmove', (e: TouchEvent) => {
@@ -116,8 +118,6 @@ export abstract class UI {
             const pos = this.getMousePos(e.clientX, e.clientY);
 
             this.app.userStop(pos);
-
-            e.preventDefault();
         });
 
         window.addEventListener('touchend', (e: TouchEvent) => {

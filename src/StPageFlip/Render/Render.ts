@@ -1,9 +1,8 @@
-import {App} from '../App';
+import {PageFlip} from '../PageFlip';
 import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
-import compile = WebAssembly.compile;
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -41,7 +40,7 @@ export abstract class Render {
     protected pageRect: RectPoints = null;
 
     protected readonly setting: FlipSetting;
-    protected readonly app: App;
+    protected readonly app: PageFlip;
 
     protected animation: Animation = null;
 
@@ -52,7 +51,7 @@ export abstract class Render {
 
     private boundsRect: PageRect = null;
 
-    protected constructor(app: App, setting: FlipSetting) {
+    protected constructor(app: PageFlip, setting: FlipSetting) {
         this.setting = setting;
         this.app = app;
     }
@@ -62,16 +61,19 @@ export abstract class Render {
     public abstract getBlockHeight(): number;
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
-        if (this.app.getSettings().drawShadow) {
-            this.shadow = {
-                pos,
-                angle,
-                width: (this.getRect().pageWidth * 3 / 4) * t / 100,
-                opacity: (100 - t) / 100,
-                direction,
-                length
-            };
-        }
+        if (!this.app.getSettings().drawShadow)
+            return;
+
+        const maxShadowOpacity = 100 * this.getSettings().maxShadowOpacity;
+
+        this.shadow = {
+            pos,
+            angle,
+            width: (this.getRect().pageWidth * 3 / 4) * t / 100,
+            opacity: (100 - t) * maxShadowOpacity / 100 / 100,
+            direction,
+            length
+        };
     }
 
     public clearShadow(): void {

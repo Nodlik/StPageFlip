@@ -1,6 +1,6 @@
 import {CanvasRender} from "../Render/CanvasRender";
 import {Page, PageOrientation} from "./Page";
-import {Orientation, Render} from "../Render/Render";
+import {Render} from "../Render/Render";
 import {Point} from "../BasicTypes";
 
 export class ImagePage extends Page {
@@ -118,7 +118,6 @@ export class ImagePage extends Page {
     public load(): void {
         if (!this.isLoad)
             this.image.onload = () => {
-                console.log(this.image);
                 this.isLoad = true;
             };
     }

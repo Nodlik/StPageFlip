@@ -1,5 +1,5 @@
 import {Orientation, Render} from './Render';
-import {App} from '../App';
+import {PageFlip} from '../PageFlip';
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
@@ -14,7 +14,7 @@ export class HTMLRender extends Render {
     private outerShadow: HTMLElement = null;
     private innerShadow: HTMLElement = null;
 
-    constructor(app: App, setting: FlipSetting, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
+    constructor(app: PageFlip, setting: FlipSetting, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, setting);
 
         this.element = element;
@@ -281,10 +281,14 @@ export class HTMLRender extends Render {
     public update(): void {
         super.update();
 
-        if (this.rightPage !== null)
+        if (this.rightPage !== null) {
+            (this.rightPage as HTMLPage).getElement().classList.add('--right');
             (this.rightPage as HTMLPage).clearSaved();
+        }
 
-        if (this.leftPage !== null)
+        if (this.leftPage !== null) {
+            (this.leftPage as HTMLPage).getElement().classList.add('--left');
             (this.leftPage as HTMLPage).clearSaved();
+        }
     }
 }

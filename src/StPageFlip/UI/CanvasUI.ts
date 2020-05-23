@@ -1,12 +1,11 @@
 import {UI} from "./UI";
-import {App} from "../App";
-import {Point} from "../BasicTypes";
+import {PageFlip} from "../PageFlip";
 import {FlipSetting} from "../Settings";
 
 export class CanvasUI extends UI {
     private readonly canvas: HTMLCanvasElement;
 
-    constructor(inBlock: HTMLElement, app: App, setting: FlipSetting) {
+    constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
         super(inBlock, app, setting);
 
         inBlock.innerHTML = '<canvas class="stf__canvas"></canvas>';
@@ -36,7 +35,7 @@ export class CanvasUI extends UI {
         return this.canvas;
     }
 
-    protected update(): void {
+    public update(): void {
         this.resizeCanvas();
         this.app.getRender().update();
     }

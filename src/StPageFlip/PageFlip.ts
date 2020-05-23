@@ -14,9 +14,9 @@ import {HTMLRender} from "./Render/HTMLRender";
 import {FlipSetting, Settings} from "./Settings";
 import {UI} from "./UI/UI";
 
-import './Style/stPagePlip.scss';
+import './Style/stPagePlip.css';
 
-export class App extends EventObject {
+export class PageFlip extends EventObject {
     private mousePosition: Point;
     private isUserTouch = false;
     private isUserMove = false;
@@ -41,7 +41,7 @@ export class App extends EventObject {
             this.block = inBlock;
         }
         catch (e) {
-            console.log(e);
+            //
         }
     }
 

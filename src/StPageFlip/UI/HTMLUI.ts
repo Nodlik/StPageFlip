@@ -1,12 +1,9 @@
 import {UI} from "./UI";
-import {App} from "../App";
-import {Point} from "../BasicTypes";
+import {PageFlip} from "../PageFlip";
 import {FlipSetting} from "../Settings";
 
 export class HTMLUI extends UI {
-    private readonly canvas: HTMLCanvasElement;
-
-    constructor(inBlock: HTMLElement, app: App, setting: FlipSetting, items: NodeListOf<HTMLElement> | HTMLElement[]) {
+    constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(inBlock, app, setting);
 
         inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
@@ -24,7 +21,7 @@ export class HTMLUI extends UI {
         this.setHandlers();
     }
 
-    protected update(): void {
+    public update(): void {
         this.app.getRender().update();
     }
 }
