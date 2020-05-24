@@ -1,6 +1,6 @@
 {
   "name": "page-flip",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "dist/js/pageFlip.module.js",
   "browser": "dist/js/pageFlip.browser.js",
   "author": "oleg.litovski9@gmail.com",
@@ -11,8 +11,7 @@
     "url": "https://github.com/Nodlik/StPageFlip.git"
   },
   "homepage": "https://nodlik.github.io/StPageFlip/",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -31,7 +30,12 @@
     "eslint": "eslint . --ext .ts"
   },
   "keywords": [
-    "typescript", "page", "flip",
-    "canvas", "fold", "frontend", "javascript"
+    "typescript",
+    "page",
+    "flip",
+    "canvas",
+    "fold",
+    "frontend",
+    "javascript"
   ]
 }
