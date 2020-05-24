@@ -1,10 +1,18 @@
 {
   "name": "page-flip",
   "version": "0.2.1",
-  "main": "dist/StPageFlip.bundle.js",
-  "author": "oleglitovski9@gmail.com",
+  "main": "dist/js/pageFlip.module.js",
+  "browser": "dist/js/pageFlip.browser.js",
+  "author": "oleg.litovski9@gmail.com",
   "license": "MIT",
-  "dependencies": {},
+  "description": "Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nodlik/StPageFlip.git"
+  },
+  "homepage": "https://nodlik.github.io/StPageFlip/",
+  "dependencies": {
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -15,9 +23,15 @@
     "ts-loader": "^7.0.4",
     "typescript": "latest",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-typescript2": "^0.27.1"
   },
   "scripts": {
     "eslint": "eslint . --ext .ts"
-  }
+  },
+  "keywords": [
+    "typescript", "page", "flip",
+    "canvas", "fold", "frontend", "javascript"
+  ]
 }

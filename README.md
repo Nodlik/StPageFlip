@@ -22,12 +22,12 @@ Or download bundle from Github
 If you installed the package from npm, you need import PageFlip from page-flip package, or just use ```<script/>``` tag:
 
 ```html
-<script src="{path/to/scripts}/stPageFlip.bundle.js"></script>
+<script src="{path/to/scripts}/pageFlip.browser.js"></script>
 ```
 
 Creation of a new PageFlip object:
 ```js
-import PageFlip from 'flip-page';
+import {PageFlip} from 'page-flip';
 
 const pageFlip = new PageFlip(htmlParentElement, settings);
 
