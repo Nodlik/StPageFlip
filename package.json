@@ -1,6 +1,6 @@
 {
   "name": "page-flip",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "dist/js/pageFlip.module.js",
   "browser": "dist/js/pageFlip.browser.js",
   "author": "oleg.litovski9@gmail.com",

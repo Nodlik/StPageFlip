@@ -86,7 +86,7 @@ Configuration is set when creating an object. Config parameters:
 * autoSize: bool - default: true. If this value is true, the parent element will be equal to the size of the book
 * maxShadowOpacity: number [0..1] - default: 1. Shadow intensity - 1: max intensity, 0: hidden shadows
 
-### Config
+### Events
 To listen for events using the method on:
 ```js
 pageFlip.on('eventName', (e) => {
@@ -101,7 +101,7 @@ Available events:
 
 Event object has two field: data and object
 
-### METHOD
+### Methods
 * getPageCount: number - Get the number of all pages
 * getCurrentPageIndex: number - Get current page number (starts at 0)
 * turnToPage(pageNum: number)	- Turns over the page to the specified number (without animation)
@@ -112,7 +112,7 @@ Event object has two field: data and object
 * loadFromImages(images: ['path-to-image'...]) - Loading page from images
 * loadFromHtml(items: NodeListOf | HTMLElement[]) -	Loading page from html elements
 
-### CONTACTS
+### Contacts
 Oleg,
 
 <oleg.litovski9@gmail.com>
