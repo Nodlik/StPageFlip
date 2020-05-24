@@ -38,7 +38,7 @@
         </div>
 
         <div class="shadow-sm bg-light rounded col-sm-6">
-<pre class="prettyprint"><code>import PageFlip from 'flip-page';
+<pre class="prettyprint"><code>import {PageFlip} from 'page-flip';
 
 const pageFlip = new PageFlip(document.getElementById('book'),
     {
@@ -169,7 +169,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.page'));</code></pre></div>
     </div>
 
     <div class="bg-light rounded p-2 mt-2 mb-2">
-        <pre class="prettyprint"><code>&lt;script src=&quot;{path/to/scripts}/stPageFlip.bundle.js&quot;&gt;&lt;/script&gt;</code></pre>
+        <pre class="prettyprint"><code>&lt;script src=&quot;{path/to/scripts}/pageFlip.browser.js&quot;&gt;&lt;/script&gt;</code></pre>
     </div>
 
     <div>
@@ -177,11 +177,11 @@ pageFlip.loadFromHTML(document.querySelectorAll('.page'));</code></pre></div>
     </div>
 
     <div class="bg-light rounded p-2 mt-2 mb-2">
-<pre class="prettyprint"><code>import PageFlip from 'flip-page';
+<pre class="prettyprint"><code>import {PageFlip} from 'page-flip';
 
 const pageFlip = new PageFlip(htmlParentElement, settings);
 
-// or if you using script tag:
+// or if you using script tag and pageFlip.browser.js:
 const pageFlip = new St.PageFlip(htmlParentElement, settings);</code>
 </pre>
     </div>
