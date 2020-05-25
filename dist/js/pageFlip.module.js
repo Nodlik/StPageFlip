@@ -1173,21 +1173,22 @@ class UI {
         this.touchPoint = null;
         this.swipeTimeout = 250;
         this.swipeDistance = 80;
-        this.wrapper = inBlock;
-        this.wrapper.classList.add('stf__wrapper');
+        inBlock.classList.add('stf__parent');
+        inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__wrapper"></div>');
+        this.wrapper = inBlock.querySelector('.stf__wrapper');
         this.app = app;
         const k = this.app.getSettings().usePortrait ? 1 : 2;
-        this.wrapper.style.minWidth = setting.minWidth * k + 'px';
-        this.wrapper.style.minHeight = setting.minHeight * k + 'px';
+        inBlock.style.minWidth = setting.minWidth * k + 'px';
+        inBlock.style.minHeight = setting.minHeight * k + 'px';
         if (setting.size === "fixed" /* FIXED */) {
-            this.wrapper.style.minWidth = setting.width * k + 'px';
-            this.wrapper.style.minHeight = setting.height * k + 'px';
+            inBlock.style.minWidth = setting.width * k + 'px';
+            inBlock.style.minHeight = setting.height * k + 'px';
         }
         if (setting.autoSize) {
-            this.wrapper.style.width = '100%';
-            this.wrapper.style.maxWidth = setting.maxWidth * 2 + 'px';
+            inBlock.style.width = '100%';
+            inBlock.style.maxWidth = setting.maxWidth * 2 + 'px';
         }
-        this.wrapper.style.display = 'block';
+        inBlock.style.display = 'block';
     }
     getDistElement() {
         return this.distElement;
@@ -1285,7 +1286,7 @@ class UI {
 class HTMLUI extends UI {
     constructor(inBlock, app, setting, items) {
         super(inBlock, app, setting);
-        inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
+        this.wrapper.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
         this.distElement = inBlock.querySelector('.stf__block');
         for (const item of items) {
             this.distElement.appendChild(item);
@@ -1303,7 +1304,7 @@ class HTMLUI extends UI {
 class CanvasUI extends UI {
     constructor(inBlock, app, setting) {
         super(inBlock, app, setting);
-        inBlock.innerHTML = '<canvas class="stf__canvas"></canvas>';
+        this.wrapper.innerHTML = '<canvas class="stf__canvas"></canvas>';
         this.canvas = inBlock.querySelectorAll('canvas')[0];
         window.addEventListener('resize', () => {
             this.update();
@@ -1637,7 +1638,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".stf__wrapper {\n  position: relative;\n  display: block;\n  box-sizing: border-box;\n  transform: translateZ(0);\n}\n\n.stf__wrapper canvas {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n}\n\n.stf__block {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n}\n\n.stf__item {\n  display: none;\n  position: absolute;\n}\n\n.stf__outerShadow {\n  position: absolute;\n}\n\n.stf__innerShadow {\n  position: absolute;\n}";
+var css_248z = ".stf__parent {\n  position: relative;\n  display: block;\n  box-sizing: border-box;\n  transform: translateZ(0);\n}\n\n.sft__wrapper {\n  position: relative;\n  width: 100%;\n  box-sizing: border-box;\n}\n\n.stf__parent canvas {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n}\n\n.stf__block {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  box-sizing: border-box;\n}\n\n.stf__item {\n  display: none;\n  position: absolute;\n}\n\n.stf__outerShadow {\n  position: absolute;\n}\n\n.stf__innerShadow {\n  position: absolute;\n}";
 styleInject(css_248z);
 
 class PageFlip extends EventObject {
