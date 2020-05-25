@@ -8,7 +8,7 @@ export class CanvasUI extends UI {
     constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
         super(inBlock, app, setting);
 
-        inBlock.innerHTML = '<canvas class="stf__canvas"></canvas>';
+        this.wrapper.innerHTML = '<canvas class="stf__canvas"></canvas>';
 
         this.canvas = inBlock.querySelectorAll('canvas')[0];
 

@@ -6,7 +6,7 @@ export class HTMLUI extends UI {
     constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(inBlock, app, setting);
 
-        inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
+        this.wrapper.insertAdjacentHTML('afterbegin', '<div class="stf__block"></div>');
 
         this.distElement = inBlock.querySelector('.stf__block');
 

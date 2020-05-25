@@ -1,11 +1,17 @@
-.stf__wrapper {
+.stf__parent {
   position: relative;
   display: block;
   box-sizing: border-box;
   transform: translateZ(0);
 }
 
-.stf__wrapper canvas {
+.sft__wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stf__parent canvas {
   position: absolute;
   width: 100%;
   height: 100%;
