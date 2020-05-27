@@ -19,27 +19,29 @@ export abstract class UI {
     private readonly swipeDistance = 80;
 
     protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
-        this.wrapper = inBlock;
-        this.wrapper.classList.add('stf__wrapper');
+        inBlock.classList.add('stf__parent');
+        inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__wrapper"></div>');
+
+        this.wrapper = inBlock.querySelector('.stf__wrapper');
 
         this.app = app;
 
         const k = this.app.getSettings().usePortrait ? 1 : 2;
 
-        this.wrapper.style.minWidth = setting.minWidth * k + 'px';
-        this.wrapper.style.minHeight = setting.minHeight * k + 'px';
+        inBlock.style.minWidth = setting.minWidth * k + 'px';
+        inBlock.style.minHeight = setting.minHeight * k + 'px';
 
         if (setting.size === SizeType.FIXED) {
-            this.wrapper.style.minWidth = setting.width * k + 'px';
-            this.wrapper.style.minHeight = setting.height * k + 'px';
+            inBlock.style.minWidth = setting.width * k + 'px';
+            inBlock.style.minHeight = setting.height * k + 'px';
         }
 
         if (setting.autoSize) {
-            this.wrapper.style.width = '100%';
-            this.wrapper.style.maxWidth = setting.maxWidth * 2 + 'px';
+            inBlock.style.width = '100%';
+            inBlock.style.maxWidth = setting.maxWidth * 2 + 'px';
         }
 
-        this.wrapper.style.display = 'block';
+        inBlock.style.display = 'block';
     }
 
     public abstract update(): void;
