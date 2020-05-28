@@ -1,5 +1,5 @@
 import {Orientation, Render} from './Render';
-import {PageFlip} from '../PageFlip';
+import {PageFlip, ViewMode} from '../PageFlip';
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageDensity, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
@@ -180,9 +180,12 @@ export class HTMLRender extends Render {
                     (this.leftPage as HTMLPage).getElement().style.zIndex =
                         (this.getSettings().startZIndex + 4).toString(10);
 
+                    if (this.app.getMode() === ViewMode.ONE_PAGE) {
+                        (this.leftPage as HTMLPage).clearSaved();
+                    }
+
                     this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
                     this.leftPage.draw(this.flippingPage.getDrawingDensity());
-
                 }
                 else {
                     this.leftPage.simpleDraw(PageOrientation.LEFT);

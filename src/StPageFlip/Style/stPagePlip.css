@@ -11,6 +11,17 @@
   box-sizing: border-box;
 }
 
+.stf__wrapper.--one_page {
+  transform: translate3d(-25%, 0, 0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.stf__wrapper.--two_page {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.3s ease-in-out;
+}
+
+
 .stf__parent canvas {
   position: absolute;
   width: 100%;

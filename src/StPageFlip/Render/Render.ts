@@ -1,9 +1,8 @@
-import {PageFlip} from '../PageFlip';
-import {Point, PageRect, RectPoints} from "../BasicTypes";
+import {PageFlip, ViewMode} from '../PageFlip';
+import {PageRect, Point, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageOrientation} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
-import {HTMLPage} from "../Page/HTMLPage";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -299,6 +298,10 @@ export abstract class Render {
                 : PageOrientation.RIGHT);
 
         this.bottomPage = page;
+    }
+
+    public setMode(mode: ViewMode): void {
+        this.app.getUI().setMode(mode);
     }
 
     public setFlippingPage(page: Page): void {

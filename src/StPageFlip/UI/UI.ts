@@ -1,4 +1,4 @@
-import {PageFlip} from "../PageFlip";
+import {PageFlip, ViewMode} from "../PageFlip";
 import {Point} from "../BasicTypes";
 import {FlipSetting, SizeType} from "../Settings";
 import {FlipCorner} from "../Flip/Flip";
@@ -52,6 +52,13 @@ export abstract class UI {
 
     public getWrapper(): HTMLElement {
         return this.wrapper;
+    }
+
+    public setMode(mode: ViewMode): void {
+        if (mode) {
+            this.wrapper.classList.remove('--one_page', '--two_page');
+            this.wrapper.classList.add('--' + mode);
+        }
     }
 
     public setOrientationStyle(orientation: Orientation): void {

@@ -1,5 +1,5 @@
 import {Orientation, Render} from "../Render/Render";
-import {PageFlip} from "../PageFlip";
+import {PageFlip, ViewMode} from "../PageFlip";
 import {Helper} from "../Helper";
 import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
@@ -70,6 +70,10 @@ export class Flip {
 
             if (!this.flippingPage || !this.bottomPage)
                 return false;
+
+            if (this.app.getMode() === ViewMode.ONE_PAGE) {
+            //    this.flippingPage.setDensity(PageDensity.HARD);
+            }
 
             if (this.render.getOrientation() === Orientation.LANDSCAPE) {
                 if (direction === FlipDirection.BACK) {
@@ -234,17 +238,16 @@ export class Flip {
 
         this.calc.calc(pagePos);
         const progress = this.calc.getFlippingProgress();
+        this.bottomPage.setArea(this.calc.getBottomClipArea());
+        this.bottomPage.setPosition(this.calc.getBottomPagePosition());
+        this.bottomPage.setAngle(0);
+        this.bottomPage.setHardAngle(0);
 
         this.flippingPage.setArea(this.calc.getFlippingClipArea());
         this.flippingPage.setPosition(this.calc.getActiveCorner());
         this.flippingPage.setAngle(this.calc.getAngle());
 
         this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
-
-        this.bottomPage.setArea(this.calc.getBottomClipArea());
-        this.bottomPage.setPosition(this.calc.getBottomPagePosition());
-        this.bottomPage.setAngle(0);
-        this.bottomPage.setHardAngle(0);
 
         if (this.calc.getDirection() === FlipDirection.FORWARD) {
             this.flippingPage.setHardAngle(90 * (200 - (progress * 2)) / 100);
@@ -281,8 +284,9 @@ export class Flip {
                 return;
 
             if (isTurned) {
-                if (this.calc.getDirection() === FlipDirection.BACK)
+                if (this.calc.getDirection() === FlipDirection.BACK) {
                     this.app.turnToPrevPage();
+                }
                 else
                     this.app.turnToNextPage();
             }
@@ -317,8 +321,10 @@ export class Flip {
         }
         else {
             if ((current < (this.app.getPageCount() - 1)) && (current >= 0)) {
+                const dp = (this.app.getMode() === ViewMode.ONE_PAGE) ? 1 : 2;
+
                 return (direction === FlipDirection.FORWARD)
-                    ? this.app.getPage(current + 2)
+                    ? this.app.getPage(current + dp)
                     : this.app.getPage(current - 1);
             }
         }
@@ -329,7 +335,11 @@ export class Flip {
     private getNextPage(): Page {
         const current = this.app.getCurrentPageIndex();
 
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+        let dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+        if (this.app.getMode() === ViewMode.ONE_PAGE) dp = 1;
+        if (current >= 1) {
+            this.app.updateViewMode(ViewMode.TWO_PAGE);
+        }
 
         if (current < (this.app.getPageCount() - dp))
             return this.app.getPage(current + dp + 1);
@@ -340,7 +350,15 @@ export class Flip {
     private getPrevPage(): Page {
         const current = this.app.getCurrentPageIndex();
 
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+        let dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
+
+        if (current === 1) {
+            this.app.updateViewMode(ViewMode.ONE_PAGE);
+            dp = 1;
+        }
+        else {
+            this.app.updateViewMode(ViewMode.TWO_PAGE);
+        }
 
         if (current - dp >= 0)
             return this.app.getPage(current - dp);

@@ -1,6 +1,6 @@
 import {Orientation, Render} from "../Render/Render";
 import {Page} from "../Page/Page";
-import {PageFlip} from "../PageFlip";
+import {PageFlip, ViewMode} from "../PageFlip";
 
 export abstract class PageCollection {
     protected pages: Page[] = [];
@@ -50,11 +50,6 @@ export abstract class PageCollection {
         return null;
     }
 
-    /**
-     * Render page at pageNum without transform
-     *
-     * @param pageNum
-     */
     public show(pageNum: number): void {
         if ((pageNum < 0) || (pageNum >= this.pages.length)) {
             return;
@@ -62,7 +57,7 @@ export abstract class PageCollection {
 
         this.app.updatePage(pageNum);
 
-        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+        if ((this.render.getOrientation() === Orientation.PORTRAIT) || (this.app.getMode() === ViewMode.ONE_PAGE)) {
             this.render.setLeftPage(null);
             this.render.setRightPage(this.pages[pageNum]);
         }
@@ -74,5 +69,7 @@ export abstract class PageCollection {
             this.render.setLeftPage(this.pages[pageNum]);
             this.render.setRightPage(this.pages[pageNum + 1]);
         }
+
+        this.render.setMode(this.app.getMode());
     }
 }

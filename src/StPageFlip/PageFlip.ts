@@ -2,7 +2,7 @@ import {PageCollection} from './Collection/PageCollection';
 import {ImagePageCollection} from './Collection/ImagePageCollection';
 import {HTMLPageCollection} from './Collection/HTMLPageCollection';
 import {PageRect, Point} from './BasicTypes';
-import {Flip, FlipCorner, FlippingState} from './Flip/Flip';
+import {Flip, FlipCorner, FlipDirection, FlippingState} from './Flip/Flip';
 import {Orientation, Render} from './Render/Render';
 import {CanvasRender} from './Render/CanvasRender';
 import {HTMLUI} from './UI/HTMLUI';
@@ -15,6 +15,11 @@ import {FlipSetting, Settings} from "./Settings";
 import {UI} from "./UI/UI";
 
 import './Style/stPagePlip.css';
+
+export const enum ViewMode {
+    ONE_PAGE = 'one_page',
+    TWO_PAGE = 'two_page'
+}
 
 export class PageFlip extends EventObject {
     private mousePosition: Point;
@@ -31,6 +36,7 @@ export class PageFlip extends EventObject {
     private render: Render;
 
     private ui: UI;
+    private mode: ViewMode;
 
     constructor(inBlock: HTMLElement, setting: Record<string, number | string | boolean>) {
         super();
@@ -51,7 +57,11 @@ export class PageFlip extends EventObject {
     }
 
     public turnToPrevPage(): void {
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
+        let dp = (this.render.getOrientation() === Orientation.PORTRAIT) ? 1 : 2;
+        if ((this.getOrientation() === Orientation.LANDSCAPE) && (this.currentPage === 1)) {
+            dp = 1;
+        }
+
         if (this.currentPage < dp) return;
 
         this.currentPage -= dp;
@@ -59,7 +69,11 @@ export class PageFlip extends EventObject {
     }
 
     public turnToNextPage(): void {
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
+        let dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
+        if (this.mode === ViewMode.ONE_PAGE) {
+            dp = 1;
+            this.updateViewMode(ViewMode.TWO_PAGE);
+        }
         if (this.currentPage > this.pages.getPageCount() - dp) return;
 
         this.currentPage += dp;
@@ -122,6 +136,11 @@ export class PageFlip extends EventObject {
         this.trigger('flip', this, newPage);
     }
 
+    public updateViewMode(mode: ViewMode): void {
+        this.mode = mode;
+        console.log(this.mode);
+    }
+
     public updateOrientation(newOrientation: Orientation): void {
         if (newOrientation === Orientation.LANDSCAPE) {
             if ((this.currentPage % 2) !== 0)
@@ -176,6 +195,10 @@ export class PageFlip extends EventObject {
 
     public getUI(): UI {
         return this.ui;
+    }
+
+    public getMode(): ViewMode {
+        return this.mode;
     }
 
     public getPageCollection(): PageCollection {

@@ -54,6 +54,11 @@ export abstract class Page {
         return this.nowDrawingDensity;
     }
 
+    public setDensity(density: PageDensity): void {
+        this.createdDensity = density;
+        this.nowDrawingDensity = density;
+    }
+
     public getDensity(): PageDensity {
         return this.createdDensity;
     }
