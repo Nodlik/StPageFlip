@@ -71,22 +71,26 @@ export class Flip {
             if (!this.flippingPage || !this.bottomPage)
                 return false;
 
-            if (direction === FlipDirection.BACK) {
-                /*const nextPage = this.app.getPageCollection().next(this.flippingPage);
-                if (nextPage !== null) {
-                    this.flippingPage.setDensity(nextPage.getDensity());
-                }*/
-            }
-            else {
-                const prevPage = this.app.getPageCollection().prev(this.flippingPage);
+            if (this.render.getOrientation() === Orientation.LANDSCAPE) {
+                if (direction === FlipDirection.BACK) {
+                    const nextPage = this.app.getPageCollection().next(this.flippingPage);
 
-                if (prevPage !== null) {
-                    const priorityDensity = (this.flippingPage.getDensity() === PageDensity.HARD)
-                    ? PageDensity.HARD
-                    : prevPage.getDensity();
+                    if (nextPage !== null) {
+                        if (this.flippingPage.getDensity() !== nextPage.getDensity()) {
+                            this.flippingPage.setDrawingDensity(PageDensity.HARD);
+                            nextPage.setDrawingDensity(PageDensity.HARD);
+                        }
+                    }
+                }
+                else {
+                    const prevPage = this.app.getPageCollection().prev(this.flippingPage);
 
-                    this.flippingPage.setDensity(priorityDensity);
-                    prevPage.setDensity(priorityDensity);
+                    if (prevPage !== null) {
+                        if (this.flippingPage.getDensity() !== prevPage.getDensity()) {
+                            this.flippingPage.setDrawingDensity(PageDensity.HARD);
+                            prevPage.setDrawingDensity(PageDensity.HARD);
+                        }
+                    }
                 }
             }
 
@@ -102,6 +106,7 @@ export class Flip {
         }
         catch (e) {
             console.log(e);
+
             return false;
         }
     }

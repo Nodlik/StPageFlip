@@ -171,7 +171,7 @@ export class HTMLRender extends Render {
             return;
 
         if (this.orientation !== Orientation.PORTRAIT) {
-            if (this.leftPage.getDensity() === PageDensity.SOFT) {
+            if (this.leftPage.getDrawingDensity() === PageDensity.SOFT) {
                 this.leftPage.simpleDraw(PageOrientation.LEFT);
             }
             else
@@ -180,8 +180,9 @@ export class HTMLRender extends Render {
                     (this.leftPage as HTMLPage).getElement().style.zIndex =
                         (this.getSettings().startZIndex + 4).toString(10);
 
-                    this.leftPage.setHardAngle(180 + this.flippingPage.getHardAngle());
-                    this.leftPage.draw(this.flippingPage.getDensity());
+                    this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+                    this.leftPage.draw(this.flippingPage.getDrawingDensity());
+
                 }
                 else {
                     this.leftPage.simpleDraw(PageOrientation.LEFT);
@@ -197,7 +198,7 @@ export class HTMLRender extends Render {
         if (this.rightPage === null)
             return;
 
-        if (this.rightPage.getDensity() === PageDensity.SOFT) {
+        if (this.rightPage.getDrawingDensity() === PageDensity.SOFT) {
             this.rightPage.simpleDraw(PageOrientation.RIGHT);
         }
         else {
@@ -205,8 +206,8 @@ export class HTMLRender extends Render {
                 (this.rightPage as HTMLPage).getElement().style.zIndex =
                     (this.getSettings().startZIndex + 4).toString(10);
 
-                this.rightPage.setHardAngle(180 + this.flippingPage.getHardAngle());
-                this.rightPage.draw(this.flippingPage.getDensity());
+                this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+                this.rightPage.draw(this.flippingPage.getDrawingDensity());
             }
             else {
                 this.rightPage.simpleDraw(PageOrientation.RIGHT);
@@ -219,7 +220,7 @@ export class HTMLRender extends Render {
             return;
 
         const tempDensity = this.flippingPage != null
-            ? this.flippingPage.getDensity()
+            ? this.flippingPage.getDrawingDensity()
             : null;
 
         if ( !(

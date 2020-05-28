@@ -19,9 +19,7 @@ export class HTMLPage extends Page {
     }
 
     public draw(tempDensity?: PageDensity): void {
-        const density = tempDensity
-            ? tempDensity
-            : this.density;
+        const density = tempDensity ? tempDensity : this.nowDrawingDensity;
 
         const pagePos = this.render.convertToGlobal(this.state.position);
         const pageWidth = this.render.getRect().pageWidth;
@@ -46,7 +44,7 @@ export class HTMLPage extends Page {
         const pos = this.render.getRect().left + this.render.getRect().width / 2;
         this.element.style.backfaceVisibility = 'hidden';
 
-        const angle = this.state.hardAngle; //;
+        const angle = this.state.hardDrawingAngle; //;
 
         if (this.orientation === PageOrientation.LEFT) {
             this.element.style.transformOrigin = this.render.getRect().pageWidth + 'px 0';
@@ -54,8 +52,10 @@ export class HTMLPage extends Page {
         }
         else {
             this.element.style.transformOrigin = "0 0";
-            this.element.style.transform = "translate(" + pos + "px, " + 0 + "px) rotateY(" + angle + "deg)";
+            this.element.style.transform = "translate3d(" + pos + "px, " + 0 + "px, 0) rotateY(" + angle + "deg)";
         }
+        this.element.style.clipPath = "none";
+        this.element.style.setProperty('-webkit-clip-path', "none");
     }
 
     private drawSoft(position: Point): void {
@@ -143,10 +143,10 @@ export class HTMLPage extends Page {
         );
     }
 
-    public setDensity(density: PageDensity): void {
+    public setDrawingDensity(density: PageDensity): void {
         this.element.classList.remove('--soft', '--hard');
         this.element.classList.add('--' + density);
 
-        super.setDensity(density);
+        super.setDrawingDensity(density);
     }
 }

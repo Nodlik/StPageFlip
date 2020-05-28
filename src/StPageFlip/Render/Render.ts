@@ -303,7 +303,7 @@ export abstract class Render {
 
     public setFlippingPage(page: Page): void {
         if (page !== null)
-            page.setOrientation((this.direction === FlipDirection.FORWARD)
+            page.setOrientation(((this.direction === FlipDirection.FORWARD) && (this.orientation !== Orientation.PORTRAIT))
                 ? PageOrientation.LEFT
                 : PageOrientation.RIGHT);
 

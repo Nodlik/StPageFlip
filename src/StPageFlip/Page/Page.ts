@@ -8,6 +8,7 @@ export interface PageState {
     position: Point;
     spine: Point;
     hardAngle: number;
+    hardDrawingAngle: number;
 }
 
 export const enum PageOrientation {
@@ -25,7 +26,8 @@ export abstract class Page {
     protected render: Render;
 
     protected orientation: PageOrientation;
-    protected density: PageDensity;
+    protected createdDensity: PageDensity;
+    protected nowDrawingDensity: PageDensity;
 
     protected constructor(render: Render, density: PageDensity) {
         this.state = {
@@ -34,19 +36,26 @@ export abstract class Page {
             corners: null,
             position: {x: 0, y: 0},
             spine: {x: 0, y: 0},
-            hardAngle: 0
+            hardAngle: 0,
+            hardDrawingAngle: 0
         };
 
-        this.density = density;
+        this.createdDensity = density;
+        this.nowDrawingDensity = this.createdDensity;
+
         this.render = render;
     }
 
-    public setDensity(density: PageDensity): void {
-        this.density = density;
+    public setDrawingDensity(density: PageDensity): void {
+        this.nowDrawingDensity = density;
+    }
+
+    public getDrawingDensity(): PageDensity {
+        return this.nowDrawingDensity;
     }
 
     public getDensity(): PageDensity {
-        return this.density;
+        return this.createdDensity;
     }
 
     public setPosition(pagePos: Point): void {
@@ -71,6 +80,11 @@ export abstract class Page {
 
     public setHardAngle(angle: number): void {
         this.state.hardAngle = angle;
+        this.state.hardDrawingAngle = angle;
+    }
+
+    public setHardDrawingAngle(angle: number): void {
+        this.state.hardDrawingAngle = angle;
     }
 
     public getHardAngle(): number {
