@@ -1,8 +1,9 @@
 import {PageFlip} from '../PageFlip';
 import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
-import {Page} from "../Page/Page";
+import {Page, PageOrientation} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
+import {HTMLPage} from "../Page/HTMLPage";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -277,20 +278,36 @@ export abstract class Render {
         return this.direction;
     }
 
-    public setFlippingPage(page: Page): void {
-        this.flippingPage = page;
-    }
-
-    public setBottomPage(page: Page): void {
-        this.bottomPage = page;
-    }
-
     public setRightPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation(PageOrientation.RIGHT);
+
         this.rightPage = page;
     }
 
     public setLeftPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation(PageOrientation.LEFT);
+
         this.leftPage = page;
+    }
+
+    public setBottomPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation((this.direction === FlipDirection.BACK)
+                ? PageOrientation.LEFT
+                : PageOrientation.RIGHT);
+
+        this.bottomPage = page;
+    }
+
+    public setFlippingPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation((this.direction === FlipDirection.FORWARD)
+                ? PageOrientation.LEFT
+                : PageOrientation.RIGHT);
+
+        this.flippingPage = page;
     }
 
     public getSettings(): FlipSetting {

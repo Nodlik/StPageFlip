@@ -24,11 +24,14 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  perspective: 2000px;
 }
 
 .stf__item {
   display: none;
   position: absolute;
+  transform-style: preserve-3d;
+
 }
 
 .stf__outerShadow {

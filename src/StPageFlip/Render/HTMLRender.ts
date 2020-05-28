@@ -1,7 +1,7 @@
 import {Orientation, Render} from './Render';
 import {PageFlip} from '../PageFlip';
 import {FlipDirection} from "../Flip/Flip";
-import {Page, PageOrientation} from "../Page/Page";
+import {Page, PageDensity, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
 import {HTMLPage} from "../Page/HTMLPage";
 import {Helper} from "../Helper";
@@ -166,29 +166,81 @@ export class HTMLRender extends Render {
         this.outerShadow.style.setProperty('-webkit-clip-path', polygon);
     }
 
+    private drawLeftPage(): void {
+        if (this.leftPage === null)
+            return;
+
+        if (this.orientation !== Orientation.PORTRAIT) {
+            if (this.leftPage.getDensity() === PageDensity.SOFT) {
+                this.leftPage.simpleDraw(PageOrientation.LEFT);
+            }
+            else
+            {
+                if ((this.direction === FlipDirection.BACK) && (this.flippingPage !== null)) {
+                    (this.leftPage as HTMLPage).getElement().style.zIndex =
+                        (this.getSettings().startZIndex + 4).toString(10);
+
+                    this.leftPage.setHardAngle(180 + this.flippingPage.getHardAngle());
+                    this.leftPage.draw(this.flippingPage.getDensity());
+                }
+                else {
+                    this.leftPage.simpleDraw(PageOrientation.LEFT);
+                }
+            }
+        }
+        else {
+            (this.leftPage as HTMLPage).clearSaved();
+        }
+    }
+
+    private drawRightPage(): void {
+        if (this.rightPage === null)
+            return;
+
+        if (this.rightPage.getDensity() === PageDensity.SOFT) {
+            this.rightPage.simpleDraw(PageOrientation.RIGHT);
+        }
+        else {
+            if ((this.direction === FlipDirection.FORWARD) && (this.flippingPage !== null)) {
+                (this.rightPage as HTMLPage).getElement().style.zIndex =
+                    (this.getSettings().startZIndex + 4).toString(10);
+
+                this.rightPage.setHardAngle(180 + this.flippingPage.getHardAngle());
+                this.rightPage.draw(this.flippingPage.getDensity());
+            }
+            else {
+                this.rightPage.simpleDraw(PageOrientation.RIGHT);
+            }
+        }
+    }
+
+    private drawBottomPage(): void {
+        if (this.bottomPage === null)
+            return;
+
+        const tempDensity = this.flippingPage != null
+            ? this.flippingPage.getDensity()
+            : null;
+
+        if ( !(
+            (this.orientation === Orientation.PORTRAIT) &&
+            (this.direction === FlipDirection.BACK)
+        ) ) {
+            (this.bottomPage as HTMLPage).getElement().style.zIndex =
+                (this.getSettings().startZIndex + 3).toString(10);
+
+            this.bottomPage.draw(tempDensity);
+        }
+    }
+
     public drawFrame(timer: number): void {
         this.clear();
 
-        if (this.orientation !== Orientation.PORTRAIT) {
-            if (this.leftPage != null)
-                this.leftPage.simpleDraw(PageOrientation.Left);
-        }
-        else {
-            if (this.leftPage != null)
-                (this.leftPage as HTMLPage).clearSaved();
-        }
+        this.drawLeftPage();
 
-        if (this.rightPage != null)
-            this.rightPage.simpleDraw(PageOrientation.Right);
+        this.drawRightPage();
 
-        if (this.bottomPage != null) {
-            if ( !((this.orientation === Orientation.PORTRAIT) && (this.direction === FlipDirection.BACK)) ) {
-                (this.bottomPage as HTMLPage).getElement().style.zIndex =
-                    (this.getSettings().startZIndex + 3).toString(10);
-
-                this.bottomPage.draw();
-            }
-        }
+        this.drawBottomPage();
 
         if (this.flippingPage != null) {
             (this.flippingPage as HTMLPage).getElement().style.zIndex =
@@ -198,8 +250,8 @@ export class HTMLRender extends Render {
         }
 
         if (this.shadow != null) {
-            this.drawOuterShadow();
-            this.drawInnerShadow();
+            //this.drawOuterShadow();
+            //this.drawInnerShadow();
         }
     }
 
@@ -226,68 +278,30 @@ export class HTMLRender extends Render {
         }
     }
 
-    private clearClass(page: HTMLPage) {
-        if (page !== null) {
-            page.getElement().classList.remove('--left', '--right');
-        }
-    }
-
     public setRightPage(page: Page): void {
-        this.clearClass(this.rightPage as HTMLPage);
-
         if ((this.rightPage !== null) && (page !== this.rightPage))
             (this.rightPage as HTMLPage).clearSaved();
-
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add('--right');
 
         super.setRightPage(page);
     }
 
     public setLeftPage(page: Page): void {
-        this.clearClass(this.leftPage as HTMLPage);
-
         if ((this.leftPage !== null) && (page !== this.rightPage))
             (this.leftPage as HTMLPage).clearSaved();
 
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add('--left');
-
         super.setLeftPage(page);
-    }
-
-    public setBottomPage(page: Page): void {
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add(
-                (this.direction === FlipDirection.BACK)
-                    ? '--left'
-                    : '--right'
-            );
-
-        super.setBottomPage(page);
-    }
-
-    public setFlippingPage(page: Page): void {
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add(
-                (this.direction === FlipDirection.BACK)
-                    ? '--right'
-                    : '--left'
-            );
-
-        super.setFlippingPage(page);
     }
 
     public update(): void {
         super.update();
 
         if (this.rightPage !== null) {
-            (this.rightPage as HTMLPage).getElement().classList.add('--right');
+            this.rightPage.setOrientation(PageOrientation.RIGHT);
             (this.rightPage as HTMLPage).clearSaved();
         }
 
         if (this.leftPage !== null) {
-            (this.leftPage as HTMLPage).getElement().classList.add('--left');
+            this.leftPage.setOrientation(PageOrientation.LEFT);
             (this.leftPage as HTMLPage).clearSaved();
         }
     }

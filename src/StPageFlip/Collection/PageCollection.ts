@@ -30,6 +30,26 @@ export abstract class PageCollection {
         throw new Error('Invalid page number');
     }
 
+    public next(current: Page): Page {
+        const idx = this.pages.indexOf(current);
+
+        if (idx < this.pages.length - 1) {
+            return this.pages[idx + 1];
+        }
+
+        return null;
+    }
+
+    public prev(current: Page): Page {
+        const idx = this.pages.indexOf(current);
+
+        if (idx > 0) {
+            return this.pages[idx - 1];
+        }
+
+        return null;
+    }
+
     /**
      * Render page at pageNum without transform
      *

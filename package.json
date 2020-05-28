@@ -10,6 +10,7 @@
     "type": "git",
     "url": "https://github.com/Nodlik/StPageFlip.git"
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "homepage": "https://nodlik.github.io/StPageFlip/",
   "dependencies": {},
   "devDependencies": {
@@ -27,7 +28,9 @@
     "rollup-plugin-typescript2": "^0.27.1"
   },
   "scripts": {
-    "eslint": "eslint . --ext .ts"
+    "eslint": "eslint . --ext .ts",
+    "build-global": "npx webpack",
+    "build": "rollup -c"
   },
   "keywords": [
     "typescript",

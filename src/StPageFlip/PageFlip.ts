@@ -178,6 +178,10 @@ export class PageFlip extends EventObject {
         return this.ui;
     }
 
+    public getPageCollection(): PageCollection {
+        return this.pages;
+    }
+
     public startUserTouch(pos: Point): void {
         this.mousePosition = pos;
         this.isUserTouch = true;

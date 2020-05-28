@@ -1,9 +1,9 @@
-import {Render, Orientation} from "../Render/Render";
+import {Orientation, Render} from "../Render/Render";
 import {PageFlip} from "../PageFlip";
 import {Helper} from "../Helper";
 import {PageRect, Point} from "../BasicTypes";
 import {FlipCalculation} from "./FlipCalculation";
-import {Page} from "../Page/Page";
+import {Page, PageDensity} from "../Page/Page";
 
 export const enum FlipDirection {
     FORWARD,
@@ -71,6 +71,25 @@ export class Flip {
             if (!this.flippingPage || !this.bottomPage)
                 return false;
 
+            if (direction === FlipDirection.BACK) {
+                /*const nextPage = this.app.getPageCollection().next(this.flippingPage);
+                if (nextPage !== null) {
+                    this.flippingPage.setDensity(nextPage.getDensity());
+                }*/
+            }
+            else {
+                const prevPage = this.app.getPageCollection().prev(this.flippingPage);
+
+                if (prevPage !== null) {
+                    const priorityDensity = (this.flippingPage.getDensity() === PageDensity.HARD)
+                    ? PageDensity.HARD
+                    : prevPage.getDensity();
+
+                    this.flippingPage.setDensity(priorityDensity);
+                    prevPage.setDensity(priorityDensity);
+                }
+            }
+
             this.render.setDirection(direction);
             this.calc = new FlipCalculation(
                 direction,
@@ -82,6 +101,7 @@ export class Flip {
             return true;
         }
         catch (e) {
+            console.log(e);
             return false;
         }
     }
@@ -208,14 +228,25 @@ export class Flip {
             return;
 
         this.calc.calc(pagePos);
+        const progress = this.calc.getFlippingProgress();
 
         this.flippingPage.setArea(this.calc.getFlippingClipArea());
         this.flippingPage.setPosition(this.calc.getActiveCorner());
         this.flippingPage.setAngle(this.calc.getAngle());
 
+        this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
+
         this.bottomPage.setArea(this.calc.getBottomClipArea());
         this.bottomPage.setPosition(this.calc.getBottomPagePosition());
         this.bottomPage.setAngle(0);
+        this.bottomPage.setHardAngle(0);
+
+        if (this.calc.getDirection() === FlipDirection.FORWARD) {
+            this.flippingPage.setHardAngle(90 * (200 - (progress * 2)) / 100);
+        }
+        else {
+            this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
+        }
 
         this.render.setPageRect(this.calc.getRect());
 
@@ -225,7 +256,7 @@ export class Flip {
         this.render.drawShadow(
             this.calc.getShadowStartPoint(),
             this.calc.getShadowAngle(),
-            this.calc.getFlippingProgress(),
+            progress,
             this.calc.getDirection(),
             this.calc.getShadowLength()
         );

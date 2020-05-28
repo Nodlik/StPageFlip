@@ -1,5 +1,5 @@
 import {CanvasRender} from "../Render/CanvasRender";
-import {Page, PageOrientation} from "./Page";
+import {Page, PageDensity, PageOrientation} from "./Page";
 import {Render} from "../Render/Render";
 import {Point} from "../BasicTypes";
 
@@ -9,14 +9,14 @@ export class ImagePage extends Page {
 
     private loadingAngle = 0;
 
-    constructor(render: Render, href: string) {
-        super(render);
+    constructor(render: Render, href: string, density: PageDensity) {
+        super(render, density);
 
         this.image = new Image();
         this.image.src = href;
     }
 
-    public draw(): void {
+    public draw(tempDensity?: PageDensity): void {
         const ctx = (this.render as CanvasRender).getContext();
 
         const pagePos = this.render.convertToGlobal(this.state.position);
@@ -79,7 +79,7 @@ export class ImagePage extends Page {
         const pageWidth = rect.pageWidth;
         const pageHeight = rect.height;
 
-        const x = (orient === PageOrientation.Right)
+        const x = (orient === PageOrientation.RIGHT)
             ? rect.left + rect.pageWidth
             : rect.left;
 

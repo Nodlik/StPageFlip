@@ -7,7 +7,7 @@ module.exports = {
         filename: 'pageFlip.browser.js',
         library: 'St'
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [
             {
