@@ -73,7 +73,7 @@ export class Flip {
 
             if (this.render.getOrientation() === Orientation.LANDSCAPE) {
                 if (direction === FlipDirection.BACK) {
-                    const nextPage = this.app.getPageCollection().next(this.flippingPage);
+                    const nextPage = this.app.getPageCollection().nextBy(this.flippingPage);
 
                     if (nextPage !== null) {
                         if (this.flippingPage.getDensity() !== nextPage.getDensity()) {
@@ -83,7 +83,7 @@ export class Flip {
                     }
                 }
                 else {
-                    const prevPage = this.app.getPageCollection().prev(this.flippingPage);
+                    const prevPage = this.app.getPageCollection().prevBy(this.flippingPage);
 
                     if (prevPage !== null) {
                         if (this.flippingPage.getDensity() !== prevPage.getDensity()) {
@@ -235,16 +235,14 @@ export class Flip {
         this.calc.calc(pagePos);
         const progress = this.calc.getFlippingProgress();
 
-        this.flippingPage.setArea(this.calc.getFlippingClipArea());
-        this.flippingPage.setPosition(this.calc.getActiveCorner());
-        this.flippingPage.setAngle(this.calc.getAngle());
-
-        this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
-
         this.bottomPage.setArea(this.calc.getBottomClipArea());
         this.bottomPage.setPosition(this.calc.getBottomPagePosition());
         this.bottomPage.setAngle(0);
         this.bottomPage.setHardAngle(0);
+
+        this.flippingPage.setArea(this.calc.getFlippingClipArea());
+        this.flippingPage.setPosition(this.calc.getActiveCorner());
+        this.flippingPage.setAngle(this.calc.getAngle());
 
         if (this.calc.getDirection() === FlipDirection.FORWARD) {
             this.flippingPage.setHardAngle(90 * (200 - (progress * 2)) / 100);
@@ -308,6 +306,8 @@ export class Flip {
     }
 
     private getFlippingPage(direction: FlipDirection): Page {
+        return this.app.getPageCollection().getFlippingPage(direction);
+        /*
         const current = this.app.getCurrentPageIndex();
 
         if (this.render.getOrientation() === Orientation.PORTRAIT) {
@@ -323,7 +323,7 @@ export class Flip {
             }
         }
 
-        return null;
+        return null;*/
     }
 
     private getNextPage(): Page {
@@ -349,15 +349,12 @@ export class Flip {
     }
 
     private getBottomPage(direction: FlipDirection): Page {
-        if (direction === FlipDirection.FORWARD)
-            return this.getNextPage();
-
-        return this.getPrevPage();
+        return this.app.getPageCollection().getBottomPage(direction);
     }
 
     private checkDirection(direction: FlipDirection): boolean {
         if (direction === FlipDirection.FORWARD)
-            return (this.app.getCurrentPageIndex() <= (this.app.getPageCount() - 1));
+            return (this.app.getCurrentPageIndex() < (this.app.getPageCount() - 1));
 
         return (this.app.getCurrentPageIndex() >= 1);
     }

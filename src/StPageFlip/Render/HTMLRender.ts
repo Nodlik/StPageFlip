@@ -180,9 +180,9 @@ export class HTMLRender extends Render {
                     (this.leftPage as HTMLPage).getElement().style.zIndex =
                         (this.getSettings().startZIndex + 4).toString(10);
 
+                    (this.leftPage as HTMLPage).clearSaved();
                     this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
                     this.leftPage.draw(this.flippingPage.getDrawingDensity());
-
                 }
                 else {
                     this.leftPage.simpleDraw(PageOrientation.LEFT);
@@ -206,6 +206,7 @@ export class HTMLRender extends Render {
                 (this.rightPage as HTMLPage).getElement().style.zIndex =
                     (this.getSettings().startZIndex + 4).toString(10);
 
+                (this.rightPage as HTMLPage).clearSaved();
                 this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
                 this.rightPage.draw(this.flippingPage.getDrawingDensity());
             }
@@ -224,9 +225,10 @@ export class HTMLRender extends Render {
             : null;
 
         if ( !(
-            (this.orientation === Orientation.PORTRAIT) &&
-            (this.direction === FlipDirection.BACK)
-        ) ) {
+                (this.orientation === Orientation.PORTRAIT) &&
+                (this.direction === FlipDirection.BACK)
+           ) )
+        {
             (this.bottomPage as HTMLPage).getElement().style.zIndex =
                 (this.getSettings().startZIndex + 3).toString(10);
 

@@ -11,6 +11,21 @@
   box-sizing: border-box;
 }
 
+.--landscape.--one_page_left {
+  transform: translate3d(-25%, 0, 0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.--landscape.--one_page_right {
+  transform: translate3d(25%, 0, 0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.--landscape.--two_page {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.2s ease-in-out;
+}
+
 .stf__parent canvas {
   position: absolute;
   width: 100%;

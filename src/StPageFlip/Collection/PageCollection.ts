@@ -1,15 +1,75 @@
-import {Orientation, Render} from "../Render/Render";
-import {Page} from "../Page/Page";
+import {Orientation, Render, ViewMode} from "../Render/Render";
+import {Page, PageDensity} from "../Page/Page";
 import {PageFlip} from "../PageFlip";
+import {FlipDirection} from "../Flip/Flip";
+
+type numberArray = number[];
 
 export abstract class PageCollection {
     protected pages: Page[] = [];
     protected readonly app: PageFlip;
     protected readonly render: Render;
 
+    protected currentPageIndex = 0;
+    protected currentSpreadIndex = 0;
+
+    protected isShowCover = false;
+
+    protected landscapeSpread: numberArray[] = [];
+    protected portraitSpread: numberArray[] = [];
+
     protected constructor(app: PageFlip, render: Render) {
         this.render = render;
         this.app = app;
+
+        this.currentPageIndex = 0;
+        this.isShowCover = this.app.getSettings().showCover;
+    }
+
+    protected createSpread(): void {
+        this.landscapeSpread = [];
+        this.portraitSpread = [];
+
+        for (let i = 0; i < this.pages.length; i++)
+            this.portraitSpread.push([i]);
+
+        let start = 0;
+        if (this.isShowCover) {
+            this.pages[0].setDensity(PageDensity.HARD);
+            this.landscapeSpread.push([start]);
+            start++;
+        }
+
+        for (let i = start; i < this.pages.length; i += 2) {
+            if (i < this.pages.length - 1)
+                this.landscapeSpread.push([i, i + 1]);
+            else {
+                this.landscapeSpread.push([i]);
+                this.pages[i].setDensity(PageDensity.HARD);
+            }
+        }
+
+        console.log(this.landscapeSpread);
+    }
+
+    protected getSpread(): numberArray[] {
+        return this.render.getOrientation() === Orientation.LANDSCAPE
+            ? this.landscapeSpread
+            : this.portraitSpread;
+    }
+
+    protected getPageSpreadIndex(pageNum: number): number {
+        const spread = this.getSpread();
+
+        for (let i = 0; i < spread.length; i++)
+            if ((pageNum === spread[i][0]) || ((spread.length > 1) && (pageNum === spread[i][1])))
+                return i;
+
+        return null;
+    }
+
+    public getIsLastPage(): boolean {
+        return false;
     }
 
     public getPageCount(): number {
@@ -30,49 +90,135 @@ export abstract class PageCollection {
         throw new Error('Invalid page number');
     }
 
-    public next(current: Page): Page {
+    public nextBy(current: Page): Page {
         const idx = this.pages.indexOf(current);
 
-        if (idx < this.pages.length - 1) {
+        if (idx < this.pages.length - 1)
             return this.pages[idx + 1];
-        }
 
         return null;
     }
 
-    public prev(current: Page): Page {
+    public prevBy(current: Page): Page {
         const idx = this.pages.indexOf(current);
 
-        if (idx > 0) {
+        if (idx > 0)
             return this.pages[idx - 1];
-        }
 
         return null;
     }
 
-    /**
-     * Render page at pageNum without transform
-     *
-     * @param pageNum
-     */
-    public show(pageNum: number): void {
-        if ((pageNum < 0) || (pageNum >= this.pages.length)) {
-            return;
-        }
-
-        this.app.updatePage(pageNum);
+    public getFlippingPage(direction: FlipDirection): Page {
+        const current = this.currentSpreadIndex;
 
         if (this.render.getOrientation() === Orientation.PORTRAIT) {
-            this.render.setLeftPage(null);
-            this.render.setRightPage(this.pages[pageNum]);
+            return (direction === FlipDirection.FORWARD)
+                ? this.pages[current]
+                : this.pages[current - 1]
         }
         else {
-            if (pageNum === (this.pages.length - 1)) {
-                pageNum--;
-            }
+            const spread = (direction === FlipDirection.FORWARD)
+                ? this.getSpread()[current + 1]
+                : this.getSpread()[current - 1];
 
-            this.render.setLeftPage(this.pages[pageNum]);
-            this.render.setRightPage(this.pages[pageNum + 1]);
+            if (spread.length === 1)
+                return this.pages[spread[0]];
+
+            return (direction === FlipDirection.FORWARD)
+                ? this.pages[spread[0]]
+                : this.pages[spread[1]];
         }
+    }
+
+    public getBottomPage(direction: FlipDirection): Page {
+        const current = this.currentSpreadIndex;
+
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            return (direction === FlipDirection.FORWARD)
+                ? this.pages[current + 1]
+                : this.pages[current - 1]
+        }
+        else {
+            const spread = (direction === FlipDirection.FORWARD)
+                ? this.getSpread()[current + 1]
+                : this.getSpread()[current - 1];
+
+            if (spread.length === 1)
+                return this.pages[spread[0]];
+
+            return (direction === FlipDirection.FORWARD)
+                ? this.pages[spread[1]]
+                : this.pages[spread[0]];
+        }
+    }
+
+    public showNext(): void {
+        if (this.currentSpreadIndex < this.getSpread().length) {
+            this.currentSpreadIndex++;
+            this.showSpread();
+            console.log('Page: ' + this.currentPageIndex);
+        }
+    }
+
+    public showPrev(): void {
+        if (this.currentSpreadIndex > 0) {
+            this.currentSpreadIndex--;
+            this.showSpread();
+            console.log('Page: ' + this.currentPageIndex);
+        }
+    }
+
+    public getCurrentPageIndex(): number {
+        return this.currentPageIndex;
+    }
+
+    public show(pageNum: number = null): void {
+        if (pageNum === null) pageNum = this.currentPageIndex;
+
+        if ((pageNum < 0) || (pageNum >= this.pages.length)) return;
+
+        this.app.updatePageIndex(pageNum);
+
+        const spreadIndex = this.getPageSpreadIndex(this.currentPageIndex);
+        if (spreadIndex !== null) {
+            this.currentSpreadIndex = spreadIndex;
+            this.showSpread();
+        }
+    }
+
+    private showSpread(): number[] {const spread = this.getSpread()[this.currentSpreadIndex];
+
+        if (spread.length === 2) {
+            this.render.setLeftPage(this.pages[spread[0]]);
+            this.render.setRightPage(this.pages[spread[1]]);
+
+            if (this.render.getOrientation() === Orientation.LANDSCAPE) {
+                this.render.setViewMode(ViewMode.TWO_PAGE);
+            }
+        }
+        else {
+
+            if (this.render.getOrientation() === Orientation.LANDSCAPE) {
+                this.render.setViewMode(ViewMode.ONE_PAGE);
+
+                if (spread[0] === this.pages.length - 1) {
+                    this.render.setLeftPage(this.pages[spread[0]]);
+                    this.render.setRightPage(null);
+                }
+                else {
+                    this.render.setLeftPage(null);
+                    this.render.setRightPage(this.pages[spread[0]]);
+                }
+            }
+            else {
+
+                this.render.setLeftPage(null);
+                this.render.setRightPage(this.pages[spread[0]]);
+            }
+        }
+
+        this.currentPageIndex = spread[0];
+
+        return spread;
     }
 }

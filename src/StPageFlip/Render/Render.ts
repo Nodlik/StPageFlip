@@ -30,6 +30,11 @@ export const enum Orientation {
     LANDSCAPE = 'landscape'
 }
 
+export const enum ViewMode {
+    ONE_PAGE = 'one_page',
+    TWO_PAGE = 'two_page'
+}
+
 export abstract class Render {
     protected leftPage: Page = null;
     protected rightPage: Page = null;
@@ -49,6 +54,7 @@ export abstract class Render {
     protected direction: FlipDirection = null;
 
     protected orientation: Orientation = null;
+    protected viewMode: ViewMode;
 
     private boundsRect: PageRect = null;
 
@@ -137,6 +143,13 @@ export abstract class Render {
         return this.boundsRect;
     }
 
+    public setViewMode(viewMode: ViewMode): void {
+        if (this.viewMode !== viewMode) {
+            this.viewMode = viewMode;
+            this.calculateBoundsRect();
+        }
+    }
+
     private calculateBoundsRect(): Orientation {
         let orientation = Orientation.LANDSCAPE;
 
@@ -157,9 +170,9 @@ export abstract class Render {
                 if (this.app.getSettings().usePortrait)
                     orientation = Orientation.PORTRAIT;
 
-            pageWidth = (orientation === Orientation.LANDSCAPE)
-                ? this.getBlockWidth() / 2
-                : this.getBlockWidth();
+            pageWidth = (orientation === Orientation.PORTRAIT)
+                ? this.getBlockWidth()
+                : this.getBlockWidth() / 2;
 
             if (pageWidth > this.setting.maxWidth)
                 pageWidth = this.setting.maxWidth;
@@ -170,9 +183,9 @@ export abstract class Render {
                 pageWidth = pageHeight * ratio;
             }
 
-            left = (orientation === Orientation.LANDSCAPE)
-                ? middlePoint.x - pageWidth
-                : middlePoint.x - pageWidth / 2 - pageWidth;
+            left = (orientation === Orientation.PORTRAIT)
+                ? middlePoint.x - pageWidth / 2 - pageWidth
+                : middlePoint.x - pageWidth;
         }
         else {
             if (blockWidth < pageWidth * 2) {

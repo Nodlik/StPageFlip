@@ -20,6 +20,8 @@ export class ImagePageCollection extends  PageCollection {
             page.load();
             this.pages.push(page);
         }
+
+        this.createSpread();
     }
 
 }
