@@ -252,9 +252,11 @@ export class HTMLRender extends Render {
             this.flippingPage.draw();
         }
 
-        if (this.shadow != null) {
-            //this.drawOuterShadow();
-            //this.drawInnerShadow();
+        if ((this.shadow != null) && (this.flippingPage !== null)) {
+            if (this.flippingPage.getDrawingDensity() === PageDensity.SOFT) {
+                this.drawOuterShadow();
+                this.drawInnerShadow();
+            }
         }
     }
 

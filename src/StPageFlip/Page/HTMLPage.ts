@@ -43,8 +43,9 @@ export class HTMLPage extends Page {
     private drawHard(): void{
         const pos = this.render.getRect().left + this.render.getRect().width / 2;
         this.element.style.backfaceVisibility = 'hidden';
+        this.element.style.setProperty('-webkit-backface-visibility', "hidden");
 
-        const angle = this.state.hardDrawingAngle; //;
+        const angle = this.state.hardDrawingAngle;
 
         if (this.orientation === PageOrientation.LEFT) {
             this.element.style.transformOrigin = this.render.getRect().pageWidth + 'px 0';

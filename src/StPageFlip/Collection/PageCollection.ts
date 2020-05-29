@@ -1,4 +1,4 @@
-import {Orientation, Render, ViewMode} from "../Render/Render";
+import {Orientation, Render} from "../Render/Render";
 import {Page, PageDensity} from "../Page/Page";
 import {PageFlip} from "../PageFlip";
 import {FlipDirection} from "../Flip/Flip";
@@ -25,6 +25,8 @@ export abstract class PageCollection {
         this.currentPageIndex = 0;
         this.isShowCover = this.app.getSettings().showCover;
     }
+
+    public abstract load(): void;
 
     protected createSpread(): void {
         this.landscapeSpread = [];
@@ -68,15 +70,9 @@ export abstract class PageCollection {
         return null;
     }
 
-    public getIsLastPage(): boolean {
-        return false;
-    }
-
     public getPageCount(): number {
         return this.pages.length;
     }
-
-    public abstract load(): void;
 
     public getPages(): Page[] {
         return this.pages;
@@ -156,7 +152,6 @@ export abstract class PageCollection {
         if (this.currentSpreadIndex < this.getSpread().length) {
             this.currentSpreadIndex++;
             this.showSpread();
-            console.log('Page: ' + this.currentPageIndex);
         }
     }
 
@@ -164,7 +159,6 @@ export abstract class PageCollection {
         if (this.currentSpreadIndex > 0) {
             this.currentSpreadIndex--;
             this.showSpread();
-            console.log('Page: ' + this.currentPageIndex);
         }
     }
 
@@ -191,15 +185,9 @@ export abstract class PageCollection {
         if (spread.length === 2) {
             this.render.setLeftPage(this.pages[spread[0]]);
             this.render.setRightPage(this.pages[spread[1]]);
-
-            if (this.render.getOrientation() === Orientation.LANDSCAPE) {
-                this.render.setViewMode(ViewMode.TWO_PAGE);
-            }
         }
         else {
-
             if (this.render.getOrientation() === Orientation.LANDSCAPE) {
-                this.render.setViewMode(ViewMode.ONE_PAGE);
 
                 if (spread[0] === this.pages.length - 1) {
                     this.render.setLeftPage(this.pages[spread[0]]);
@@ -211,7 +199,6 @@ export abstract class PageCollection {
                 }
             }
             else {
-
                 this.render.setLeftPage(null);
                 this.render.setRightPage(this.pages[spread[0]]);
             }

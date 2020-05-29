@@ -51,22 +51,10 @@ export class PageFlip extends EventObject {
     }
 
     public turnToPrevPage(): void {
-        /*
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
-        if (this.currentPage < dp) return;
-
-        this.currentPage -= dp;
-        this.pages.show(this.currentPage);*/
         this.pages.showPrev();
     }
 
     public turnToNextPage(): void {
-        /*
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
-        if (this.currentPage > this.pages.getPageCount() - dp) return;
-
-        this.currentPage += dp;
-        this.pages.show(this.currentPage);*/
         this.pages.showNext();
     }
 
@@ -98,10 +86,6 @@ export class PageFlip extends EventObject {
         this.pages.show(this.setting.startPage);
     }
 
-    public isLastPage(): boolean {
-        return this.pages.getIsLastPage();
-    }
-
     public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
         this.ui = new HTMLUI(this.block, this, this.setting, items);
 
@@ -126,17 +110,6 @@ export class PageFlip extends EventObject {
     }
 
     public updateOrientation(newOrientation: Orientation): void {
-        /*if (newOrientation === Orientation.LANDSCAPE) {
-            if ((this.currentPage % 2) !== 0)
-                this.currentPage--;
-
-            this.update();
-        }
-        else {
-            this.currentPage++;
-            this.update();
-        }*/
-
         this.update();
         this.ui.setOrientationStyle(newOrientation);
         this.trigger('changeOrientation', this, newOrientation);
@@ -211,9 +184,5 @@ export class PageFlip extends EventObject {
                     this.flip.stopMove();
             }
         }
-    }
-
-    private checkPage(page: number): boolean {
-        return ((page >= 0) && (page < this.pages.getPageCount()));
     }
 }

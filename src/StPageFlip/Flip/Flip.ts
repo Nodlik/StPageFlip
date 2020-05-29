@@ -65,8 +65,8 @@ export class Flip {
             return false;
 
         try {
-            this.flippingPage = this.getFlippingPage(direction);
-            this.bottomPage = this.getBottomPage(direction);
+            this.flippingPage = this.app.getPageCollection().getFlippingPage(direction);
+            this.bottomPage = this.app.getPageCollection().getBottomPage(direction);
 
             if (!this.flippingPage || !this.bottomPage)
                 return false;
@@ -305,53 +305,6 @@ export class Flip {
         return (size / 1000) * defaultTime;
     }
 
-    private getFlippingPage(direction: FlipDirection): Page {
-        return this.app.getPageCollection().getFlippingPage(direction);
-        /*
-        const current = this.app.getCurrentPageIndex();
-
-        if (this.render.getOrientation() === Orientation.PORTRAIT) {
-            return (direction === FlipDirection.FORWARD)
-                ? this.app.getPage(current)
-                : this.app.getPage(current - 1);
-        }
-        else {
-            if ((current < (this.app.getPageCount() - 1)) && (current >= 0)) {
-                return (direction === FlipDirection.FORWARD)
-                    ? this.app.getPage(current + 2)
-                    : this.app.getPage(current - 1);
-            }
-        }
-
-        return null;*/
-    }
-
-    private getNextPage(): Page {
-        const current = this.app.getCurrentPageIndex();
-
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
-
-        if (current < (this.app.getPageCount() - dp))
-            return this.app.getPage(current + dp + 1);
-
-        return null;
-    }
-
-    private getPrevPage(): Page {
-        const current = this.app.getCurrentPageIndex();
-
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 0 : 2;
-
-        if (current - dp >= 0)
-            return this.app.getPage(current - dp);
-
-        return null;
-    }
-
-    private getBottomPage(direction: FlipDirection): Page {
-        return this.app.getPageCollection().getBottomPage(direction);
-    }
-
     private checkDirection(direction: FlipDirection): boolean {
         if (direction === FlipDirection.FORWARD)
             return (this.app.getCurrentPageIndex() < (this.app.getPageCount() - 1));
@@ -367,14 +320,6 @@ export class Flip {
 
     private getBoundsRect(): PageRect {
         return this.render.getRect();
-    }
-
-    private getPageWidth(): number {
-        return this.getBoundsRect().width / 2;
-    }
-
-    private getPageHeight(): number {
-        return this.getBoundsRect().height;
     }
 
     private setState(newState: FlippingState): void {
