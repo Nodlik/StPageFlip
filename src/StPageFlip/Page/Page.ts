@@ -6,7 +6,6 @@ export interface PageState {
     area: Point[];
     corners: RectPoints;
     position: Point;
-    spine: Point;
     hardAngle: number;
     hardDrawingAngle: number;
 }
@@ -35,7 +34,6 @@ export abstract class Page {
             area: [],
             corners: null,
             position: {x: 0, y: 0},
-            spine: {x: 0, y: 0},
             hardAngle: 0,
             hardDrawingAngle: 0
         };
@@ -94,10 +92,6 @@ export abstract class Page {
 
     public getHardAngle(): number {
         return this.state.hardAngle;
-    }
-
-    public setSpine(spine: Point): void {
-        this.state.spine = spine;
     }
 
     public setOrientation(orientation: PageOrientation): void {

@@ -49,7 +49,7 @@ export class HTMLPage extends Page {
 
         if (this.orientation === PageOrientation.LEFT) {
             this.element.style.transformOrigin = this.render.getRect().pageWidth + 'px 0';
-            this.element.style.transform = "translate(" + 0 + "px, " + 0 + "px) rotateY(" + angle + "deg)";
+            this.element.style.transform = "translate3d(" + 0 + "px, " + 0 + "px, 0) rotateY(" + angle + "deg)";
         }
         else {
             this.element.style.transformOrigin = "0 0";

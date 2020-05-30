@@ -15,6 +15,7 @@ type Shadow = {
     opacity: number;
     direction: FlipDirection;
     length: number;
+    progress: number;
 }
 
 type Animation = {
@@ -73,7 +74,8 @@ export abstract class Render {
             width: (this.getRect().pageWidth * 3 / 4) * t / 100,
             opacity: (100 - t) * maxShadowOpacity / 100 / 100,
             direction,
-            length
+            length,
+            progress: t * 2
         };
     }
 

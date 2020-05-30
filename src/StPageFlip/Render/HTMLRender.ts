@@ -13,6 +13,8 @@ export class HTMLRender extends Render {
 
     private outerShadow: HTMLElement = null;
     private innerShadow: HTMLElement = null;
+    private hardShadow: HTMLElement = null;
+    private hardInnerShadow: HTMLElement = null;
 
     constructor(app: PageFlip, setting: FlipSetting, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, setting);
@@ -34,9 +36,13 @@ export class HTMLRender extends Render {
 
         this.outerShadow.remove();
         this.innerShadow.remove();
+        this.hardShadow.remove();
+        this.hardInnerShadow.remove();
 
         this.outerShadow = null;
         this.innerShadow = null;
+        this.hardShadow = null;
+        this.hardInnerShadow = null;
     }
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
@@ -46,17 +52,91 @@ export class HTMLRender extends Render {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__outerShadow"></div>');
             this.outerShadow = this.element.querySelector('.stf__outerShadow');
             this.outerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
-            this.outerShadow.style.left = "0px";
-            this.outerShadow.style.top = "0px";
         }
 
         if (this.innerShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__innerShadow"></div>');
             this.innerShadow = this.element.querySelector('.stf__innerShadow');
             this.innerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
-            this.innerShadow.style.left = "0px";
-            this.innerShadow.style.top = "0px";
         }
+
+        if (this.hardShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
+            this.hardShadow = this.element.querySelector('.stf__hardShadow');
+            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+
+        if (this.hardShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
+            this.hardShadow = this.element.querySelector('.stf__hardShadow');
+            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+
+        if (this.hardInnerShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardInnerShadow"></div>');
+            this.hardInnerShadow = this.element.querySelector('.stf__hardInnerShadow');
+            this.hardInnerShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+    }
+
+    private drawHardInnerShadow(): void {
+        const rect = this.getRect();
+
+        const progress = this.shadow.progress > 100
+            ? 200 - this.shadow.progress
+            : this.shadow.progress;
+
+        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        if (innerShadowSize > rect.pageWidth)
+            innerShadowSize = rect.pageWidth;
+
+        this.hardInnerShadow.style.width = innerShadowSize  + 'px';
+        this.hardInnerShadow.style.height = rect.height + 'px';
+        this.hardInnerShadow.style.background = "linear-gradient(to right, " +
+            "rgba(0, 0, 0, " + (this.shadow.opacity * progress / 100) + ") 5%, " +
+            "rgba(0, 0, 0, 0) 100% " +
+            ")";
+
+        this.hardInnerShadow.style.left = rect.left + rect.width / 2 + 'px';
+        this.hardInnerShadow.style.transformOrigin = "0 0";
+
+        this.hardInnerShadow.style.transform =
+            (
+                ((this.getDirection() === FlipDirection.FORWARD) && (this.shadow.progress > 100))  ||
+                ((this.getDirection() === FlipDirection.BACK) && (this.shadow.progress <= 100))
+            )
+                ? this.hardInnerShadow.style.transform = 'translate3d(0, 0, 0)'
+                : this.hardInnerShadow.style.transform = 'translate3d(0, 0, 0) rotateY(180deg)';
+    }
+
+    private drawHardOuterShadow(): void {
+        const rect = this.getRect();
+
+        const progress = this.shadow.progress > 100
+            ? 200 - this.shadow.progress
+            : this.shadow.progress;
+
+        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        if (innerShadowSize > rect.pageWidth)
+            innerShadowSize = rect.pageWidth;
+
+        this.hardShadow.style.width = innerShadowSize  + 'px';
+        this.hardShadow.style.height = rect.height + 'px';
+        this.hardShadow.style.background = "linear-gradient(to left, " +
+            "rgba(0, 0, 0, " + this.shadow.opacity + ") 5%, " +
+            "rgba(0, 0, 0, 0) 100% " +
+            ")";
+
+        this.hardShadow.style.left = rect.left + rect.width / 2 + 'px';
+        this.hardShadow.style.transformOrigin = "0 0";
+
+        this.hardShadow.style.transform =
+            (
+                ((this.getDirection() === FlipDirection.FORWARD) && (this.shadow.progress > 100))  ||
+                ((this.getDirection() === FlipDirection.BACK) && (this.shadow.progress <= 100))
+            )
+                ? this.hardShadow.style.transform = 'translate3d(0, 0, 0) rotateY(180deg)'
+                : this.hardShadow.style.transform = 'translate3d(0, 0, 0)';
     }
 
     private drawInnerShadow(): void {
@@ -256,6 +336,10 @@ export class HTMLRender extends Render {
             if (this.flippingPage.getDrawingDensity() === PageDensity.SOFT) {
                 this.drawOuterShadow();
                 this.drawInnerShadow();
+            }
+            else {
+                this.drawHardOuterShadow();
+                this.drawHardInnerShadow();
             }
         }
     }
