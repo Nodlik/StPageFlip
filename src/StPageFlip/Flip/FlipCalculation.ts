@@ -32,7 +32,7 @@ export class FlipCalculation {
             this.calculateIntersectPoint(this.position);
         }
         catch (e) {
-            //console.log(e);
+            //
         }
     }
 

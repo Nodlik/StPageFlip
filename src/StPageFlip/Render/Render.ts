@@ -1,8 +1,9 @@
 import {PageFlip} from '../PageFlip';
 import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
-import {Page} from "../Page/Page";
+import {Page, PageOrientation} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
+import {HTMLPage} from "../Page/HTMLPage";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -14,6 +15,7 @@ type Shadow = {
     opacity: number;
     direction: FlipDirection;
     length: number;
+    progress: number;
 }
 
 type Animation = {
@@ -72,7 +74,8 @@ export abstract class Render {
             width: (this.getRect().pageWidth * 3 / 4) * t / 100,
             opacity: (100 - t) * maxShadowOpacity / 100 / 100,
             direction,
-            length
+            length,
+            progress: t * 2
         };
     }
 
@@ -156,9 +159,9 @@ export abstract class Render {
                 if (this.app.getSettings().usePortrait)
                     orientation = Orientation.PORTRAIT;
 
-            pageWidth = (orientation === Orientation.LANDSCAPE)
-                ? this.getBlockWidth() / 2
-                : this.getBlockWidth();
+            pageWidth = (orientation === Orientation.PORTRAIT)
+                ? this.getBlockWidth()
+                : this.getBlockWidth() / 2;
 
             if (pageWidth > this.setting.maxWidth)
                 pageWidth = this.setting.maxWidth;
@@ -169,9 +172,9 @@ export abstract class Render {
                 pageWidth = pageHeight * ratio;
             }
 
-            left = (orientation === Orientation.LANDSCAPE)
-                ? middlePoint.x - pageWidth
-                : middlePoint.x - pageWidth / 2 - pageWidth;
+            left = (orientation === Orientation.PORTRAIT)
+                ? middlePoint.x - pageWidth / 2 - pageWidth
+                : middlePoint.x - pageWidth;
         }
         else {
             if (blockWidth < pageWidth * 2) {
@@ -277,20 +280,36 @@ export abstract class Render {
         return this.direction;
     }
 
-    public setFlippingPage(page: Page): void {
-        this.flippingPage = page;
-    }
-
-    public setBottomPage(page: Page): void {
-        this.bottomPage = page;
-    }
-
     public setRightPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation(PageOrientation.RIGHT);
+
         this.rightPage = page;
     }
 
     public setLeftPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation(PageOrientation.LEFT);
+
         this.leftPage = page;
+    }
+
+    public setBottomPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation((this.direction === FlipDirection.BACK)
+                ? PageOrientation.LEFT
+                : PageOrientation.RIGHT);
+
+        this.bottomPage = page;
+    }
+
+    public setFlippingPage(page: Page): void {
+        if (page !== null)
+            page.setOrientation(((this.direction === FlipDirection.FORWARD) && (this.orientation !== Orientation.PORTRAIT))
+                ? PageOrientation.LEFT
+                : PageOrientation.RIGHT);
+
+        this.flippingPage = page;
     }
 
     public getSettings(): FlipSetting {

@@ -22,11 +22,13 @@ export interface FlipSetting {
     startZIndex: number;
     autoSize: boolean;
     maxShadowOpacity: number;
+
+    showCover: boolean;
 }
 
 export class Settings {
 
-    private static _default: FlipSetting = {
+    private _default: FlipSetting = {
         startPage: 0,
         size: SizeType.FIXED,
         width: 0,
@@ -40,10 +42,11 @@ export class Settings {
         usePortrait: true,
         startZIndex: 0,
         autoSize: true,
-        maxShadowOpacity: 1
+        maxShadowOpacity: 1,
+        showCover: false
     };
 
-    public static GetSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {
+    public getSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {
         const result = this._default;
         Object.assign(result, userSetting);
 

@@ -21,12 +21,10 @@ export class PageFlip extends EventObject {
     private isUserTouch = false;
     private isUserMove = false;
 
-    private pages: PageCollection = null;
-    private currentPage = 0;
-
     private readonly setting: FlipSetting = null;
-
     private readonly block: HTMLElement;
+
+    private pages: PageCollection = null;
     private flip: Flip;
     private render: Render;
 
@@ -36,7 +34,7 @@ export class PageFlip extends EventObject {
         super();
 
         try {
-            this.setting = Settings.GetSettings(setting);
+            this.setting = (new Settings()).getSettings(setting);
 
             this.block = inBlock;
         }
@@ -47,30 +45,19 @@ export class PageFlip extends EventObject {
 
     public update(): void {
         this.render.update();
-        this.pages.show(this.currentPage);
+        this.pages.show();
     }
 
     public turnToPrevPage(): void {
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
-        if (this.currentPage < dp) return;
-
-        this.currentPage -= dp;
-        this.pages.show(this.currentPage);
+        this.pages.showPrev();
     }
 
     public turnToNextPage(): void {
-        const dp = this.render.getOrientation() === Orientation.PORTRAIT ? 1 : 2;
-        if (this.currentPage > this.pages.getPageCount() - dp) return;
-
-        this.currentPage += dp;
-        this.pages.show(this.currentPage);
+        this.pages.showNext();
     }
 
     public turnToPage(pageNum: number): void {
-        if (!this.checkPage(pageNum)) return;
-
-        this.currentPage = pageNum;
-        this.pages.show(this.currentPage);
+        this.pages.show(pageNum);
     }
 
     public flipNext(corner: FlipCorner = FlipCorner.TOP): void {
@@ -94,8 +81,9 @@ export class PageFlip extends EventObject {
 
         this.render.start();
 
-        this.currentPage = this.setting.startPage;
         this.pages.show(this.setting.startPage);
+        // safari fix
+        setTimeout(() => this.ui.update());
     }
 
     public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
@@ -110,30 +98,22 @@ export class PageFlip extends EventObject {
 
         this.render.start();
 
-        this.currentPage = this.setting.startPage;
         this.pages.show(this.setting.startPage);
+
+        // safari fix
+        setTimeout(() => this.ui.update());
     }
 
     public updateState(newState: FlippingState): void {
         this.trigger('changeState', this, newState);
     }
 
-    public updatePage(newPage: number): void {
+    public updatePageIndex(newPage: number): void {
         this.trigger('flip', this, newPage);
     }
 
     public updateOrientation(newOrientation: Orientation): void {
-        if (newOrientation === Orientation.LANDSCAPE) {
-            if ((this.currentPage % 2) !== 0)
-                this.currentPage--;
-
-            this.update();
-        }
-        else {
-            this.currentPage++;
-            this.update();
-        }
-
+        this.update();
         this.ui.setOrientationStyle(newOrientation);
         this.trigger('changeOrientation', this, newOrientation);
     }
@@ -143,11 +123,7 @@ export class PageFlip extends EventObject {
     }
 
     public getCurrentPageIndex(): number {
-        return this.currentPage;
-    }
-
-    public getCurrentPage(): Page {
-        return this.pages.getPage(this.currentPage);
+        return this.pages.getCurrentPageIndex();
     }
 
     public getPage(pageNum: number): Page {
@@ -176,6 +152,10 @@ export class PageFlip extends EventObject {
 
     public getUI(): UI {
         return this.ui;
+    }
+
+    public getPageCollection(): PageCollection {
+        return this.pages;
     }
 
     public startUserTouch(pos: Point): void {
@@ -207,9 +187,5 @@ export class PageFlip extends EventObject {
                     this.flip.stopMove();
             }
         }
-    }
-
-    private checkPage(page: number): boolean {
-        return ((page >= 0) && (page < this.pages.getPageCount()));
     }
 }
