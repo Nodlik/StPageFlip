@@ -1,7 +1,7 @@
 import {Orientation, Render} from './Render';
 import {PageFlip} from '../PageFlip';
 import {FlipDirection} from "../Flip/Flip";
-import {Page, PageOrientation} from "../Page/Page";
+import {Page, PageDensity, PageOrientation} from "../Page/Page";
 import {Point} from "../BasicTypes";
 import {HTMLPage} from "../Page/HTMLPage";
 import {Helper} from "../Helper";
@@ -13,6 +13,8 @@ export class HTMLRender extends Render {
 
     private outerShadow: HTMLElement = null;
     private innerShadow: HTMLElement = null;
+    private hardShadow: HTMLElement = null;
+    private hardInnerShadow: HTMLElement = null;
 
     constructor(app: PageFlip, setting: FlipSetting, element: HTMLElement, items: NodeListOf<HTMLElement> | HTMLElement[]) {
         super(app, setting);
@@ -34,9 +36,13 @@ export class HTMLRender extends Render {
 
         this.outerShadow.remove();
         this.innerShadow.remove();
+        this.hardShadow.remove();
+        this.hardInnerShadow.remove();
 
         this.outerShadow = null;
         this.innerShadow = null;
+        this.hardShadow = null;
+        this.hardInnerShadow = null;
     }
 
     public drawShadow(pos: Point, angle: number, t: number, direction: FlipDirection, length: number): void {
@@ -46,17 +52,91 @@ export class HTMLRender extends Render {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__outerShadow"></div>');
             this.outerShadow = this.element.querySelector('.stf__outerShadow');
             this.outerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
-            this.outerShadow.style.left = "0px";
-            this.outerShadow.style.top = "0px";
         }
 
         if (this.innerShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__innerShadow"></div>');
             this.innerShadow = this.element.querySelector('.stf__innerShadow');
             this.innerShadow.style.zIndex =  (this.getSettings().startZIndex + 10).toString(10);
-            this.innerShadow.style.left = "0px";
-            this.innerShadow.style.top = "0px";
         }
+
+        if (this.hardShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
+            this.hardShadow = this.element.querySelector('.stf__hardShadow');
+            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+
+        if (this.hardShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
+            this.hardShadow = this.element.querySelector('.stf__hardShadow');
+            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+
+        if (this.hardInnerShadow === null) {
+            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardInnerShadow"></div>');
+            this.hardInnerShadow = this.element.querySelector('.stf__hardInnerShadow');
+            this.hardInnerShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+        }
+    }
+
+    private drawHardInnerShadow(): void {
+        const rect = this.getRect();
+
+        const progress = this.shadow.progress > 100
+            ? 200 - this.shadow.progress
+            : this.shadow.progress;
+
+        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        if (innerShadowSize > rect.pageWidth)
+            innerShadowSize = rect.pageWidth;
+
+        this.hardInnerShadow.style.width = innerShadowSize  + 'px';
+        this.hardInnerShadow.style.height = rect.height + 'px';
+        this.hardInnerShadow.style.background = "linear-gradient(to right, " +
+            "rgba(0, 0, 0, " + (this.shadow.opacity * progress / 100) + ") 5%, " +
+            "rgba(0, 0, 0, 0) 100% " +
+            ")";
+
+        this.hardInnerShadow.style.left = rect.left + rect.width / 2 + 'px';
+        this.hardInnerShadow.style.transformOrigin = "0 0";
+
+        this.hardInnerShadow.style.transform =
+            (
+                ((this.getDirection() === FlipDirection.FORWARD) && (this.shadow.progress > 100))  ||
+                ((this.getDirection() === FlipDirection.BACK) && (this.shadow.progress <= 100))
+            )
+                ? this.hardInnerShadow.style.transform = 'translate3d(0, 0, 0)'
+                : this.hardInnerShadow.style.transform = 'translate3d(0, 0, 0) rotateY(180deg)';
+    }
+
+    private drawHardOuterShadow(): void {
+        const rect = this.getRect();
+
+        const progress = this.shadow.progress > 100
+            ? 200 - this.shadow.progress
+            : this.shadow.progress;
+
+        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        if (innerShadowSize > rect.pageWidth)
+            innerShadowSize = rect.pageWidth;
+
+        this.hardShadow.style.width = innerShadowSize  + 'px';
+        this.hardShadow.style.height = rect.height + 'px';
+        this.hardShadow.style.background = "linear-gradient(to left, " +
+            "rgba(0, 0, 0, " + this.shadow.opacity + ") 5%, " +
+            "rgba(0, 0, 0, 0) 100% " +
+            ")";
+
+        this.hardShadow.style.left = rect.left + rect.width / 2 + 'px';
+        this.hardShadow.style.transformOrigin = "0 0";
+
+        this.hardShadow.style.transform =
+            (
+                ((this.getDirection() === FlipDirection.FORWARD) && (this.shadow.progress > 100))  ||
+                ((this.getDirection() === FlipDirection.BACK) && (this.shadow.progress <= 100))
+            )
+                ? this.hardShadow.style.transform = 'translate3d(0, 0, 0) rotateY(180deg)'
+                : this.hardShadow.style.transform = 'translate3d(0, 0, 0)';
     }
 
     private drawInnerShadow(): void {
@@ -166,29 +246,84 @@ export class HTMLRender extends Render {
         this.outerShadow.style.setProperty('-webkit-clip-path', polygon);
     }
 
+    private drawLeftPage(): void {
+        if (this.leftPage === null)
+            return;
+
+        if (this.orientation !== Orientation.PORTRAIT) {
+            if (this.leftPage.getDrawingDensity() === PageDensity.SOFT) {
+                this.leftPage.simpleDraw(PageOrientation.LEFT);
+            }
+            else
+            {
+                if ((this.direction === FlipDirection.BACK) && (this.flippingPage !== null)) {
+                    (this.leftPage as HTMLPage).getElement().style.zIndex =
+                        (this.getSettings().startZIndex + 4).toString(10);
+
+                    (this.leftPage as HTMLPage).clearSaved();
+                    this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+                    this.leftPage.draw(this.flippingPage.getDrawingDensity());
+                }
+                else {
+                    this.leftPage.simpleDraw(PageOrientation.LEFT);
+                }
+            }
+        }
+        else {
+            (this.leftPage as HTMLPage).clearSaved();
+        }
+    }
+
+    private drawRightPage(): void {
+        if (this.rightPage === null)
+            return;
+
+        if (this.rightPage.getDrawingDensity() === PageDensity.SOFT) {
+            this.rightPage.simpleDraw(PageOrientation.RIGHT);
+        }
+        else {
+            if ((this.direction === FlipDirection.FORWARD) && (this.flippingPage !== null)) {
+                (this.rightPage as HTMLPage).getElement().style.zIndex =
+                    (this.getSettings().startZIndex + 4).toString(10);
+
+                (this.rightPage as HTMLPage).clearSaved();
+                this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+                this.rightPage.draw(this.flippingPage.getDrawingDensity());
+            }
+            else {
+                this.rightPage.simpleDraw(PageOrientation.RIGHT);
+            }
+        }
+    }
+
+    private drawBottomPage(): void {
+        if (this.bottomPage === null)
+            return;
+
+        const tempDensity = this.flippingPage != null
+            ? this.flippingPage.getDrawingDensity()
+            : null;
+
+        if ( !(
+                (this.orientation === Orientation.PORTRAIT) &&
+                (this.direction === FlipDirection.BACK)
+           ) )
+        {
+            (this.bottomPage as HTMLPage).getElement().style.zIndex =
+                (this.getSettings().startZIndex + 3).toString(10);
+
+            this.bottomPage.draw(tempDensity);
+        }
+    }
+
     public drawFrame(timer: number): void {
         this.clear();
 
-        if (this.orientation !== Orientation.PORTRAIT) {
-            if (this.leftPage != null)
-                this.leftPage.simpleDraw(PageOrientation.Left);
-        }
-        else {
-            if (this.leftPage != null)
-                (this.leftPage as HTMLPage).clearSaved();
-        }
+        this.drawLeftPage();
 
-        if (this.rightPage != null)
-            this.rightPage.simpleDraw(PageOrientation.Right);
+        this.drawRightPage();
 
-        if (this.bottomPage != null) {
-            if ( !((this.orientation === Orientation.PORTRAIT) && (this.direction === FlipDirection.BACK)) ) {
-                (this.bottomPage as HTMLPage).getElement().style.zIndex =
-                    (this.getSettings().startZIndex + 3).toString(10);
-
-                this.bottomPage.draw();
-            }
-        }
+        this.drawBottomPage();
 
         if (this.flippingPage != null) {
             (this.flippingPage as HTMLPage).getElement().style.zIndex =
@@ -197,9 +332,15 @@ export class HTMLRender extends Render {
             this.flippingPage.draw();
         }
 
-        if (this.shadow != null) {
-            this.drawOuterShadow();
-            this.drawInnerShadow();
+        if ((this.shadow != null) && (this.flippingPage !== null)) {
+            if (this.flippingPage.getDrawingDensity() === PageDensity.SOFT) {
+                this.drawOuterShadow();
+                this.drawInnerShadow();
+            }
+            else {
+                this.drawHardOuterShadow();
+                this.drawHardInnerShadow();
+            }
         }
     }
 
@@ -226,68 +367,30 @@ export class HTMLRender extends Render {
         }
     }
 
-    private clearClass(page: HTMLPage) {
-        if (page !== null) {
-            page.getElement().classList.remove('--left', '--right');
-        }
-    }
-
     public setRightPage(page: Page): void {
-        this.clearClass(this.rightPage as HTMLPage);
-
         if ((this.rightPage !== null) && (page !== this.rightPage))
             (this.rightPage as HTMLPage).clearSaved();
-
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add('--right');
 
         super.setRightPage(page);
     }
 
     public setLeftPage(page: Page): void {
-        this.clearClass(this.leftPage as HTMLPage);
-
         if ((this.leftPage !== null) && (page !== this.rightPage))
             (this.leftPage as HTMLPage).clearSaved();
 
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add('--left');
-
         super.setLeftPage(page);
-    }
-
-    public setBottomPage(page: Page): void {
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add(
-                (this.direction === FlipDirection.BACK)
-                    ? '--left'
-                    : '--right'
-            );
-
-        super.setBottomPage(page);
-    }
-
-    public setFlippingPage(page: Page): void {
-        if (page !== null)
-            (page as HTMLPage).getElement().classList.add(
-                (this.direction === FlipDirection.BACK)
-                    ? '--right'
-                    : '--left'
-            );
-
-        super.setFlippingPage(page);
     }
 
     public update(): void {
         super.update();
 
         if (this.rightPage !== null) {
-            (this.rightPage as HTMLPage).getElement().classList.add('--right');
+            this.rightPage.setOrientation(PageOrientation.RIGHT);
             (this.rightPage as HTMLPage).clearSaved();
         }
 
         if (this.leftPage !== null) {
-            (this.leftPage as HTMLPage).getElement().classList.add('--left');
+            this.leftPage.setOrientation(PageOrientation.LEFT);
             (this.leftPage as HTMLPage).clearSaved();
         }
     }

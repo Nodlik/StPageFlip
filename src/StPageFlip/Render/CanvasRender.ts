@@ -33,10 +33,10 @@ export class CanvasRender extends Render {
 
         if (this.orientation !== Orientation.PORTRAIT)
             if (this.leftPage != null)
-                this.leftPage.simpleDraw(PageOrientation.Left);
+                this.leftPage.simpleDraw(PageOrientation.LEFT);
 
         if (this.rightPage != null)
-            this.rightPage.simpleDraw(PageOrientation.Right);
+            this.rightPage.simpleDraw(PageOrientation.RIGHT);
 
         if (this.bottomPage != null)
             this.bottomPage.draw();
