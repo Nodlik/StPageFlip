@@ -39,7 +39,7 @@ export class PageFlip extends EventObject {
             this.block = inBlock;
         }
         catch (e) {
-            console.log(e);
+            //
         }
     }
 

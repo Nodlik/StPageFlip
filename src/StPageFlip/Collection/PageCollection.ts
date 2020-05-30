@@ -50,8 +50,6 @@ export abstract class PageCollection {
                 this.pages[i].setDensity(PageDensity.HARD);
             }
         }
-
-        console.log(this.landscapeSpread);
     }
 
     protected getSpread(): numberArray[] {

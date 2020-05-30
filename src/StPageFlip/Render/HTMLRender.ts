@@ -80,7 +80,7 @@ export class HTMLRender extends Render {
             ? 200 - this.shadow.progress
             : this.shadow.progress;
 
-        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        let innerShadowSize = ((100 - progress) * (2.5 * rect.pageWidth) / 100) + 20;
         if (innerShadowSize > rect.pageWidth)
             innerShadowSize = rect.pageWidth;
 
@@ -110,7 +110,7 @@ export class HTMLRender extends Render {
             ? 200 - this.shadow.progress
             : this.shadow.progress;
 
-        let innerShadowSize = ((100 - progress) * (3 * rect.pageWidth) / 100) + 20;
+        let innerShadowSize = ((100 - progress) * (2.5 * rect.pageWidth) / 100) + 20;
         if (innerShadowSize > rect.pageWidth)
             innerShadowSize = rect.pageWidth;
 
