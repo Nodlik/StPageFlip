@@ -63,19 +63,13 @@ export class HTMLRender extends Render {
         if (this.hardShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
             this.hardShadow = this.element.querySelector('.stf__hardShadow');
-            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
-        }
-
-        if (this.hardShadow === null) {
-            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
-            this.hardShadow = this.element.querySelector('.stf__hardShadow');
-            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+            this.hardShadow.style.zIndex =  (this.getSettings().startZIndex + 4).toString(10);
         }
 
         if (this.hardInnerShadow === null) {
             this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardInnerShadow"></div>');
             this.hardInnerShadow = this.element.querySelector('.stf__hardInnerShadow');
-            this.hardInnerShadow.style.zIndex =  (this.getSettings().startZIndex + 3).toString(10);
+            this.hardInnerShadow.style.zIndex =  (this.getSettings().startZIndex + 4).toString(10);
         }
     }
 
@@ -258,9 +252,11 @@ export class HTMLRender extends Render {
             {
                 if ((this.direction === FlipDirection.BACK) && (this.flippingPage !== null)) {
                     (this.leftPage as HTMLPage).getElement().style.zIndex =
-                        (this.getSettings().startZIndex + 4).toString(10);
+                        (this.getSettings().startZIndex + 5).toString(10);
 
-                    (this.leftPage as HTMLPage).clearSaved();
+                    if (this.flippingPage === this.bottomPage)
+                        (this.leftPage as HTMLPage).clearSaved();
+
                     this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
                     this.leftPage.draw(this.flippingPage.getDrawingDensity());
                 }
@@ -284,9 +280,11 @@ export class HTMLRender extends Render {
         else {
             if ((this.direction === FlipDirection.FORWARD) && (this.flippingPage !== null)) {
                 (this.rightPage as HTMLPage).getElement().style.zIndex =
-                    (this.getSettings().startZIndex + 4).toString(10);
+                    (this.getSettings().startZIndex + 5).toString(10);
 
-                (this.rightPage as HTMLPage).clearSaved();
+                if (this.flippingPage === this.bottomPage)
+                    (this.rightPage as HTMLPage).clearSaved();
+
                 this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
                 this.rightPage.draw(this.flippingPage.getDrawingDensity());
             }
@@ -327,7 +325,7 @@ export class HTMLRender extends Render {
 
         if (this.flippingPage != null) {
             (this.flippingPage as HTMLPage).getElement().style.zIndex =
-                (this.getSettings().startZIndex + 4).toString(10);
+                (this.getSettings().startZIndex + 5).toString(10);
 
             this.flippingPage.draw();
         }

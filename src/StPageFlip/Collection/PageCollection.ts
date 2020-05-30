@@ -171,16 +171,15 @@ export abstract class PageCollection {
 
         if ((pageNum < 0) || (pageNum >= this.pages.length)) return;
 
-        this.app.updatePageIndex(pageNum);
-
-        const spreadIndex = this.getPageSpreadIndex(this.currentPageIndex);
+        const spreadIndex = this.getPageSpreadIndex(pageNum);
         if (spreadIndex !== null) {
             this.currentSpreadIndex = spreadIndex;
             this.showSpread();
         }
     }
 
-    private showSpread(): number[] {const spread = this.getSpread()[this.currentSpreadIndex];
+    private showSpread(): number[] {
+        const spread = this.getSpread()[this.currentSpreadIndex];
 
         if (spread.length === 2) {
             this.render.setLeftPage(this.pages[spread[0]]);
@@ -205,6 +204,7 @@ export abstract class PageCollection {
         }
 
         this.currentPageIndex = spread[0];
+        this.app.updatePageIndex(this.currentPageIndex);
 
         return spread;
     }

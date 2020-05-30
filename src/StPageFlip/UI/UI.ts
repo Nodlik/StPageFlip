@@ -18,6 +18,8 @@ export abstract class UI {
     private readonly swipeTimeout = 250;
     private readonly swipeDistance = 80;
 
+    private preventTouch = false;
+
     protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
         inBlock.classList.add('stf__parent');
         inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__wrapper"></div>');

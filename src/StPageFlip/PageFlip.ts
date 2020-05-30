@@ -21,12 +21,10 @@ export class PageFlip extends EventObject {
     private isUserTouch = false;
     private isUserMove = false;
 
-    private pages: PageCollection = null;
-    //private currentPage = 0;
-
     private readonly setting: FlipSetting = null;
-
     private readonly block: HTMLElement;
+
+    private pages: PageCollection = null;
     private flip: Flip;
     private render: Render;
 
@@ -41,7 +39,7 @@ export class PageFlip extends EventObject {
             this.block = inBlock;
         }
         catch (e) {
-            //
+            console.log(e);
         }
     }
 
@@ -84,6 +82,8 @@ export class PageFlip extends EventObject {
         this.render.start();
 
         this.pages.show(this.setting.startPage);
+        // safari fix
+        setTimeout(() => this.ui.update());
     }
 
     public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
@@ -99,6 +99,9 @@ export class PageFlip extends EventObject {
         this.render.start();
 
         this.pages.show(this.setting.startPage);
+
+        // safari fix
+        setTimeout(() => this.ui.update());
     }
 
     public updateState(newState: FlippingState): void {

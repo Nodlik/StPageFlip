@@ -232,6 +232,7 @@ export class Flip {
         if (this.calc === null)
             return;
 
+
         this.calc.calc(pagePos);
         const progress = this.calc.getFlippingProgress();
 
