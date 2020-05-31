@@ -26,13 +26,15 @@ export class FlipCalculation {
     {
     }
 
-    public calc(localPos: Point): void {
+    public calc(localPos: Point): boolean {
         try {
             this.position = this.preparePosition(localPos);
             this.calculateIntersectPoint(this.position);
+
+            return true;
         }
         catch (e) {
-            //
+            return false;
         }
     }
 
@@ -169,7 +171,7 @@ export class FlipCalculation {
 
 
     private calculateAngle(pos: Point): number {
-        const left = this.pageWidth - pos.x;
+        const left = this.pageWidth - pos.x + 1;
         const top = (this.corner === FlipCorner.BOTTOM)
             ? this.pageHeight - pos.y
             : pos.y;

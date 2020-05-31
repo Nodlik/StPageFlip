@@ -6,6 +6,7 @@ Powerful, simple and flexible JS Library for creating realistic and beautiful pa
 * Has a simple api and flexible configuration
 * Compatibility with mobile devices
 * Support landscape and portrait screen mode
+* Supports soft and hard page types (only in HTML mode) 
 * No additional libraries
 
 Demo and docs: https://nodlik.github.io/StPageFlip/
@@ -22,7 +23,7 @@ Or download bundle from Github
 If you installed the package from npm, you need import PageFlip from page-flip package, or just use ```<script/>``` tag:
 
 ```html
-<script src="{path/to/scripts}/pageFlip.browser.js"></script>
+<script src="{path/to/scripts}/page-flip.browser.js"></script>
 ```
 
 Creation of a new PageFlip object:
@@ -47,6 +48,9 @@ pageFlip.loadFromHtml(items);
 For example:
 ```html
 <div id="book">
+    <div class="my-page" data-density="hard">
+        Page Cover
+    </div>
     <div class="my-page">
         Page one
     </div>
@@ -58,6 +62,9 @@ For example:
     </div>
     <div class="my-page">
         Page four
+    </div>
+    <div class="my-page" data-density="hard">
+        Last page
     </div>
 </div>
 ```
@@ -71,26 +78,29 @@ const pageFlip = new PageFlip(document.getElementById('book'),
 
 pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));
 ```
+Use the following```data-density="hard"``` attribute to specify page type (```soft | hard```)
 ### Config
 
 Configuration is set when creating an object. Config parameters:
 
-* width: number - required
-* height: number - required
-* size: ("fixed", "stretch") - default: "fixed". Whether the book will be stretched under the parent element
-* minWidth, maxWidth, minHeight, maxHeight: number. You must set threshold values ​​with a size: "stretch"
-* drawShadow: bool - default: true. Draw shadows or not
-* flippingTime: number (milliseconds) - default: 1000. Flipping animation time
-* usePortrait: bool - default: true. Enable switching to portrait mode
-* startZIndex: number - default: 0. Initial value to z-index
-* autoSize: bool - default: true. If this value is true, the parent element will be equal to the size of the book
-* maxShadowOpacity: number [0..1] - default: 1. Shadow intensity - 1: max intensity, 0: hidden shadows
-
+* ```width: number``` - required
+* ```height: number``` - required
+* ```size: ("fixed", "stretch") - default: "fixed"``` Whether the book will be stretched under the parent element
+* ```minWidth, maxWidth, minHeight, maxHeight: number``` You must set threshold values ​​with a size: ```"stretch"```
+* ```drawShadow: bool - default: true``` Draw shadows or not
+* ```flippingTime: number (milliseconds) - default: 1000``` Flipping animation time
+* ```usePortrait: bool - default: true``` Enable switching to portrait mode
+* ```startZIndex: number - default: 0``` Initial value to z-index
+* ```autoSize: bool - default: true``` If this value is true, the parent element will be equal to the size of the book
+* ```maxShadowOpacity: number [0..1] - default: 1``` Shadow intensity - 1: max intensity, 0: hidden shadows
+* ```showCover: boolean - default: false``` if this value is true, the first and last pages will be marked as hard and will be shown in single page mode 
+* ```mobileScrollSupport: boolean - default: true``` disable scrolling when touching a book in mobile devices
 ### Events
 To listen for events using the method on:
 ```js
-pageFlip.on('eventName', (e) => {
+pageFlip.on('flip', (e) => {
         // callback code
+        alert(e.data); // current page number
     }
 );
 ```

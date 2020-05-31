@@ -39,6 +39,7 @@ export class PageFlip extends EventObject {
             this.block = inBlock;
         }
         catch (e) {
+            console.log(e);
             //
         }
     }
@@ -106,7 +107,6 @@ export class PageFlip extends EventObject {
     }
 
     public updateState(newState: FlippingState): void {
-        console.log(newState);
         this.trigger('changeState', this, newState);
     }
 

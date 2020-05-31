@@ -242,37 +242,38 @@ export class Flip {
             return;
 
 
-        this.calc.calc(pagePos);
-        const progress = this.calc.getFlippingProgress();
+        if (this.calc.calc(pagePos)) {
+            const progress = this.calc.getFlippingProgress();
 
-        this.bottomPage.setArea(this.calc.getBottomClipArea());
-        this.bottomPage.setPosition(this.calc.getBottomPagePosition());
-        this.bottomPage.setAngle(0);
-        this.bottomPage.setHardAngle(0);
+            this.bottomPage.setArea(this.calc.getBottomClipArea());
+            this.bottomPage.setPosition(this.calc.getBottomPagePosition());
+            this.bottomPage.setAngle(0);
+            this.bottomPage.setHardAngle(0);
 
-        this.flippingPage.setArea(this.calc.getFlippingClipArea());
-        this.flippingPage.setPosition(this.calc.getActiveCorner());
-        this.flippingPage.setAngle(this.calc.getAngle());
+            this.flippingPage.setArea(this.calc.getFlippingClipArea());
+            this.flippingPage.setPosition(this.calc.getActiveCorner());
+            this.flippingPage.setAngle(this.calc.getAngle());
 
-        if (this.calc.getDirection() === FlipDirection.FORWARD) {
-            this.flippingPage.setHardAngle(90 * (200 - (progress * 2)) / 100);
+            if (this.calc.getDirection() === FlipDirection.FORWARD) {
+                this.flippingPage.setHardAngle(90 * (200 - (progress * 2)) / 100);
+            }
+            else {
+                this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
+            }
+
+            this.render.setPageRect(this.calc.getRect());
+
+            this.render.setBottomPage(this.bottomPage);
+            this.render.setFlippingPage(this.flippingPage);
+
+            this.render.drawShadow(
+                this.calc.getShadowStartPoint(),
+                this.calc.getShadowAngle(),
+                progress,
+                this.calc.getDirection(),
+                this.calc.getShadowLength()
+            );
         }
-        else {
-            this.flippingPage.setHardAngle(-90 * (200 - (progress * 2)) / 100);
-        }
-
-        this.render.setPageRect(this.calc.getRect());
-
-        this.render.setBottomPage(this.bottomPage);
-        this.render.setFlippingPage(this.flippingPage);
-
-        this.render.drawShadow(
-            this.calc.getShadowStartPoint(),
-            this.calc.getShadowAngle(),
-            progress,
-            this.calc.getDirection(),
-            this.calc.getShadowLength()
-        );
     }
 
     private animateFlippingTo(start: Point, dest: Point, isTurned: boolean, needReset = true): void {
