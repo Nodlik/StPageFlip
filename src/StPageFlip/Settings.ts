@@ -24,6 +24,7 @@ export interface FlipSetting {
     maxShadowOpacity: number;
 
     showCover: boolean;
+    mobileScrollSupport: boolean;
 }
 
 export class Settings {
@@ -43,7 +44,8 @@ export class Settings {
         startZIndex: 0,
         autoSize: true,
         maxShadowOpacity: 1,
-        showCover: false
+        showCover: false,
+        mobileScrollSupport: true
     };
 
     public getSettings(userSetting: Record<string, number | string | boolean>): FlipSetting {

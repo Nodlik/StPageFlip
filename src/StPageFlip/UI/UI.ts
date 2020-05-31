@@ -1,7 +1,7 @@
 import {PageFlip} from "../PageFlip";
 import {Point} from "../BasicTypes";
 import {FlipSetting, SizeType} from "../Settings";
-import {FlipCorner} from "../Flip/Flip";
+import {FlipCorner, FlippingState} from "../Flip/Flip";
 import {Orientation} from "../Render/Render";
 
 type SwipeData = {
@@ -95,12 +95,14 @@ export abstract class UI {
                 };
 
                 setTimeout(() => {
-                    if (this.touchPoint !== null)
+                    if (this.touchPoint !== null) {
                         this.app.startUserTouch(pos);
+                    }
 
                 }, this.swipeTimeout);
 
-                e.preventDefault();
+                if (!this.app.getSettings().mobileScrollSupport)
+                    e.preventDefault();
             }
         });
 
@@ -113,10 +115,26 @@ export abstract class UI {
         window.addEventListener('touchmove', (e: TouchEvent) => {
             if (e.changedTouches.length > 0) {
                 const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
 
-                this.app.userMove(this.getMousePos(t.clientX, t.clientY), true);
+                if (this.app.getSettings().mobileScrollSupport) {
+                    if (this.touchPoint !== null) {
+                        if ((Math.abs(this.touchPoint.point.x - pos.x) > 10) || (this.app.getState() !== FlippingState.READ)) {
+                            if (e.cancelable)
+                                this.app.userMove(pos, true);
+                        }
+                    }
+
+                    if (this.app.getState() !== FlippingState.READ) {
+                        e.preventDefault();
+                    }
+                }
+                else {
+                    this.app.userMove(pos, true);
+                }
             }
-        });
+
+        }, { passive: !this.app.getSettings().mobileScrollSupport });
 
         window.addEventListener('mouseup', (e: MouseEvent) => {
             const pos = this.getMousePos(e.clientX, e.clientY);
@@ -129,6 +147,7 @@ export abstract class UI {
                 const t = e.changedTouches[0];
                 const pos = this.getMousePos(t.clientX, t.clientY);
                 let isSwipe = false;
+                this.preventTouch = false;
 
                 if (this.touchPoint !== null) {
                     const dx = pos.x - this.touchPoint.point.x;

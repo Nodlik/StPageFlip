@@ -42,6 +42,17 @@ export class Flip {
         return this.calc;
     }
 
+    public getState(): FlippingState {
+        return this.state;
+    }
+
+    private setState(newState: FlippingState): void {
+        if (this.state !== newState) {
+            this.app.updateState(newState);
+            this.state = newState;
+        }
+    }
+
     public start(globalPos: Point): boolean {
         this.reset();
 
@@ -289,7 +300,7 @@ export class Flip {
                 this.render.setFlippingPage(null);
                 this.render.clearShadow();
 
-                this.state = FlippingState.READ;
+                this.setState(FlippingState.READ);
                 this.reset();
             }
         });
@@ -319,11 +330,6 @@ export class Flip {
 
     private getBoundsRect(): PageRect {
         return this.render.getRect();
-    }
-
-    private setState(newState: FlippingState): void {
-        this.app.updateState(newState);
-        this.state = newState;
     }
 
     private checkState(...states: FlippingState[]): boolean {

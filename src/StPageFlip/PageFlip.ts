@@ -82,6 +82,7 @@ export class PageFlip extends EventObject {
         this.render.start();
 
         this.pages.show(this.setting.startPage);
+
         // safari fix
         setTimeout(() => this.ui.update());
     }
@@ -105,6 +106,7 @@ export class PageFlip extends EventObject {
     }
 
     public updateState(newState: FlippingState): void {
+        console.log(newState);
         this.trigger('changeState', this, newState);
     }
 
@@ -152,6 +154,10 @@ export class PageFlip extends EventObject {
 
     public getUI(): UI {
         return this.ui;
+    }
+
+    public getState(): FlippingState {
+        return this.flip.getState();
     }
 
     public getPageCollection(): PageCollection {
