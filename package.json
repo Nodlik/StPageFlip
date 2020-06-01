@@ -1,6 +1,6 @@
 {
   "name": "page-flip",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/js/page-flip.module.js",
   "browser": "dist/js/page-flip.browser.js",
   "author": "oleg.litovski9@gmail.com",
@@ -10,8 +10,7 @@
     "type": "git",
     "url": "https://github.com/Nodlik/StPageFlip.git"
   },
-  "publishConfig": {
-  },
+  "publishConfig": {},
   "homepage": "https://nodlik.github.io/StPageFlip/",
   "dependencies": {},
   "devDependencies": {
