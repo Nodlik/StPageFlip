@@ -25,7 +25,7 @@ export class PageFlip extends EventObject {
     private readonly block: HTMLElement;
 
     private pages: PageCollection = null;
-    private flip: Flip;
+    private flipController: Flip;
     private render: Render;
 
     private ui: UI;
@@ -62,11 +62,15 @@ export class PageFlip extends EventObject {
     }
 
     public flipNext(corner: FlipCorner = FlipCorner.TOP): void {
-        this.flip.flipNext(corner);
+        this.flipController.flipNext(corner);
     }
 
     public flipPrev(corner: FlipCorner = FlipCorner.TOP): void {
-        this.flip.flipPrev(corner);
+        this.flipController.flipPrev(corner);
+    }
+
+    public flip(page: number, corner: FlipCorner = FlipCorner.TOP): void {
+        this.flipController.flipToPage(page, corner);
     }
 
     public loadFromImages(imagesHref: string[]): void {
@@ -75,7 +79,7 @@ export class PageFlip extends EventObject {
         const canvas = (this.ui as CanvasUI).getCanvas();
         this.render = new CanvasRender(this, this.setting, canvas);
 
-        this.flip = new Flip(this.render, this);
+        this.flipController = new Flip(this.render, this);
 
         this.pages = new ImagePageCollection(this, this.render, imagesHref);
         this.pages.load();
@@ -93,7 +97,7 @@ export class PageFlip extends EventObject {
 
         this.render = new HTMLRender(this, this.setting, this.ui.getDistElement(), items);
 
-        this.flip = new Flip(this.render, this);
+        this.flipController = new Flip(this.render, this);
 
         this.pages = new HTMLPageCollection(this, this.render, this.ui.getDistElement(), items);
         this.pages.load();
@@ -115,8 +119,8 @@ export class PageFlip extends EventObject {
     }
 
     public updateOrientation(newOrientation: Orientation): void {
-        this.update();
         this.ui.setOrientationStyle(newOrientation);
+        this.update();
         this.trigger('changeOrientation', this, newOrientation);
     }
 
@@ -136,8 +140,8 @@ export class PageFlip extends EventObject {
         return this.render;
     }
 
-    public getFlipObject(): Flip {
-        return this.flip;
+    public getFlipController(): Flip {
+        return this.flipController;
     }
 
     public getOrientation(): Orientation {
@@ -157,7 +161,7 @@ export class PageFlip extends EventObject {
     }
 
     public getState(): FlippingState {
-        return this.flip.getState();
+        return this.flipController.getState();
     }
 
     public getPageCollection(): PageCollection {
@@ -172,12 +176,12 @@ export class PageFlip extends EventObject {
 
     public userMove(pos: Point, isTouch: boolean): void {
         if ((!this.isUserTouch) && (!isTouch)) {
-            this.flip.showCorner(pos);
+            this.flipController.showCorner(pos);
         }
         else if (this.isUserTouch) {
             if (Helper.GetDestinationFromTwoPoint(this.mousePosition, pos) > 5) {
                 this.isUserMove = true;
-                this.flip.fold(pos);
+                this.flipController.fold(pos);
             }
         }
     }
@@ -188,9 +192,9 @@ export class PageFlip extends EventObject {
 
             if (!isSwipe) {
                 if (!this.isUserMove)
-                    this.flip.flip(pos);
+                    this.flipController.flip(pos);
                 else
-                    this.flip.stopMove();
+                    this.flipController.stopMove();
             }
         }
     }

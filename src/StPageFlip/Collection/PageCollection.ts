@@ -58,7 +58,7 @@ export abstract class PageCollection {
             : this.portraitSpread;
     }
 
-    protected getPageSpreadIndex(pageNum: number): number {
+    public getSpreadIndexByPage(pageNum: number): number {
         const spread = this.getSpread();
 
         for (let i = 0; i < spread.length; i++)
@@ -169,10 +169,23 @@ export abstract class PageCollection {
 
         if ((pageNum < 0) || (pageNum >= this.pages.length)) return;
 
-        const spreadIndex = this.getPageSpreadIndex(pageNum);
+        const spreadIndex = this.getSpreadIndexByPage(pageNum);
         if (spreadIndex !== null) {
             this.currentSpreadIndex = spreadIndex;
             this.showSpread();
+        }
+    }
+
+    public getCurrentSpreadIndex(): number {
+        return this.currentSpreadIndex;
+    }
+
+    public setCurrentSpreadIndex(newIndex: number): void {
+        if ((newIndex >= 0) && (newIndex < this.getSpread().length)) {
+            this.currentSpreadIndex = newIndex;
+        }
+        else {
+            throw new Error('Invalid page')
         }
     }
 

@@ -4,7 +4,7 @@ module.exports = {
     entry: './src/StPageFlip/PageFlip.ts',
     output: {
         path: path.resolve(__dirname, 'dist/js'),
-        filename: 'page-flip.browser.js',
+        filename: 'pageFlip.browser.js',
         library: 'St'
     },
     mode: 'development',

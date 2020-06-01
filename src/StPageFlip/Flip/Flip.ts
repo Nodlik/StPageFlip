@@ -206,6 +206,25 @@ export class Flip {
             {x: -rect.pageWidth, y: yDest}, true);
     }
 
+    public flipToPage(page: number, corner: FlipCorner): void {
+        const current = this.app.getPageCollection().getCurrentSpreadIndex();
+        const next = this.app.getPageCollection().getSpreadIndexByPage(page);
+
+        try {
+            if (next > current) {
+                this.app.getPageCollection().setCurrentSpreadIndex(next - 1);
+                this.flipNext(corner);
+            }
+            if (next < current) {
+                this.app.getPageCollection().setCurrentSpreadIndex(next + 1);
+                this.flipPrev(corner);
+            }
+        }
+        catch (e) {
+            //
+        }
+    }
+
     public flipNext(corner: FlipCorner): void {
         this.flip({
             x: this.render.getRect().left + this.render.getRect().pageWidth * 2,
@@ -240,7 +259,6 @@ export class Flip {
     private do(pagePos: Point): void {
         if (this.calc === null)
             return;
-
 
         if (this.calc.calc(pagePos)) {
             const progress = this.calc.getFlippingProgress();

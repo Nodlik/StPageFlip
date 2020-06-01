@@ -105,22 +105,23 @@ pageFlip.on('flip', (e) => {
 );
 ```
 Available events:
-* flip: number - triggered by page turning
-* changeOrientation: ("portrait", "landscape") - triggered when page orientation changes
-* changeState: ("user_fold", "fold_corner", "flipping", "read") - triggered when the state of the book changes
+* ```flip: number``` - triggered by page turning
+* ```changeOrientation: ("portrait", "landscape")``` - triggered when page orientation changes
+* ```changeState: ("user_fold", "fold_corner", "flipping", "read")``` - triggered when the state of the book changes
 
 Event object has two field: data and object
 
 ### Methods
-* getPageCount: number - Get the number of all pages
-* getCurrentPageIndex: number - Get current page number (starts at 0)
-* turnToPage(pageNum: number)	- Turns over the page to the specified number (without animation)
-* turnToNextPage() - Turn to the next page (without animation)
-* turnToPrevPage() - Turn to the previous page (without animation)
-* flipNext(corner: 'top' | 'bottom') - Turn to the next page (with animation)
-* flipPrev(corner: 'top' | 'bottom') - Turn to the previous page (with animation)
-* loadFromImages(images: ['path-to-image'...]) - Loading page from images
-* loadFromHtml(items: NodeListOf | HTMLElement[]) -	Loading page from html elements
+* ```getPageCount: number``` - Get the number of all pages
+* ```getCurrentPageIndex: number``` - Get current page number (starts at 0)
+* ```turnToPage(pageNum: number)``` - Turns over the page to the specified number (without animation)
+* ```turnToNextPage()``` - Turn to the next page (without animation)
+* ```turnToPrevPage()``` - Turn to the previous page (without animation)
+* ```flipNext(corner: 'top' | 'bottom')``` - Turn to the next page (with animation)
+* ```flipPrev(corner: 'top' | 'bottom')``` - Turn to the previous page (with animation)
+* ```flip(pageNum: number, corner: 'top' | 'bottom')``` - Turn to the specified page (with animation)
+* ```loadFromImages(images: ['path-to-image'...])``` - Loading page from images
+* ```loadFromHtml(items: NodeListOf | HTMLElement[])``` -	Loading page from html elements
 
 ### Contacts
 Oleg,
