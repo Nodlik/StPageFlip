@@ -38,19 +38,20 @@
         <div class="col-sm-6">
             <h3>St Page Flip</h3>
             <hr />
-            Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect.
+            Powerful, simple, and flexible JS Library for creating realistic and beautiful page turning effect.
 
             <ul class="list-group list-group-flush" style="font-size: 90%">
-                <li class="list-group-item">- Works with simple images on canvas and with complex html blocks</li>
-                <li class="list-group-item">- Has a simple api and flexible configuration</li>
-                <li class="list-group-item">- Compatibility with mobile devices</li>
-                <li class="list-group-item">- Support landscape and portrait screen mode</li>
+                <li class="list-group-item">- Works with simple images on canvas and complex HTML blocks</li>
+                <li class="list-group-item">- Has simple API and flexible configuration</li>
+                <li class="list-group-item">- Compatible with mobile devices</li>
+                <li class="list-group-item">- Supports landscape and portrait screen mode</li>
                 <li class="list-group-item">- Supports soft and hard page types (only in HTML mode)</li>
                 <li class="list-group-item">- No dependencies</li>
             </ul>
         </div>
 
-        <div class="shadow-sm bg-light rounded col-sm-6">
+        <div class="col-sm-6">
+            <div class="shadow-sm bg-light rounded">
 <pre><code>import {PageFlip} from 'page-flip';
 
 const pageFlip = new PageFlip(document.getElementById('book'),
@@ -66,8 +67,12 @@ pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
 pageFlip.on('flip', (e) => {
         console.log("Current page: " + e.data);
+        // callback code
     }
-);</code></pre></div>
+);
+</code></pre>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -191,7 +196,7 @@ pageFlip.on('flip', (e) => {
     <div class="mt-4">
         <h2>Usage</h2>
         <hr />
-        If you installed the package from npm, you need import <code>PageFlip</code> from <code>page-flip</code> package,
+        If you've installed the package from npm, you should import <code>PageFlip</code> from <code>page-flip</code> package,
         or just use <code>&lt;script/&gt;</code> tag:
     </div>
 
@@ -200,7 +205,7 @@ pageFlip.on('flip', (e) => {
     </div>
 
     <div>
-        Creation of a new PageFlip object:
+        To create a new PageFlip object:
     </div>
 
     <div class="bg-light rounded p-2 mt-2 mb-2">
@@ -208,23 +213,24 @@ pageFlip.on('flip', (e) => {
 
 const pageFlip = new PageFlip(htmlParentElement, settings);
 
-// or if you using script tag and page-flip.browser.js:
+// or if you're using a script tag and page-flip.browser.js:
 const pageFlip = new St.PageFlip(htmlParentElement, settings);</code></pre>
     </div>
 
     <div>
-        Where <code>htmlParentElement: HTMLElement</code>, where the book will be created, <code>settings</code> - configuration object.
+        <code>htmlParentElement: HTMLElement</code> - root element where the book will be created<br />
+        <code>settings</code> - a configuration object.
     </div>
     <hr />
     <div>
-        To drawing on the canvas, use the following method:
+        To draw on a canvas, use <code>loadFromImages</code>:
     </div>
 
     <div class="bg-light rounded p-2 mt-2 mb-2">
 <pre><code>pageFlip.loadFromImages(['path/to/image1.jpg', 'path/to/image2.jpg' ... ]);</code></pre>
     </div>
     <div>
-        For html block - use <code>loadFromHtml</code>
+        To load page from html elements - use <code>loadFromHtml</code>
     </div>
 
     <div class="bg-light rounded p-2 mt-2 mb-2">
@@ -267,21 +273,22 @@ const pageFlip = new St.PageFlip(htmlParentElement, settings);</code></pre>
 pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
     </div>
     <div>
-        <p>Use the following <code>data-density="hard"</code> attribute to specify page type (<code>soft | hard</code>)</p>
+        <p>Use the following <code>data-density="hard"</code> attribute to specify page type (<code>soft | hard</code>)
+            and define flipping animation.</p>
     </div>
     <div class="mt-4">
         <h2>Config</h2>
         <hr />
-        Configuration is set when creating an object. Config parameters:
+        To set configuration define these parameters when creating an object:
         <ul class="list-group" style="font-size: 90%">
             <li class="list-group-item"><code>width: number</code> - <u>required</u>. Base page width</li>
             <li class="list-group-item"><code>height: number</code> - <u>required</u>. Base page height</li>
             <li class="list-group-item"><code>size:("fixed", "stretch")</code> - default: <code>"fixed"</code>.
-                Whether the book will be stretched under the parent element</li>
+                Whether the book will be stretched under the parent element or not</li>
             <li class="list-group-item"><code>minWidth, maxWidth, minHeight, maxHeight: number</code>.
-                You must set threshold values ​​with a <code>size: "stretch"</code></li>
+                You must set threshold values ​​with <code>size: "stretch"</code></li>
 
-            <li class="list-group-item"><code>drawShadow: bool</code> - default: <code>true</code>. Draw shadows or not</li>
+            <li class="list-group-item"><code>drawShadow: bool</code> - default: <code>true</code>. Draw shadows or not when page flipping</li>
             <li class="list-group-item"><code>flippingTime: number</code> (milliseconds) - default: <code>1000</code>.
                 Flipping animation time</li>
             <li class="list-group-item"><code>usePortrait: bool</code> - default: <code>true</code>.
@@ -293,13 +300,13 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
                 If this value is true, the parent element will be equal to the size of the book
             </li>
             <li class="list-group-item"><code>maxShadowOpacity: number[0..1]</code> - default: <code>1</code>.
-                Shadow intensity - 1: max intensity, 0: hidden shadows
+                Shadow intensity (1: max intensity, 0: hidden shadows)
             </li>
             <li class="list-group-item"><code>showCover: boolean</code> - default: <code>false</code>.
-                if this value is true, the first and last pages will be marked as hard and will be shown in single page mode <span class="new">NEW on 0.3.0</span>
+                If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode  <span class="new">NEW on 0.3.0</span>
             </li>
             <li class="list-group-item"><code>mobileScrollSupport: boolean</code> - default: <code>false</code>.
-                disable scrolling when touching a book in mobile devices <span class="new">NEW on 0.3.0</span>
+                Disable content scrolling when touching a book on mobile devices <span class="new">NEW on 0.3.0</span>
             </li>
         </ul>
     </div>
@@ -307,7 +314,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
     <div class="mt-4">
         <h2>Events</h2>
         <hr />
-        To listen events using the method <code>on</code>:
+        To listen events use the method <code>on</code>:
         <div class="bg-light rounded p-2 mt-2 mb-2">
 <pre><code>pageFlip.on('flip', (e) => {
         console.log("Current page: " + e.data);
@@ -322,7 +329,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
                 triggered when the state of the book changes</li>
         </ul>
         <div class="mt-2">
-            Event object has two field: <code>data: number | string</code> and <code>object: PageFlip</code>
+            Event object has two fields: <code>data: number | string</code> and <code>object: PageFlip</code>
         </div>
     </div>
 
@@ -344,19 +351,19 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
                 <td><code>getPageCount</code></td>
                 <td><code></code></td>
                 <td><code>number</code></td>
-                <td>Get the number of all pages</td>
+                <td>Get number of all pages</td>
             </tr>
             <tr>
                 <td><code>getCurrentPageIndex</code></td>
                 <td><code></code></td>
                 <td><code>number</code></td>
-                <td>Get current page number (starts at 0)</td>
+                <td>Get the current page number (starts at 0)</td>
             </tr>
             <tr>
                 <td><code>turnToPage</code></td>
                 <td><code>pageNum: number</code></td>
                 <td><code>void</code></td>
-                <td>Turns over the page to the specified number (without animation)</td>
+                <td>Turn to the specified page number (without animation)</td>
             </tr>
             <tr>
                 <td><code>turnToNextPage</code></td>
@@ -392,13 +399,13 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
                 <td><code>loadFromImages</code></td>
                 <td><code>images: ['path-to-image'...]</code></td>
                 <td><code>void</code></td>
-                <td>Loading page from images</td>
+                <td>Load page from images</td>
             </tr>
             <tr>
                 <td><code>loadFromHtml</code></td>
                 <td><code>items: NodeListOf | HTMLElement[]</code></td>
                 <td><code>void</code></td>
-                <td>Loading page from html elements</td>
+                <td>Load page from html elements</td>
             </tr>
             </tbody>
         </table>
@@ -428,7 +435,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/64530565" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-
+<!-- Place this tag in your head or just before your close body tag. -->
 </body>
 
 </html>
