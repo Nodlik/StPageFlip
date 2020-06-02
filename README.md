@@ -1,7 +1,7 @@
 # StPageFlip
 Powerful, simple, and flexible JS Library for creating realistic and beautiful page turning effect.
 
-![](https://nodlik.github.io/StPageFlip/images/video.gif)
+![](video.gif)
 
 ### Features
 * Works with simple images on canvas and complex HTML blocks
