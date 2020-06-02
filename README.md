@@ -1,13 +1,15 @@
 # StPageFlip
-Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect
+Powerful, simple, and flexible JS Library for creating realistic and beautiful page turning effect.
+
+![](https://nodlik.github.io/StPageFlip/images/video.gif)
 
 ### Features
-* Works with simple images on canvas and with complex html blocks
-* Has a simple api and flexible configuration
-* Compatibility with mobile devices
-* Support landscape and portrait screen mode
+* Works with simple images on canvas and complex HTML blocks
+* Has simple API and flexible configuration
+* Compatible with mobile devices
+* Supports landscape and portrait screen mode
 * Supports soft and hard page types (only in HTML mode) 
-* No additional libraries
+* No dependencies
 
 Demo and docs: https://nodlik.github.io/StPageFlip/
 
@@ -20,28 +22,31 @@ Or download bundle from Github
 
 ### Usage
 
-If you installed the package from npm, you need import PageFlip from page-flip package, or just use ```<script/>``` tag:
+If you've installed the package from npm, you should import PageFlip from page-flip package, or just use ```<script/>``` tag:
 
 ```html
 <script src="{path/to/scripts}/page-flip.browser.js"></script>
 ```
 
-Creation of a new PageFlip object:
+To create a new PageFlip object:
 ```js
 import {PageFlip} from 'page-flip';
 
 const pageFlip = new PageFlip(htmlParentElement, settings);
 
-// or if you using script tag:
+// or if you're using a script tag and page-flip.browser.js:
 const pageFlip = new St.PageFlip(htmlParentElement, settings);
 ```
-Where htmlParentElement - HTMLElement, where the book will be created, settings - configuration object.
 
-To drawing on the canvas, use the following method:
+```htmlParentElement - HTMLElement```- root element, where the book will be created
+
+```settings: object``` - configuration object.
+
+To draw on a canvas, use ```loadFromImages```:
 ```js
 pageFlip.loadFromImages(['path/to/image1.jpg', 'path/to/image2.jpg' ... ]);
 ```
-For html block - use loadFromHtml
+To load page from html elements - use ```loadFromHtml```:
 ```js
 pageFlip.loadFromHtml(items);
 ```
@@ -78,25 +83,25 @@ const pageFlip = new PageFlip(document.getElementById('book'),
 
 pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));
 ```
-Use the following```data-density="hard"``` attribute to specify page type (```soft | hard```)
+Use ```data-density="hard"``` attribute to specify page type (```soft | hard```) and define flipping animation.
 ### Config
 
-Configuration is set when creating an object. Config parameters:
+To set configuration define these parameters when creating an object::
 
 * ```width: number``` - required
 * ```height: number``` - required
-* ```size: ("fixed", "stretch") - default: "fixed"``` Whether the book will be stretched under the parent element
-* ```minWidth, maxWidth, minHeight, maxHeight: number``` You must set threshold values ​​with a size: ```"stretch"```
-* ```drawShadow: bool - default: true``` Draw shadows or not
-* ```flippingTime: number (milliseconds) - default: 1000``` Flipping animation time
-* ```usePortrait: bool - default: true``` Enable switching to portrait mode
-* ```startZIndex: number - default: 0``` Initial value to z-index
-* ```autoSize: bool - default: true``` If this value is true, the parent element will be equal to the size of the book
-* ```maxShadowOpacity: number [0..1] - default: 1``` Shadow intensity - 1: max intensity, 0: hidden shadows
-* ```showCover: boolean - default: false``` if this value is true, the first and last pages will be marked as hard and will be shown in single page mode 
-* ```mobileScrollSupport: boolean - default: true``` disable scrolling when touching a book in mobile devices
+* ```size: ("fixed", "stretch")``` - default: ```"fixed"``` Whether the book will be stretched under the parent element or not
+* ```minWidth, maxWidth, minHeight, maxHeight: number``` You must set threshold values ​​with size: ```"stretch"```
+* ```drawShadow: bool``` - default: ```true``` Draw shadows or not when page flipping
+* ```flippingTime: number``` (milliseconds) - default: ```1000``` Flipping animation time
+* ```usePortrait: bool``` - default: ```true``` Enable switching to portrait mode
+* ```startZIndex: number``` - default: ```0``` Initial value to z-index
+* ```autoSize: bool``` - default: ```true``` If this value is true, the parent element will be equal to the size of the book
+* ```maxShadowOpacity: number [0..1]``` - default: ```1``` Shadow intensity (1: max intensity, 0: hidden shadows)
+* ```showCover: boolean``` - default: ```false``` If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode 
+* ```mobileScrollSupport: boolean``` - default: ```true``` isable content scrolling when touching a book on mobile devices
 ### Events
-To listen for events using the method on:
+To listen events use the method ```on```:
 ```js
 pageFlip.on('flip', (e) => {
         // callback code
@@ -109,19 +114,19 @@ Available events:
 * ```changeOrientation: ("portrait", "landscape")``` - triggered when page orientation changes
 * ```changeState: ("user_fold", "fold_corner", "flipping", "read")``` - triggered when the state of the book changes
 
-Event object has two field: data and object
+Event object has two fields: ```data: number | string``` and ```object: PageFlip```
 
 ### Methods
-* ```getPageCount: number``` - Get the number of all pages
-* ```getCurrentPageIndex: number``` - Get current page number (starts at 0)
-* ```turnToPage(pageNum: number)``` - Turns over the page to the specified number (without animation)
+* ```getPageCount: number``` - Get number of all pages
+* ```getCurrentPageIndex: number``` - Get the current page number (starts at 0)
+* ```turnToPage(pageNum: number)``` - Turn to the specified page number (without animation)
 * ```turnToNextPage()``` - Turn to the next page (without animation)
 * ```turnToPrevPage()``` - Turn to the previous page (without animation)
 * ```flipNext(corner: 'top' | 'bottom')``` - Turn to the next page (with animation)
 * ```flipPrev(corner: 'top' | 'bottom')``` - Turn to the previous page (with animation)
 * ```flip(pageNum: number, corner: 'top' | 'bottom')``` - Turn to the specified page (with animation)
-* ```loadFromImages(images: ['path-to-image'...])``` - Loading page from images
-* ```loadFromHtml(items: NodeListOf | HTMLElement[])``` -	Loading page from html elements
+* ```loadFromImages(images: ['path-to-image1.jpg', ...])``` - Load page from images
+* ```loadFromHtml(items: NodeListOf | HTMLElement[])``` -	Load page from html elements
 
 ### Contacts
 Oleg,
