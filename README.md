@@ -99,7 +99,7 @@ To set configuration define these parameters when creating an object::
 * ```autoSize: bool``` - default: ```true``` If this value is true, the parent element will be equal to the size of the book
 * ```maxShadowOpacity: number [0..1]``` - default: ```1``` Shadow intensity (1: max intensity, 0: hidden shadows)
 * ```showCover: boolean``` - default: ```false``` If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode 
-* ```mobileScrollSupport: boolean``` - default: ```true``` isable content scrolling when touching a book on mobile devices
+* ```mobileScrollSupport: boolean``` - default: ```true``` disable content scrolling when touching a book on mobile devices
 ### Events
 To listen events use the method ```on```:
 ```js
