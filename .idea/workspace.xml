@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5f2e1f35-7406-4b07-8209-49bc0d258164" name="Default Changelist" comment="" />
+    <list default="true" id="5f2e1f35-7406-4b07-8209-49bc0d258164" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/demo.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/pages.bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/pages.bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,9 +100,9 @@
           <entry key="css" value="6" />
           <entry key="eslintrc" value="2" />
           <entry key="gitignore" value="1" />
-          <entry key="html" value="2" />
+          <entry key="html" value="3" />
           <entry key="jpg" value="1" />
-          <entry key="js" value="41" />
+          <entry key="js" value="42" />
           <entry key="json" value="17" />
           <entry key="less" value="9" />
           <entry key="php" value="13" />
@@ -107,10 +113,10 @@
         <counts>
           <entry key="CSS" value="6" />
           <entry key="ESLint" value="2" />
-          <entry key="HTML" value="2" />
+          <entry key="HTML" value="3" />
           <entry key="Image" value="1" />
           <entry key="JSON" value="9" />
-          <entry key="JavaScript" value="41" />
+          <entry key="JavaScript" value="42" />
           <entry key="Less" value="9" />
           <entry key="PHP" value="13" />
           <entry key="PLAIN_TEXT" value="1" />
@@ -149,7 +155,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/static/style.css">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="559">
+              <caret line="158" column="22" selection-start-line="158" selection-start-column="22" selection-end-line="158" selection-end-column="22" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#8;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/pages.bundle.js">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -304,11 +322,6 @@
             <path>
               <item name="www" type="b2602c69:ProjectViewProjectNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="www" type="b2602c69:ProjectViewProjectNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -342,16 +355,16 @@
     <property name="typescript-compiler-editor-notification" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/_" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static" />
+      <recent name="$PROJECT_DIR$/dist" />
       <recent name="$PROJECT_DIR$/images" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/front/scripts" />
-      <recent name="$PROJECT_DIR$/front/scripts/StPageFlip/Flip" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/_" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -398,13 +411,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="209903000" />
+    <option name="totallyTimeSpent" value="210084000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16666667" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13471779" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -459,7 +472,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Flip/FlipCalculation.ts" />
     <entry file="file://$PROJECT_DIR$/front/scripts/StPageFlip/Collection/ImagePageCollection.ts" />
     <entry file="file://$PROJECT_DIR$/public/js/app.js" />
     <entry file="file://$PROJECT_DIR$/front/gulpfile.js" />
@@ -525,9 +537,6 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php" />
-    <entry file="file://$PROJECT_DIR$/static/pages.bundle.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="614">
@@ -537,6 +546,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/style.css">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/pages.bundle.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="559">
+          <caret line="158" column="22" selection-start-line="158" selection-start-column="22" selection-end-line="158" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#8;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">

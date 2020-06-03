@@ -15,14 +15,15 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand" href="#">StPageFlip</a>
+    <a class="navbar-brand" href="/">StPageFlip</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
+                <a class="nav-link" href="demo.html">Demo</a>
             </li>
         </ul>
         <div class="my-2 my-lg-0">
@@ -305,7 +306,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
             <li class="list-group-item"><code>showCover: boolean</code> - default: <code>false</code>.
                 If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode  <span class="new">NEW on 0.3.0</span>
             </li>
-            <li class="list-group-item"><code>mobileScrollSupport: boolean</code> - default: <code>false</code>.
+            <li class="list-group-item"><code>mobileScrollSupport: boolean</code> - default: <code>true</code>.
                 Disable content scrolling when touching a book on mobile devices <span class="new">NEW on 0.3.0</span>
             </li>
         </ul>
