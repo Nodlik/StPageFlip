@@ -109,8 +109,8 @@ export class Flip {
             this.calc = new FlipCalculation(
                 direction,
                 flipCorner,
-                rect.pageWidth,
-                rect.height
+                rect.pageWidth.toString(10), // fix bug
+                rect.height.toString(10) // fix bug
             );
 
             return true;

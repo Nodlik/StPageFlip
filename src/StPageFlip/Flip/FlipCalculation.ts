@@ -18,12 +18,17 @@ export class FlipCalculation {
     private sideIntersectPoint: Point = null;
     private bottomIntersectPoint: Point = null;
 
+    private pageWidth: number;
+    private pageHeight: number;
+
     constructor(private direction: FlipDirection,
                 private corner: FlipCorner,
 
-                private pageWidth: number,
-                private pageHeight: number)
+                pageWidth: string,
+                pageHeight: string)
     {
+        this.pageWidth = parseInt(pageWidth, 10);
+        this.pageHeight = parseInt(pageHeight, 10);
     }
 
     public calc(localPos: Point): boolean {
