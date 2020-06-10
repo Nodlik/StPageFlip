@@ -14,10 +14,6 @@ export class HTMLUI extends UI {
             this.distElement.appendChild(item);
         }
 
-        window.addEventListener('resize', () => {
-            this.update();
-        }, false);
-
         this.setHandlers();
     }
 

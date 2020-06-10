@@ -20,6 +20,10 @@ export abstract class UI {
 
     private preventTouch = false;
 
+    private onResize = (): void => {
+        this.update();
+    };
+
     protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
         inBlock.classList.add('stf__parent');
         inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__wrapper"></div>');
@@ -44,6 +48,122 @@ export abstract class UI {
         }
 
         inBlock.style.display = 'block';
+
+        window.addEventListener('resize', this.onResize, false);
+    }
+
+    private onMouseDown = (e: MouseEvent) => {
+        const pos = this.getMousePos(e.clientX, e.clientY);
+
+        this.app.startUserTouch(pos);
+
+        e.preventDefault();
+    };
+
+    private onTouchStart = (e: TouchEvent) => {
+        if (e.changedTouches.length > 0) {
+            const t = e.changedTouches[0];
+            const pos = this.getMousePos(t.clientX, t.clientY);
+
+            this.touchPoint = {
+                point: pos,
+                time: Date.now()
+            };
+
+            setTimeout(() => {
+                if (this.touchPoint !== null) {
+                    this.app.startUserTouch(pos);
+                }
+
+            }, this.swipeTimeout);
+
+            if (!this.app.getSettings().mobileScrollSupport)
+                e.preventDefault();
+        }
+    };
+
+    private onMouseUp = (e: MouseEvent) => {
+        const pos = this.getMousePos(e.clientX, e.clientY);
+
+        this.app.userStop(pos);
+    };
+
+    private onMouseMove = (e: MouseEvent) => {
+        const pos = this.getMousePos(e.clientX, e.clientY);
+
+        this.app.userMove(pos, false);
+    };
+
+    private onTouchMove = (e: TouchEvent) => {
+        if (e.changedTouches.length > 0) {
+            const t = e.changedTouches[0];
+            const pos = this.getMousePos(t.clientX, t.clientY);
+
+            if (this.app.getSettings().mobileScrollSupport) {
+                if (this.touchPoint !== null) {
+                    if ((Math.abs(this.touchPoint.point.x - pos.x) > 10) || (this.app.getState() !== FlippingState.READ)) {
+                        if (e.cancelable)
+                            this.app.userMove(pos, true);
+                    }
+                }
+
+                if (this.app.getState() !== FlippingState.READ) {
+                    e.preventDefault();
+                }
+            }
+            else {
+                this.app.userMove(pos, true);
+            }
+        }
+    };
+
+    private onTouchEnd = (e: TouchEvent) => {
+        if (e.changedTouches.length > 0) {
+            const t = e.changedTouches[0];
+            const pos = this.getMousePos(t.clientX, t.clientY);
+            let isSwipe = false;
+            this.preventTouch = false;
+
+            if (this.touchPoint !== null) {
+                const dx = pos.x - this.touchPoint.point.x;
+                const distY = Math.abs(pos.y - this.touchPoint.point.y);
+
+                if ( (Math.abs(dx) > this.swipeDistance) &&
+                    (distY < this.swipeDistance * 2) &&
+                    ((Date.now() - this.touchPoint.time) < this.swipeTimeout) )
+                {
+                    if (dx > 0) {
+                        this.app.flipPrev( (this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                            ? FlipCorner.TOP
+                            : FlipCorner.BOTTOM );
+                    }
+                    else {
+                        this.app.flipNext((this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
+                            ? FlipCorner.TOP
+                            : FlipCorner.BOTTOM );
+                    }
+                    isSwipe = true;
+                }
+
+                this.touchPoint = null;
+            }
+
+            this.app.userStop(pos, isSwipe);
+        }
+    };
+
+    public destroy(): void {
+        window.removeEventListener('resize', this.onResize);
+
+        this.distElement.removeEventListener('mousedown', this.onMouseDown);
+        this.distElement.removeEventListener('touchstart', this.onTouchStart);
+        window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('touchmove', this.onTouchMove);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        window.removeEventListener('touchend', this.onTouchEnd);
+
+        this.distElement.remove();
+        this.wrapper.remove();
     }
 
     public abstract update(): void;
@@ -76,106 +196,12 @@ export abstract class UI {
     }
 
     protected setHandlers(): void {
-        this.distElement.addEventListener('mousedown', (e: MouseEvent) => {
-            const pos = this.getMousePos(e.clientX, e.clientY);
-
-            this.app.startUserTouch(pos);
-
-            e.preventDefault();
-        });
-
-        this.distElement.addEventListener('touchstart',(e: TouchEvent) => {
-            if (e.changedTouches.length > 0) {
-                const t = e.changedTouches[0];
-                const pos = this.getMousePos(t.clientX, t.clientY);
-
-                this.touchPoint = {
-                    point: pos,
-                    time: Date.now()
-                };
-
-                setTimeout(() => {
-                    if (this.touchPoint !== null) {
-                        this.app.startUserTouch(pos);
-                    }
-
-                }, this.swipeTimeout);
-
-                if (!this.app.getSettings().mobileScrollSupport)
-                    e.preventDefault();
-            }
-        });
-
-        window.addEventListener('mousemove', (e: MouseEvent) => {
-            const pos = this.getMousePos(e.clientX, e.clientY);
-
-            this.app.userMove(pos, false);
-        });
-
-        window.addEventListener('touchmove', (e: TouchEvent) => {
-            if (e.changedTouches.length > 0) {
-                const t = e.changedTouches[0];
-                const pos = this.getMousePos(t.clientX, t.clientY);
-
-                if (this.app.getSettings().mobileScrollSupport) {
-                    if (this.touchPoint !== null) {
-                        if ((Math.abs(this.touchPoint.point.x - pos.x) > 10) || (this.app.getState() !== FlippingState.READ)) {
-                            if (e.cancelable)
-                                this.app.userMove(pos, true);
-                        }
-                    }
-
-                    if (this.app.getState() !== FlippingState.READ) {
-                        e.preventDefault();
-                    }
-                }
-                else {
-                    this.app.userMove(pos, true);
-                }
-            }
-
-        }, { passive: !this.app.getSettings().mobileScrollSupport });
-
-        window.addEventListener('mouseup', (e: MouseEvent) => {
-            const pos = this.getMousePos(e.clientX, e.clientY);
-
-            this.app.userStop(pos);
-        });
-
-        window.addEventListener('touchend', (e: TouchEvent) => {
-            if (e.changedTouches.length > 0) {
-                const t = e.changedTouches[0];
-                const pos = this.getMousePos(t.clientX, t.clientY);
-                let isSwipe = false;
-                this.preventTouch = false;
-
-                if (this.touchPoint !== null) {
-                    const dx = pos.x - this.touchPoint.point.x;
-                    const distY = Math.abs(pos.y - this.touchPoint.point.y);
-
-                    if ( (Math.abs(dx) > this.swipeDistance) &&
-                         (distY < this.swipeDistance * 2) &&
-                         ((Date.now() - this.touchPoint.time) < this.swipeTimeout) )
-                    {
-                        if (dx > 0) {
-                            this.app.flipPrev( (this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
-                                ? FlipCorner.TOP
-                                : FlipCorner.BOTTOM );
-                        }
-                        else {
-                            this.app.flipNext((this.touchPoint.point.y < this.app.getRender().getRect().height / 2)
-                                ? FlipCorner.TOP
-                                : FlipCorner.BOTTOM );
-                        }
-                        isSwipe = true;
-                    }
-
-                    this.touchPoint = null;
-                }
-
-                this.app.userStop(pos, isSwipe);
-            }
-        });
+        this.distElement.addEventListener('mousedown', this.onMouseDown);
+        this.distElement.addEventListener('touchstart', this.onTouchStart);
+        window.addEventListener('mousemove', this.onMouseMove);
+        window.addEventListener('touchmove', this.onTouchMove, { passive: !this.app.getSettings().mobileScrollSupport });
+        window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('touchend', this.onTouchEnd);
     }
 
     private getMousePos(x: number, y: number): Point {

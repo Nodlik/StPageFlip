@@ -44,6 +44,11 @@ export class PageFlip extends EventObject {
         }
     }
 
+    public destroy(): void {
+        this.ui.destroy();
+        this.block.remove();
+    }
+
     public update(): void {
         this.render.update();
         this.pages.show();
@@ -92,6 +97,16 @@ export class PageFlip extends EventObject {
         setTimeout(() => this.ui.update());
     }
 
+    public updateFromImages(imagesHref: string[]): void {
+        const current = this.pages.getCurrentPageIndex();
+
+        this.pages.destroy();
+        this.pages = new ImagePageCollection(this, this.render, imagesHref);
+        this.pages.load();
+
+        this.pages.show(current);
+    }
+
     public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
         this.ui = new HTMLUI(this.block, this, this.setting, items);
 
@@ -108,6 +123,16 @@ export class PageFlip extends EventObject {
 
         // safari fix
         setTimeout(() => this.ui.update());
+    }
+
+    public updateFromHtml(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
+        const current = this.pages.getCurrentPageIndex();
+
+        this.pages.destroy();
+        this.pages = new HTMLPageCollection(this, this.render, this.ui.getDistElement(), items);
+        this.pages.load();
+
+        this.pages.show(current);
     }
 
     public updateState(newState: FlippingState): void {

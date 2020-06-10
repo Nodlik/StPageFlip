@@ -38,32 +38,8 @@ export class ImagePage extends Page {
 
         ctx.clip();
 
-        //ctx.imageSmoothingQuality = 'high';
-
         if (!this.isLoad) {
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgb(200, 200, 200)';
-            ctx.fillStyle = 'rgb(255, 255, 255)';
-            ctx.lineWidth = 1;
-            ctx.rect( 1, 1, pageWidth - 1, pageHeight - 1);
-            ctx.stroke();
-            ctx.fill();
-
-            const middlePoint: Point = {
-                x: pageWidth / 2,
-                y: pageHeight / 2
-            };
-
-            ctx.beginPath();
-            ctx.lineWidth = 10;
-            ctx.arc(middlePoint.x, middlePoint.y, 20, this.loadingAngle, 3 * Math.PI / 2 + this.loadingAngle);
-            ctx.stroke();
-            ctx.closePath();
-
-            this.loadingAngle += 0.07;
-            if (this.loadingAngle >= 2 * Math.PI) {
-                this.loadingAngle = 0;
-            }
+            this.drawLoader(ctx, {x: 0, y: 0}, pageWidth, pageHeight);
         }
         else {
             ctx.drawImage(this.image, 0, 0, pageWidth, pageHeight);
@@ -86,32 +62,36 @@ export class ImagePage extends Page {
         const y = rect.top;
 
         if (!this.isLoad) {
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgb(200, 200, 200)';
-            ctx.fillStyle = 'rgb(255, 255, 255)';
-            ctx.lineWidth = 1;
-            ctx.rect(x + 1, y + 1, pageWidth - 1, pageHeight - 1);
-            ctx.stroke();
-            ctx.fill();
-
-            const middlePoint: Point = {
-                x: x + pageWidth / 2,
-                y: y + pageHeight / 2
-            };
-
-            ctx.beginPath();
-            ctx.lineWidth = 10;
-            ctx.arc(middlePoint.x, middlePoint.y, 20, this.loadingAngle, 3 * Math.PI / 2 + this.loadingAngle);
-            ctx.stroke();
-            ctx.closePath();
-
-            this.loadingAngle += 0.07;
-            if (this.loadingAngle >= 2 * Math.PI) {
-                this.loadingAngle = 0;
-            }
+            this.drawLoader(ctx, {x, y}, pageWidth, pageHeight);
         }
         else {
             ctx.drawImage(this.image, x, y, pageWidth, pageHeight);
+        }
+    }
+    
+    private drawLoader(ctx: CanvasRenderingContext2D, shiftPos: Point, pageWidth: number, pageHeight: number): void {
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgb(200, 200, 200)';
+        ctx.fillStyle = 'rgb(255, 255, 255)';
+        ctx.lineWidth = 1;
+        ctx.rect(shiftPos.x + 1, shiftPos.y + 1, pageWidth - 1, pageHeight - 1);
+        ctx.stroke();
+        ctx.fill();
+
+        const middlePoint: Point = {
+            x: shiftPos.x + pageWidth / 2,
+            y: shiftPos.y + pageHeight / 2
+        };
+
+        ctx.beginPath();
+        ctx.lineWidth = 10;
+        ctx.arc(middlePoint.x, middlePoint.y, 20, this.loadingAngle, 3 * Math.PI / 2 + this.loadingAngle);
+        ctx.stroke();
+        ctx.closePath();
+
+        this.loadingAngle += 0.07;
+        if (this.loadingAngle >= 2 * Math.PI) {
+            this.loadingAngle = 0;
         }
     }
 

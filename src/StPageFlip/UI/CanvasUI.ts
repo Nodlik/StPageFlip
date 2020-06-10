@@ -12,10 +12,6 @@ export class CanvasUI extends UI {
 
         this.canvas = inBlock.querySelectorAll('canvas')[0];
 
-        window.addEventListener('resize', () => {
-            this.update();
-        }, false);
-
         this.distElement = this.canvas;
 
         this.resizeCanvas();

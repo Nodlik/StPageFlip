@@ -26,6 +26,10 @@ export abstract class PageCollection {
         this.isShowCover = this.app.getSettings().showCover;
     }
 
+    public destroy(): void {
+        this.pages = [];
+    }
+
     public abstract load(): void;
 
     protected createSpread(): void {
@@ -62,7 +66,7 @@ export abstract class PageCollection {
         const spread = this.getSpread();
 
         for (let i = 0; i < spread.length; i++)
-            if ((pageNum === spread[i][0]) || ((spread.length > 1) && (pageNum === spread[i][1])))
+            if ((pageNum === spread[i][0]) || (pageNum === spread[i][1]))
                 return i;
 
         return null;
@@ -189,7 +193,7 @@ export abstract class PageCollection {
         }
     }
 
-    private showSpread(): number[] {
+    private showSpread(): void {
         const spread = this.getSpread()[this.currentSpreadIndex];
 
         if (spread.length === 2) {
@@ -216,7 +220,5 @@ export abstract class PageCollection {
 
         this.currentPageIndex = spread[0];
         this.app.updatePageIndex(this.currentPageIndex);
-
-        return spread;
     }
 }
