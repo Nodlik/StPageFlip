@@ -127,6 +127,9 @@ Event object has two fields: ```data: number | string``` and ```object: PageFlip
 * ```flip(pageNum: number, corner: 'top' | 'bottom')``` - Turn to the specified page (with animation)
 * ```loadFromImages(images: ['path-to-image1.jpg', ...])``` - Load page from images
 * ```loadFromHtml(items: NodeListOf | HTMLElement[])``` -	Load page from html elements
+* ```updateFromHtml(items: NodeListOf | HTMLElement[])``` -	Update page from html elements (new on 0.4.0)
+* ```updateFromImages(images: ['path-to-image1.jpg', ...])``` - Update page from images (new on 0.4.0)
+* ```destroy()``` - Destructor. Remove an HTML Element and all event handlers (new on 0.4.0)
 
 ### Contacts
 Oleg,
