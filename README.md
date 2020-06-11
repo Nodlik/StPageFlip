@@ -13,6 +13,8 @@ Powerful, simple, and flexible JS Library for creating realistic and beautiful p
 
 Demo and docs: https://nodlik.github.io/StPageFlip/
 
+For React.JS you can use: https://nodlik.github.io/react-pageflip/
+
 ### Installation
 You can install the latest version using npm:
 
