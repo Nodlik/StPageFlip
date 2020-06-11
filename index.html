@@ -25,6 +25,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="demo.html">Demo</a>
             </li>
+            <li>
+                <a class="nav-link" href="https://nodlik.github.io/react-pageflip/">React Plugin</a>
+            </li>
         </ul>
         <div class="my-2 my-lg-0">
             <a class="github-logo" href="https://github.com/Nodlik/StPageFlip">
@@ -195,7 +198,8 @@ pageFlip.on('flip', (e) => {
     </div>
 
     <div>
-        Or download bundle from <a href="https://github.com/Nodlik/StPageFlip/releases">Github</a>
+        Or download bundle from <a href="https://github.com/Nodlik/StPageFlip/releases">Github</a> <br />
+        For React you can use: <a href="https://nodlik.github.io/react-pageflip/">react-pageflip</a>
     </div>
 
     <div class="mt-4">
@@ -411,6 +415,24 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
                 <td><code>items: NodeListOf | HTMLElement[]</code></td>
                 <td><code>void</code></td>
                 <td>Load page from html elements</td>
+            </tr>
+            <tr>
+                <td><code>updateFromHtml</code></td>
+                <td><code>items: NodeListOf | HTMLElement[]</code></td>
+                <td><code>void</code></td>
+                <td>Update page from html elements <span class="new">new on 0.4.0</span></td>
+            </tr>
+            <tr>
+                <td><code>updateFromImages</code></td>
+                <td><code>images: ['path-to-image1.jpg', ...]</code></td>
+                <td><code>void</code></td>
+                <td>Update page from images <span class="new">new on 0.4.0</span></td>
+            </tr>
+            <tr>
+                <td><code>destroy</code></td>
+                <td><code></code></td>
+                <td><code>void</code></td>
+                <td>Destructor. Removes Parent HTML Element and all event handlers <span class="new">new on 0.4.0</span></td>
             </tr>
             </tbody>
         </table>
