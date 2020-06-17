@@ -94,7 +94,7 @@ export class PageFlip extends EventObject {
         this.pages.show(this.setting.startPage);
 
         // safari fix
-        setTimeout(() => this.ui.update());
+        setTimeout(() => this.ui.update(), 1);
     }
 
     public updateFromImages(imagesHref: string[]): void {
@@ -122,7 +122,7 @@ export class PageFlip extends EventObject {
         this.pages.show(this.setting.startPage);
 
         // safari fix
-        setTimeout(() => this.ui.update());
+        setTimeout(() => this.ui.update(), 1);
     }
 
     public updateFromHtml(items: NodeListOf<HTMLElement> | HTMLElement[]): void {

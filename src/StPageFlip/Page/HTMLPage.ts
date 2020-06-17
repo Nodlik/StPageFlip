@@ -82,11 +82,15 @@ export class HTMLPage extends Page {
         polygon = polygon.slice(0, -2);
         polygon += ')';
 
+        if ((this.render.isSafari() && (this.state.angle === 0))) {
+            this.element.style.transform = "translate(" + (position.x) + "px, " + (position.y) + "px)";
+        }
+        else {
+            this.element.style.transform = "translate3d(" + position.x + "px, " + position.y + "px, 0) rotate(" + this.state.angle + "rad)";
+        }
+
         this.element.style.clipPath = polygon;
         this.element.style.setProperty('-webkit-clip-path', polygon);
-
-        this.element.style.transform = "translate3d(" + position.x + "px, " + position.y + "px, 0) rotate(" + this.state.angle + "rad)";
-
     }
 
     public simpleDraw(orient: PageOrientation): void {

@@ -3,7 +3,6 @@ import {Point, PageRect, RectPoints} from "../BasicTypes";
 import {FlipDirection} from "../Flip/Flip";
 import {Page, PageOrientation} from "../Page/Page";
 import {FlipSetting, SizeType} from "../Settings";
-import {HTMLPage} from "../Page/HTMLPage";
 
 type AnimationAction = ( ) => void;
 type AnimationSuccessAction = () => void;
@@ -52,10 +51,14 @@ export abstract class Render {
     protected orientation: Orientation = null;
 
     private boundsRect: PageRect = null;
+    private safari = false;
 
     protected constructor(app: PageFlip, setting: FlipSetting) {
         this.setting = setting;
         this.app = app;
+
+        const regex = new RegExp('Version\\/[\\d\\.]+.*Safari/');
+        this.safari = (regex.exec(window.navigator.userAgent) !== null);
     }
 
     public abstract drawFrame(timer: number): void;
@@ -78,6 +81,11 @@ export abstract class Render {
             progress: t * 2
         };
     }
+
+    public isSafari(): boolean {
+        return this.safari;
+    }
+
 
     public clearShadow(): void {
         this.shadow = null;
