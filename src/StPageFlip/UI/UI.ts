@@ -153,14 +153,7 @@ export abstract class UI {
     };
 
     public destroy(): void {
-        window.removeEventListener('resize', this.onResize);
-
-        this.distElement.removeEventListener('mousedown', this.onMouseDown);
-        this.distElement.removeEventListener('touchstart', this.onTouchStart);
-        window.removeEventListener('mousemove', this.onMouseMove);
-        window.removeEventListener('touchmove', this.onTouchMove);
-        window.removeEventListener('mouseup', this.onMouseUp);
-        window.removeEventListener('touchend', this.onTouchEnd);
+        this.removeHandlers();
 
         this.distElement.remove();
         this.wrapper.remove();
@@ -193,6 +186,17 @@ export abstract class UI {
         }
 
         this.update();
+    }
+
+    protected removeHandlers(): void {
+        window.removeEventListener('resize', this.onResize);
+
+        this.distElement.removeEventListener('mousedown', this.onMouseDown);
+        this.distElement.removeEventListener('touchstart', this.onTouchStart);
+        window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('touchmove', this.onTouchMove);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        window.removeEventListener('touchend', this.onTouchEnd);
     }
 
     protected setHandlers(): void {

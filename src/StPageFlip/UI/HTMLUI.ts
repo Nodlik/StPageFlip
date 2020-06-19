@@ -17,6 +17,18 @@ export class HTMLUI extends UI {
         this.setHandlers();
     }
 
+    public updateItems(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
+        this.removeHandlers();
+
+        this.distElement.innerHTML = "";
+
+        for (const item of items) {
+            this.distElement.appendChild(item);
+        }
+
+        this.setHandlers();
+    }
+
     public update(): void {
         this.app.getRender().update();
     }

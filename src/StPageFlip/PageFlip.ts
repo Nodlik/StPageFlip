@@ -131,6 +131,7 @@ export class PageFlip extends EventObject {
         this.pages.destroy();
         this.pages = new HTMLPageCollection(this, this.render, this.ui.getDistElement(), items);
         this.pages.load();
+        (this.ui as HTMLUI).updateItems(items);
 
         this.pages.show(current);
     }
