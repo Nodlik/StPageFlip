@@ -3,6 +3,9 @@
   display: block;
   box-sizing: border-box;
   transform: translateZ(0);
+
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
 }
 
 .sft__wrapper {

@@ -16,7 +16,7 @@ export abstract class UI {
 
     private touchPoint: SwipeData = null;
     private readonly swipeTimeout = 250;
-    private readonly swipeDistance = 80;
+    private readonly swipeDistance = 40;
 
     private preventTouch = false;
 
