@@ -2,6 +2,9 @@ import {UI} from "./UI";
 import {PageFlip} from "../PageFlip";
 import {FlipSetting} from "../Settings";
 
+/**
+ * UI for canvas mode
+ */
 export class CanvasUI extends UI {
     private readonly canvas: HTMLCanvasElement;
 
@@ -27,6 +30,9 @@ export class CanvasUI extends UI {
         this.canvas.height = height;
     }
 
+    /**
+     * Get canvas element
+     */
     public getCanvas(): HTMLCanvasElement {
         return this.canvas;
     }

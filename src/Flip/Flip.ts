@@ -284,12 +284,11 @@ export class Flip {
             this.render.setBottomPage(this.bottomPage);
             this.render.setFlippingPage(this.flippingPage);
 
-            this.render.drawShadow(
+            this.render.setShadowData(
                 this.calc.getShadowStartPoint(),
                 this.calc.getShadowAngle(),
                 progress,
-                this.calc.getDirection(),
-                this.calc.getShadowLength()
+                this.calc.getDirection()
             );
         }
     }

@@ -1,6 +1,6 @@
 {
   "files": [
-    "src/StPageFlip/PageFlip.ts"
+    "src/PageFlip.ts"
   ],
   "compilerOptions": {
     "noImplicitAny": true,
@@ -8,5 +8,13 @@
     "module": "es6",
     "target": "es2017"
   },
-  "reference": []
+  "typedocOptions": {
+      "mode": "file",
+      "out": "dist/docs",
+      "readme": "none",
+      "excludePrivate": true,
+      "excludeNotExported": true,
+      "excludeProtected": true
+  },
+  "reference": [],
 }

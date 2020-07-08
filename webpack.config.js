@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/StPageFlip/PageFlip.ts',
+    entry: './src/PageFlip.ts',
     output: {
         path: path.resolve(__dirname, 'dist/js'),
         filename: 'pageFlip.browser.js',

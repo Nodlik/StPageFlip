@@ -88,7 +88,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));
 Use ```data-density="hard"``` attribute to specify page type (```soft | hard```) and define flipping animation.
 ### Config
 
-To set configuration define these parameters when creating an object::
+To set configuration define these parameters when creating an object:
 
 * ```width: number``` - required
 * ```height: number``` - required
@@ -98,6 +98,7 @@ To set configuration define these parameters when creating an object::
 * ```flippingTime: number``` (milliseconds) - default: ```1000``` Flipping animation time
 * ```usePortrait: bool``` - default: ```true``` Enable switching to portrait mode
 * ```startZIndex: number``` - default: ```0``` Initial value to z-index
+* ```startPage: number``` - default: ```0``` Page number from which to start viewing
 * ```autoSize: bool``` - default: ```true``` If this value is true, the parent element will be equal to the size of the book
 * ```maxShadowOpacity: number [0..1]``` - default: ```1``` Shadow intensity (1: max intensity, 0: hidden shadows)
 * ```showCover: boolean``` - default: ```false``` If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode 
@@ -131,7 +132,7 @@ Event object has two fields: ```data: number | string``` and ```object: PageFlip
 * ```loadFromHtml(items: NodeListOf | HTMLElement[])``` -	Load page from html elements
 * ```updateFromHtml(items: NodeListOf | HTMLElement[])``` -	Update page from html elements (new on 0.4.0)
 * ```updateFromImages(images: ['path-to-image1.jpg', ...])``` - Update page from images (new on 0.4.0)
-* ```destroy()``` - Destructor. Remove an HTML Element and all event handlers (new on 0.4.0)
+* ```destroy()``` - Destructor. Remove a root HTML element and all event handlers (new on 0.4.0)
 
 ### Contacts
 Oleg,

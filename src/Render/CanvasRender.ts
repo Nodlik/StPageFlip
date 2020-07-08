@@ -4,7 +4,9 @@ import {FlipDirection} from "../Flip/Flip";
 import {PageOrientation} from "../Page/Page";
 import {FlipSetting} from "../Settings";
 
-
+/**
+ * Class responsible for rendering the Canvas book
+ */
 export class CanvasRender extends Render {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
@@ -16,19 +18,11 @@ export class CanvasRender extends Render {
         this.ctx = inCanvas.getContext('2d');
     }
 
-    public getBlockWidth(): number {
-        return this.canvas.offsetWidth;
-    }
-
-    public getBlockHeight(): number {
-        return this.canvas.offsetHeight;
-    }
-
     public getContext(): CanvasRenderingContext2D {
         return this.ctx;
     }
 
-    public drawFrame(timer: number): void {
+    protected drawFrame(): void {
         this.clear();
 
         if (this.orientation !== Orientation.PORTRAIT)

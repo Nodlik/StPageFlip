@@ -91,33 +91,33 @@ export class FlipCalculation {
         };
 
         if (this.corner === FlipCorner.TOP) {
-            this.topIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.topIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [pos, this.rect.topRight],
                 [{x: 0, y: 0}, {x: this.pageWidth, y: 0}]
             );
 
-            this.sideIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.sideIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [pos, this.rect.bottomLeft],
                 [{x: this.pageWidth, y: 0}, {x: this.pageWidth, y: this.pageHeight}]
             );
 
-            this.bottomIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.bottomIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [this.rect.bottomLeft, this.rect.bottomRight],
                 [{x: 0, y: this.pageHeight}, {x: this.pageWidth, y: this.pageHeight}]
             );
         }
         else {
-            this.topIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.topIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [this.rect.topLeft, this.rect.topRight],
                 [{x: 0, y: 0}, {x: this.pageWidth, y: 0}]
             );
 
-            this.sideIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.sideIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [pos, this.rect.topLeft],
                 [{x: this.pageWidth, y: 0}, {x: this.pageWidth, y: this.pageHeight}]
             );
 
-            this.bottomIntersectPoint = Helper.GetIntersectByTwoSegment(boundRect,
+            this.bottomIntersectPoint = Helper.GetIntersectBetweenTwoSegment(boundRect,
                 [this.rect.bottomLeft, this.rect.bottomRight],
                 [{x: 0, y: this.pageHeight}, {x: this.pageWidth, y: this.pageHeight}]
             );
@@ -127,7 +127,7 @@ export class FlipCalculation {
     private checkPositionAtCenterLine(checkedPos: Point, centerOne: Point, centerTwo: Point): Point {
         let result = checkedPos;
 
-        const tmp = Helper.GetIntersectByLineAndCircle(centerOne, this.pageWidth, result);
+        const tmp = Helper.LimitPointToCircle(centerOne, this.pageWidth, result);
         if (result !== tmp) {
             result = tmp;
             this.updateAngleAndGeometry(result);
@@ -144,7 +144,7 @@ export class FlipCalculation {
         }
 
         if (checkPointOne.x <= 0) {
-            const bottomPoint = Helper.GetIntersectByLineAndCircle(centerTwo, rad, checkPointTwo);
+            const bottomPoint = Helper.LimitPointToCircle(centerTwo, rad, checkPointTwo);
 
             if (bottomPoint !== result) {
                 result = bottomPoint;
@@ -254,7 +254,7 @@ export class FlipCalculation {
     }
 
     public getShadowAngle(): number {
-        const angle = Helper.GetAngleFromTwoLine(
+        const angle = Helper.GetAngleBetweenTwoLine(
             this.getSegmentToShadowLine(), [{x: 0, y: 0}, {x: this.pageWidth, y: 0}]
         );
 
@@ -319,7 +319,7 @@ export class FlipCalculation {
         }
 
         if (this.sideIntersectPoint !== null) {
-            if (Helper.GetDestinationFromTwoPoint(this.sideIntersectPoint, this.topIntersectPoint) >= 10)
+            if (Helper.GetDistanceBetweenTwoPoint(this.sideIntersectPoint, this.topIntersectPoint) >= 10)
                 result.push(this.sideIntersectPoint);
         }
         else {
