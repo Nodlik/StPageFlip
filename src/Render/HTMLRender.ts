@@ -281,7 +281,7 @@ export class HTMLRender extends Render {
 
             if (this.flippingPage === this.bottomPage) (this.leftPage as HTMLPage).clearSaved();
 
-            this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+            this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardDrawingAngle());
             this.leftPage.draw(this.flippingPage.getDrawingDensity());
         } else {
             this.leftPage.simpleDraw(PageOrientation.LEFT);
@@ -305,7 +305,7 @@ export class HTMLRender extends Render {
 
             if (this.flippingPage === this.bottomPage) (this.rightPage as HTMLPage).clearSaved();
 
-            this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
+            this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardDrawingAngle());
             this.rightPage.draw(this.flippingPage.getDrawingDensity());
         } else {
             this.rightPage.simpleDraw(PageOrientation.RIGHT);

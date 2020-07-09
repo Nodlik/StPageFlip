@@ -1,41 +1,59 @@
-import {Render} from "../Render/Render";
-import {Point, RectPoints} from "../BasicTypes";
+import { Render } from '../Render/Render';
+import { Point } from '../BasicTypes';
 
+/**
+ * State of the page on the basis of which rendering
+ */
 export interface PageState {
+    /** Page rotation angle */
     angle: number;
+
+    /** Page scope */
     area: Point[];
-    corners: RectPoints;
+
+    /** Page position */
     position: Point;
-    hardAngle: number;
+
+    /** Rotate angle for hard pages */
     hardDrawingAngle: number;
 }
 
 export const enum PageOrientation {
+    /** Left side page */
     LEFT,
-    RIGHT
+
+    /** Right side page */
+    RIGHT,
 }
 
 export const enum PageDensity {
     SOFT = 'soft',
-    HARD = 'hard'
+    HARD = 'hard',
 }
 
+/**
+ * Class representing a book page
+ */
 export abstract class Page {
+    /** State of the page on the basis of which rendering */
     protected state: PageState;
+    /** Render object */
     protected render: Render;
 
+    /** Page Orientation */
     protected orientation: PageOrientation;
+
+    /** Density at creation */
     protected createdDensity: PageDensity;
+    /** Density at the time of rendering (Depends on neighboring pages) */
     protected nowDrawingDensity: PageDensity;
 
     protected constructor(render: Render, density: PageDensity) {
         this.state = {
             angle: 0,
             area: [],
-            corners: null,
-            position: {x: 0, y: 0},
-            hardAngle: 0,
-            hardDrawingAngle: 0
+            position: { x: 0, y: 0 },
+            hardDrawingAngle: 0,
         };
 
         this.createdDensity = density;
@@ -44,65 +62,107 @@ export abstract class Page {
         this.render = render;
     }
 
+    /**
+     * Render static page
+     * 
+     * @param {PageOrientation} orient - Static page orientation
+     */
+    public abstract simpleDraw(orient: PageOrientation): void;
+
+    /**
+     * Render dynamic page, using state
+     * 
+     * @param {PageDensity} tempDensity - Density at the time of rendering 
+     */
+    public abstract draw(tempDensity?: PageDensity): void;
+
+    /**
+     * Page loading
+     */
+    public abstract load(): void;
+
+    /**
+     * Set a constant page density
+     * 
+     * @param {PageDensity} density 
+     */
     public setDensity(density: PageDensity): void {
         this.createdDensity = density;
         this.nowDrawingDensity = density;
     }
 
+    /**
+     * Set temp page density to next render
+     * 
+     * @param {PageDensity}  density 
+     */
     public setDrawingDensity(density: PageDensity): void {
         this.nowDrawingDensity = density;
     }
 
-    public getDrawingDensity(): PageDensity {
-        return this.nowDrawingDensity;
-    }
-
-    public getDensity(): PageDensity {
-        return this.createdDensity;
-    }
-
+    /**
+     * Set page position
+     * 
+     * @param {Point} pagePos 
+     */
     public setPosition(pagePos: Point): void {
         this.state.position = pagePos;
     }
 
+    /**
+     * Set page angle
+     * 
+     * @param {number} angle 
+     */
     public setAngle(angle: number): void {
         this.state.angle = angle;
     }
 
+    /**
+     * Set page crop area
+     * 
+     * @param {Point[]} area 
+     */
     public setArea(area: Point[]): void {
         this.state.area = area;
     }
 
-    public setCorners(corners: RectPoints): void {
-        this.state.corners = corners;
-    }
-
-    public getAngle(): number {
-        return this.state.angle;
-    }
-
-    public setHardAngle(angle: number): void {
-        this.state.hardAngle = angle;
-        this.state.hardDrawingAngle = angle;
-    }
-
+    /**
+     * Rotate angle for hard pages
+     * 
+     * @param {number} angle 
+     */
     public setHardDrawingAngle(angle: number): void {
         this.state.hardDrawingAngle = angle;
     }
 
-    public getHardAngle(): number {
-        return this.state.hardAngle;
-    }
-
+    /**
+     * Set page orientation
+     * 
+     * @param {PageOrientation} orientation 
+     */
     public setOrientation(orientation: PageOrientation): void {
         this.orientation = orientation;
     }
 
-    public getOrientation(): PageOrientation {
-        return this.orientation;
+    /**
+     * Get temp page density
+     */
+    public getDrawingDensity(): PageDensity {
+        return this.nowDrawingDensity;
     }
 
-    public abstract simpleDraw(orient: PageOrientation): void;
-    public abstract draw(tempDensity?: PageDensity): void;
-    public abstract load(): void;
+    /**
+     * Get a constant page density
+     */
+    public getDensity(): PageDensity {
+        return this.createdDensity;
+    }
+    
+    /**
+     * Get rotate angle for hard pages
+     */
+    public getHardDrawingAngle(): number {
+        return this.state.hardDrawingAngle;
+    }
 }

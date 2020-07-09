@@ -1,8 +1,11 @@
-import {CanvasRender} from "../Render/CanvasRender";
-import {Page, PageDensity, PageOrientation} from "./Page";
-import {Render} from "../Render/Render";
-import {Point} from "../BasicTypes";
+import { CanvasRender } from '../Render/CanvasRender';
+import { Page, PageDensity, PageOrientation } from './Page';
+import { Render } from '../Render/Render';
+import { Point } from '../BasicTypes';
 
+/**
+ * Class representing a book page as an image on Canvas
+ */
 export class ImagePage extends Page {
     private readonly image: HTMLImageElement = null;
     private isLoad = false;
@@ -39,9 +42,8 @@ export class ImagePage extends Page {
         ctx.clip();
 
         if (!this.isLoad) {
-            this.drawLoader(ctx, {x: 0, y: 0}, pageWidth, pageHeight);
-        }
-        else {
+            this.drawLoader(ctx, { x: 0, y: 0 }, pageWidth, pageHeight);
+        } else {
             ctx.drawImage(this.image, 0, 0, pageWidth, pageHeight);
         }
 
@@ -55,21 +57,23 @@ export class ImagePage extends Page {
         const pageWidth = rect.pageWidth;
         const pageHeight = rect.height;
 
-        const x = (orient === PageOrientation.RIGHT)
-            ? rect.left + rect.pageWidth
-            : rect.left;
+        const x = orient === PageOrientation.RIGHT ? rect.left + rect.pageWidth : rect.left;
 
         const y = rect.top;
 
         if (!this.isLoad) {
-            this.drawLoader(ctx, {x, y}, pageWidth, pageHeight);
-        }
-        else {
+            this.drawLoader(ctx, { x, y }, pageWidth, pageHeight);
+        } else {
             ctx.drawImage(this.image, x, y, pageWidth, pageHeight);
         }
     }
-    
-    private drawLoader(ctx: CanvasRenderingContext2D, shiftPos: Point, pageWidth: number, pageHeight: number): void {
+
+    private drawLoader(
+        ctx: CanvasRenderingContext2D,
+        shiftPos: Point,
+        pageWidth: number,
+        pageHeight: number
+    ): void {
         ctx.beginPath();
         ctx.strokeStyle = 'rgb(200, 200, 200)';
         ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -80,12 +84,18 @@ export class ImagePage extends Page {
 
         const middlePoint: Point = {
             x: shiftPos.x + pageWidth / 2,
-            y: shiftPos.y + pageHeight / 2
+            y: shiftPos.y + pageHeight / 2,
         };
 
         ctx.beginPath();
         ctx.lineWidth = 10;
-        ctx.arc(middlePoint.x, middlePoint.y, 20, this.loadingAngle, 3 * Math.PI / 2 + this.loadingAngle);
+        ctx.arc(
+            middlePoint.x,
+            middlePoint.y,
+            20,
+            this.loadingAngle,
+            (3 * Math.PI) / 2 + this.loadingAngle
+        );
         ctx.stroke();
         ctx.closePath();
 
@@ -97,7 +107,7 @@ export class ImagePage extends Page {
 
     public load(): void {
         if (!this.isLoad)
-            this.image.onload = () => {
+            this.image.onload = (): void => {
                 this.isLoad = true;
             };
     }
