@@ -9,12 +9,14 @@
     "target": "es2017"
   },
   "typedocOptions": {
+      "name": "StPageFlip",
       "mode": "file",
       "out": "dist/docs",
       "readme": "none",
       "excludePrivate": true,
       "excludeNotExported": true,
-      "excludeProtected": true
+      "excludeProtected": true,
+      "categorizeByGroup": true,
   },
   "reference": [],
 }

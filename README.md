@@ -1,3 +1,5 @@
+[![GitHub license](https://img.shields.io/github/license/Nodlik/StPageFlip)](https://github.com/Nodlik/StPageFlip/blob/master/LICENSE) ![npm](https://img.shields.io/npm/v/page-flip) ![npm](https://img.shields.io/npm/dm/page-flip)
+
 # StPageFlip
 Powerful, simple, and flexible JS Library for creating realistic and beautiful page turning effect.
 
