@@ -22,11 +22,14 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li>
+                <a class="nav-link" href="https://nodlik.github.io/react-pageflip/">React Plugin</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="demo.html">Demo</a>
             </li>
-            <li>
-                <a class="nav-link" href="https://nodlik.github.io/react-pageflip/">React Plugin</a>
+            <li class="nav-item">
+                <a class="nav-link" href="docs/index.html">API Docs</a>
             </li>
         </ul>
         <div class="my-2 my-lg-0">
@@ -68,108 +71,121 @@ const pageFlip = new PageFlip(document.getElementById('book'),
 );
 
 pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-
-pageFlip.on('flip', (e) => {
-        console.log("Current page: " + e.data);
-        // callback code
-    }
-);
 </code></pre>
+            </div>
+            <div class="shadow-sm bg-light rounded mt-3 p-3 github-block">
+                <a href="https://github.com/Nodlik/react-pageflip" style="background-image: url('images/github_dark.png');" class="github-href">View on Github</a>
+
+                <a class="github-button" href="https://github.com/Nodlik/StPageFlip" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star Nodlik/StPageFlip on GitHub">Star</a>
             </div>
         </div>
     </div>
 </div>
 
 <div class="demo-block bg-light pt-3 pb-3 overflow-hidden">
-    <div class="container mb-3 text-center" id="buttonDemoSelection">
-        <div class="btn-group" role="group" aria-label="">
-            <button type="button" class="btn btn-primary" data-dest="html">HTML</button>
-            <button type="button" class="btn btn-secondary" data-dest="canvas">CANVAS</button>
+    <div class="container mb-3" id="buttonDemoSelection">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="btn-group" role="group" aria-label="">
+                    <button type="button" class="btn btn-primary" data-dest="html">HTML</button>
+                    <button type="button" class="btn btn-secondary" data-dest="canvas">CANVAS</button>
+                </div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <span style="padding: 5px; display: inline-block; border-bottom: solid 3px #cccccc">
+                    <a href="#demo" class="mode" data-dest="mobile" ><img src="icons/phone.svg" alt="" width="28" height="28" title="Phone" /></a>
+                    <a href="#demo" class="mode" data-dest="tablet" ><img src="icons/tablet.svg" alt="" width="32" height="32" title="Tablet" /></a>
+                    <a href="#demo" class="mode" data-dest="tablet-l" ><img src="icons/tablet-landscape.svg" alt="" width="32" height="32" title="Tablet landscape" /></a>
+                    <a href="#demo" class="mode mode--selected" data-dest="desktop" title=""><img src="icons/window.svg" alt="" width="36" height="36" title="Desktop" /></a>
+                </span>
+            </div>
         </div>
     </div>
 
-    <div class="container-md">
-        <div id="htmlBook">
-            <div class="flip-book html-book" id="htmlBookExample" style="background-image: url('images/background.jpg')">
-                <div class="page page-cover page-cover-top" data-density="hard">
-                    <div class="page-content">
-                        <h2>BOOK TITLE</h2>
+    <div class="container">
+        <div id="bookParent" style="background-image: url('images/background.jpg')">
+            <div id="htmlBook">
+                <div class="flip-book html-book" id="htmlBookExample" style="background-image: url('images/background.jpg')">
+                    <div class="page page-cover page-cover-top" data-density="hard">
+                        <div class="page-content">
+                            <h2>BOOK TITLE</h2>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 1</h2>
-                        <div class="page-image" style="background-image: url(images/html/1.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">1</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 1</h2>
+                            <div class="page-image" style="background-image: url(images/html/1.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">1</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 2</h2>
-                        <div class="page-image" style="background-image: url(images/html/2.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">2</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 2</h2>
+                            <div class="page-image" style="background-image: url(images/html/2.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">2</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 3</h2>
-                        <div class="page-image" style="background-image: url(images/html/3.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">3</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 3</h2>
+                            <div class="page-image" style="background-image: url(images/html/3.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">3</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page hard" data-density="hard">
-                    <div class="page-content">
-                        <h2 class="page-header">HARD Page header - 4</h2>
-                        <div class="page-image" style="background-image: url(images/html/4.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">4</div>
+                    <div class="page hard" data-density="hard">
+                        <div class="page-content">
+                            <h2 class="page-header">HARD Page header - 4</h2>
+                            <div class="page-image" style="background-image: url(images/html/4.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">4</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page hard" data-density="hard">
-                    <div class="page-content">
-                        <h2 class="page-header">HARD Page header - 5</h2>
-                        <div class="page-image" style="background-image: url(images/html/5.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">5</div>
+                    <div class="page hard" data-density="hard">
+                        <div class="page-content">
+                            <h2 class="page-header">HARD Page header - 5</h2>
+                            <div class="page-image" style="background-image: url(images/html/5.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">5</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 6</h2>
-                        <div class="page-image" style="background-image: url(images/html/6.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">6</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 6</h2>
+                            <div class="page-image" style="background-image: url(images/html/6.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">6</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 7</h2>
-                        <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">7</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 7</h2>
+                            <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">7</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page">
-                    <div class="page-content">
-                        <h2 class="page-header">Page header - 8</h2>
-                        <div class="page-image" style="background-image: url(images/html/8.jpg)"></div>
-                        <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
-                        <div class="page-footer">8</div>
+                    <div class="page">
+                        <div class="page-content">
+                            <h2 class="page-header">Page header - 8</h2>
+                            <div class="page-image" style="background-image: url(images/html/8.jpg)"></div>
+                            <div class="page-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                            <div class="page-footer">8</div>
+                        </div>
                     </div>
-                </div>
-                <div class="page page-cover page-cover-bottom" data-density="hard">
-                    <div class="page-content">
-                        <h2>THE END</h2>
+                    <div class="page page-cover page-cover-bottom" data-density="hard">
+                        <div class="page-content">
+                            <h2>THE END</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="canvasBook" style="display: none">
-            <div class="flip-book canvas-book" id="canvasBookExample"></div>
+            <div id="canvasBook" style="display: none">
+                <div class="flip-book canvas-book" id="canvasBookExample"></div>
+            </div>
         </div>
     </div>
 
@@ -182,9 +198,10 @@ pageFlip.on('flip', (e) => {
     </div>
 </div>
 
-<div class="container mt-4">
+<div class="container container-md mt-4">
     <div>
         <a href="demo.html" class="btn btn-info">View demo with source code</a>
+        | <a href="docs/index.html" class="">View API Docs (TypeDoc generated)</a>
         <hr />
     </div>
     <div>
@@ -447,6 +464,7 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
     </div>
 </div>
 
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="static/pagesDemo.bundle.js"></script>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
@@ -463,6 +481,11 @@ pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));</code></pre>
 <noscript><div><img src="https://mc.yandex.ru/watch/64530565" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 <!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
 </body>
 
 </html>
