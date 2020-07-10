@@ -15,6 +15,9 @@ export interface PageState {
     position: Point;
 
     /** Rotate angle for hard pages */
+    hardAngle: number;
+
+    /** Rotate angle for hard pages at renedering time */
     hardDrawingAngle: number;
 }
 
@@ -53,6 +56,7 @@ export abstract class Page {
             angle: 0,
             area: [],
             position: { x: 0, y: 0 },
+            hardAngle: 0,
             hardDrawingAngle: 0,
         };
 
@@ -128,11 +132,21 @@ export abstract class Page {
     }
 
     /**
-     * Rotate angle for hard pages
+     * Rotate angle for hard pages to next render
      * 
      * @param {number} angle 
      */
     public setHardDrawingAngle(angle: number): void {
+        this.state.hardDrawingAngle = angle;
+    }
+
+    /**
+     * Rotate angle for hard pages
+     * 
+     * @param {number} angle 
+     */
+    public setHardAngle(angle: number): void {
+        this.state.hardAngle = angle;
         this.state.hardDrawingAngle = angle;
     }
 
@@ -162,7 +176,7 @@ export abstract class Page {
     /**
      * Get rotate angle for hard pages
      */
-    public getHardDrawingAngle(): number {
-        return this.state.hardDrawingAngle;
+    public getHardAngle(): number {
+        return this.state.hardAngle;
     }
 }

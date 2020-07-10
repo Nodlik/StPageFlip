@@ -182,16 +182,16 @@ export class Flip {
             this.bottomPage.setArea(this.calc.getBottomClipArea());
             this.bottomPage.setPosition(this.calc.getBottomPagePosition());
             this.bottomPage.setAngle(0);
-            this.bottomPage.setHardDrawingAngle(0);
+            this.bottomPage.setHardAngle(0);
 
             this.flippingPage.setArea(this.calc.getFlippingClipArea());
             this.flippingPage.setPosition(this.calc.getActiveCorner());
             this.flippingPage.setAngle(this.calc.getAngle());
 
             if (this.calc.getDirection() === FlipDirection.FORWARD) {
-                this.flippingPage.setHardDrawingAngle((90 * (200 - progress * 2)) / 100);
+                this.flippingPage.setHardAngle((90 * (200 - progress * 2)) / 100);
             } else {
-                this.flippingPage.setHardDrawingAngle((-90 * (200 - progress * 2)) / 100);
+                this.flippingPage.setHardAngle((-90 * (200 - progress * 2)) / 100);
             }
 
             this.render.setPageRect(this.calc.getRect());
