@@ -44,6 +44,9 @@ export interface FlipSetting {
     /** Disable content scrolling when touching a book on mobile devices */
     mobileScrollSupport: boolean;
 
+    /** Set the forward event of clicking on child elements (buttons, links) */
+    clickEventForward: boolean;
+
     swipeDistance: number;
 }
 
@@ -66,6 +69,7 @@ export class Settings {
         showCover: false,
         mobileScrollSupport: true,
         swipeDistance: 30,
+        clickEventForward: true
     };
 
     /**

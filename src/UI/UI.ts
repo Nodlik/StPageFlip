@@ -159,32 +159,46 @@ export abstract class UI {
         };
     }
 
+    private checkTarget(targer: EventTarget): boolean {
+        if (!this.app.getSettings().clickEventForward) return true;
+
+        if (['a', 'button'].includes((targer as HTMLElement).tagName.toLowerCase())) {
+            return false;
+        }
+        
+        return true;
+    }
+
     private onMouseDown = (e: MouseEvent): void => {
-        const pos = this.getMousePos(e.clientX, e.clientY);
+        if (this.checkTarget(e.target)) {
+            const pos = this.getMousePos(e.clientX, e.clientY);
 
-        this.app.startUserTouch(pos);
+            this.app.startUserTouch(pos);
 
-        e.preventDefault();
+            e.preventDefault();
+        }
     };
 
     private onTouchStart = (e: TouchEvent): void => {
-        if (e.changedTouches.length > 0) {
-            const t = e.changedTouches[0];
-            const pos = this.getMousePos(t.clientX, t.clientY);
+        if (this.checkTarget(e.target)) {
+            if (e.changedTouches.length > 0) {
+                const t = e.changedTouches[0];
+                const pos = this.getMousePos(t.clientX, t.clientY);
 
-            this.touchPoint = {
-                point: pos,
-                time: Date.now(),
-            };
+                this.touchPoint = {
+                    point: pos,
+                    time: Date.now(),
+                };
 
-            // part of swipe detection
-            setTimeout(() => {
-                if (this.touchPoint !== null) {
-                    this.app.startUserTouch(pos);
-                }
-            }, this.swipeTimeout);
+                // part of swipe detection
+                setTimeout(() => {
+                    if (this.touchPoint !== null) {
+                        this.app.startUserTouch(pos);
+                    }
+                }, this.swipeTimeout);
 
-            if (!this.app.getSettings().mobileScrollSupport) e.preventDefault();
+                if (!this.app.getSettings().mobileScrollSupport) e.preventDefault();
+            }
         }
     };
 
