@@ -1,4 +1,4 @@
-[![GitHub license](https://img.shields.io/github/license/Nodlik/StPageFlip)](https://github.com/Nodlik/StPageFlip/blob/master/LICENSE) [![npm](https://img.shields.io/npm/v/page-flip)](https://www.npmjs.com/package/page-flip) [![npm](https://img.shields.io/npm/dm/page-flip)](https://npmcharts.com/compare/page-flip?minimal=true)
+[![GitHub license](https://img.shields.io/github/license/Nodlik/StPageFlip)](https://github.com/Nodlik/StPageFlip/blob/master/LICENSE) [![npm](https://img.shields.io/npm/v/page-flip)](https://www.npmjs.com/package/page-flip) [![npm](https://img.shields.io/npm/dm/page-flip)](https://npmcharts.com/compare/page-flip?minimal=true) [![](https://img.shields.io/badge/support-buymeacoffee-orange)](https://www.buymeacoffee.com/nndlik)
 
 # StPageFlip
 Powerful, simple, and flexible JS Library for creating realistic and beautiful page turning effect.
@@ -107,6 +107,9 @@ To set configuration define these parameters when creating an object:
 * ```maxShadowOpacity: number [0..1]``` - default: ```1``` Shadow intensity (1: max intensity, 0: hidden shadows)
 * ```showCover: boolean``` - default: ```false``` If this value is true, the first and the last pages will be marked as hard and will be shown in single page mode 
 * ```mobileScrollSupport: boolean``` - default: ```true``` disable content scrolling when touching a book on mobile devices
+* ```swipeDistance: number``` - default: ```30``` (px) minimum distance to detect swipe (new on 1.1.0)
+* ```clickEventForward: boolean``` - default: ```true``` forwarding click events to the page children html elements (only for ```a``` and ```button``` tags) (new on 1.1.0)
+
 ### Events
 To listen events use the method ```on```:
 ```js
@@ -144,3 +147,9 @@ Oleg,
 <oleg.litovski9@gmail.com>
 
 https://github.com/Nodlik/StPageFlip
+
+
+[![Buy me a coffee][buymeacoffee-shield]][buymeacoffee]
+
+ [buymeacoffee]: https://www.buymeacoffee.com/nndlik
+ [buymeacoffee-shield]: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
