@@ -47,6 +47,9 @@ export interface FlipSetting {
     /** Set the forward event of clicking on child elements (buttons, links) */
     clickEventForward: boolean;
 
+    /** Using mouse and touch events to page flipping */
+    useMouseEvents: boolean;
+
     swipeDistance: number;
 }
 
@@ -69,7 +72,8 @@ export class Settings {
         showCover: false,
         mobileScrollSupport: true,
         swipeDistance: 30,
-        clickEventForward: true
+        clickEventForward: true,
+        useMouseEvents: true
     };
 
     /**

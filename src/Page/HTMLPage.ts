@@ -105,9 +105,15 @@ export class HTMLPage extends Page {
     public simpleDraw(orient: PageOrientation): void {
         if (this.element.classList.contains('--simple')) return;
 
-        if (this.copiedElement === null) {
-            this.copiedElement = this.element.cloneNode(true) as HTMLElement;
-            this.element.parentElement.appendChild(this.copiedElement);
+        let staticPage = this.element;
+        if (this.render.getSettings().usePortrait) {
+            if (this.copiedElement === null) {
+                this.copiedElement = this.element.cloneNode(true) as HTMLElement;
+                this.element.parentElement.appendChild(this.copiedElement);
+            }
+
+            staticPage = this.copiedElement;
+            this.element.style.cssText = 'display: none';
         }
 
         const rect = this.render.getRect();
@@ -120,7 +126,7 @@ export class HTMLPage extends Page {
         const y = rect.top;
 
         this.element.classList.add('--simple');
-        this.copiedElement.style.cssText =
+        staticPage.style.cssText =
             'position: absolute; display: block; height: ' +
             pageHeight +
             'px; left: ' +
@@ -132,8 +138,6 @@ export class HTMLPage extends Page {
             'px; z-index: ' +
             (this.render.getSettings().startZIndex + 1) +
             ';';
-
-        this.element.style.cssText = 'display: none';
     }
 
     public clearSaved(): void {

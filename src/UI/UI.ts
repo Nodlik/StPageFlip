@@ -27,7 +27,7 @@ export abstract class UI {
 
     /**
      * @constructor
-     * 
+     *
      * @param {HTMLElement} inBlock - Root HTML Element
      * @param {PageFlip} app - PageFlip instanse
      * @param {FlipSetting} setting - Configuration object
@@ -45,11 +45,11 @@ export abstract class UI {
 
         // Setting block sizes based on configuration
         inBlock.style.minWidth = setting.minWidth * k + 'px';
-        inBlock.style.minHeight = setting.minHeight * k + 'px';
+        inBlock.style.minHeight = setting.minHeight + 'px';
 
         if (setting.size === SizeType.FIXED) {
             inBlock.style.minWidth = setting.width * k + 'px';
-            inBlock.style.minHeight = setting.height * k + 'px';
+            inBlock.style.minHeight = setting.height + 'px';
         }
 
         if (setting.autoSize) {
@@ -67,7 +67,7 @@ export abstract class UI {
      * Destructor. Remove all HTML elements and all event handlers
      */
     public destroy(): void {
-        this.removeHandlers();
+        if (this.app.getSettings().useMouseEvents) this.removeHandlers();
 
         this.distElement.remove();
         this.wrapper.remove();
@@ -80,7 +80,7 @@ export abstract class UI {
 
     /**
      * Get parent element for book
-     * 
+     *
      * @returns {HTMLElement}
      */
     public getDistElement(): HTMLElement {
@@ -89,7 +89,7 @@ export abstract class UI {
 
     /**
      * Get wrapper element
-     * 
+     *
      * @returns {HTMLElement}
      */
     public getWrapper(): HTMLElement {
@@ -98,7 +98,7 @@ export abstract class UI {
 
     /**
      * Updates styles and sizes based on book orientation
-     * 
+     *
      * @param {Orientation} orientation - New book orientation
      */
     public setOrientationStyle(orientation: Orientation): void {
@@ -134,6 +134,8 @@ export abstract class UI {
     }
 
     protected setHandlers(): void {
+        if (!this.app.getSettings().useMouseEvents) return;
+        
         this.distElement.addEventListener('mousedown', this.onMouseDown);
         this.distElement.addEventListener('touchstart', this.onTouchStart);
         window.addEventListener('mousemove', this.onMouseMove);
@@ -146,9 +148,9 @@ export abstract class UI {
 
     /**
      * Convert global coordinates to relative book coordinates
-     * 
-     * @param x 
-     * @param y 
+     *
+     * @param x
+     * @param y
      */
     private getMousePos(x: number, y: number): Point {
         const rect = this.distElement.getBoundingClientRect();
@@ -165,7 +167,7 @@ export abstract class UI {
         if (['a', 'button'].includes((targer as HTMLElement).tagName.toLowerCase())) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -276,5 +278,4 @@ export abstract class UI {
             this.app.userStop(pos, isSwipe);
         }
     };
-
 }

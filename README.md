@@ -100,7 +100,7 @@ To set configuration define these parameters when creating an object:
 * ```minWidth, maxWidth, minHeight, maxHeight: number``` You must set threshold values ​​with size: ```"stretch"```
 * ```drawShadow: bool``` - default: ```true``` Draw shadows or not when page flipping
 * ```flippingTime: number``` (milliseconds) - default: ```1000``` Flipping animation time
-* ```usePortrait: bool``` - default: ```true``` Enable switching to portrait mode
+* ```usePortrait: bool``` - default: ```true``` Enable switching to portrait mode. !This mode uses cloning of html elements (pages)
 * ```startZIndex: number``` - default: ```0``` Initial value to z-index
 * ```startPage: number``` - default: ```0``` Page number from which to start viewing
 * ```autoSize: bool``` - default: ```true``` If this value is true, the parent element will be equal to the size of the book
@@ -109,6 +109,7 @@ To set configuration define these parameters when creating an object:
 * ```mobileScrollSupport: boolean``` - default: ```true``` disable content scrolling when touching a book on mobile devices
 * ```swipeDistance: number``` - default: ```30``` (px) minimum distance to detect swipe (new on 1.1.0)
 * ```clickEventForward: boolean``` - default: ```true``` forwarding click events to the page children html elements (only for ```a``` and ```button``` tags) (new on 1.1.0)
+* ```useMouseEvents: boolean``` - default: ```true``` using mouse and touch events to page flipping (new on 1.2.0)
 
 ### Events
 To listen events use the method ```on```:
