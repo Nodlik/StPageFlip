@@ -213,8 +213,8 @@ export abstract class Render {
         let left = middlePoint.x - pageWidth;
 
         if (this.setting.size === SizeType.STRETCH) {
-            if (blockWidth < this.setting.minWidth * 2)
-                if (this.app.getSettings().usePortrait) orientation = Orientation.PORTRAIT;
+            if (blockWidth < this.setting.minWidth * 2 && this.app.getSettings().usePortrait)
+                orientation = Orientation.PORTRAIT;
 
             pageWidth =
                 orientation === Orientation.PORTRAIT
