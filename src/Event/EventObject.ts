@@ -3,7 +3,7 @@ import { PageFlip } from '../PageFlip';
 /**
  * Data type passed to the event handler
  */
-export type DataType = number | string | boolean;
+export type DataType = number | string | boolean | object;
 
 /**
  * Type of object in event handlers

@@ -86,7 +86,13 @@ export class PageFlip extends EventObject {
         this.pages.show(this.setting.startPage);
 
         // safari fix
-        setTimeout(() => this.ui.update(), 1);
+        setTimeout(() => {
+            this.ui.update();
+            this.trigger('init', this, {
+                page: this.setting.startPage,
+                mode: this.render.getOrientation(),
+            });
+        }, 1);
     }
 
     /**
@@ -109,7 +115,13 @@ export class PageFlip extends EventObject {
         this.pages.show(this.setting.startPage);
 
         // safari fix
-        setTimeout(() => this.ui.update(), 1);
+        setTimeout(() => {
+            this.ui.update();
+            this.trigger('init', this, {
+                page: this.setting.startPage,
+                mode: this.render.getOrientation(),
+            });
+        }, 1);
     }
 
     /**
@@ -125,6 +137,10 @@ export class PageFlip extends EventObject {
         this.pages.load();
 
         this.pages.show(current);
+        this.trigger('update', this, {
+            page: current,
+            mode: this.render.getOrientation(),
+        });
     }
 
     /**
@@ -141,6 +157,10 @@ export class PageFlip extends EventObject {
         (this.ui as HTMLUI).updateItems(items);
 
         this.pages.show(current);
+        this.trigger('update', this, {
+            page: current,
+            mode: this.render.getOrientation(),
+        });
     }
 
     /**
@@ -225,8 +245,8 @@ export class PageFlip extends EventObject {
 
     /**
      * Get the total number of pages in a book
-     * 
-     * @returns {number} 
+     *
+     * @returns {number}
      */
     public getPageCount(): number {
         return this.pages.getPageCount();
@@ -234,7 +254,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get the index of the current page in the page list (starts at 0)
-     * 
+     *
      * @returns {number}
      */
     public getCurrentPageIndex(): number {
@@ -253,7 +273,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get the current rendering object
-     * 
+     *
      * @returns {Render}
      */
     public getRender(): Render {
@@ -262,7 +282,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get current object responsible for flipping
-     * 
+     *
      * @returns {Flip}
      */
     public getFlipController(): Flip {
@@ -271,7 +291,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get current page orientation
-     * 
+     *
      * @returns {Orientation} Сurrent orientation: portrait or landscape
      */
     public getOrientation(): Orientation {
@@ -280,7 +300,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get current book sizes and position
-     * 
+     *
      * @returns {PageRect}
      */
     public getBoundsRect(): PageRect {
@@ -289,7 +309,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get configuration object
-     * 
+     *
      * @returns {FlipSetting}
      */
     public getSettings(): FlipSetting {
@@ -298,7 +318,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Get UI object
-     * 
+     *
      * @returns {UI}
      */
     public getUI(): UI {
@@ -307,8 +327,8 @@ export class PageFlip extends EventObject {
 
     /**
      * Get current flipping state
-     * 
-     * @returns {FlippingState} 
+     *
+     * @returns {FlippingState}
      */
     public getState(): FlippingState {
         return this.flipController.getState();
@@ -316,8 +336,8 @@ export class PageFlip extends EventObject {
 
     /**
      * Get page collection
-     * 
-     * @returns {PageCollection} 
+     *
+     * @returns {PageCollection}
      */
     public getPageCollection(): PageCollection {
         return this.pages;
@@ -325,18 +345,18 @@ export class PageFlip extends EventObject {
 
     /**
      * Start page turning. Called when a user clicks or touches
-     * 
+     *
      * @param {Point} pos - Touch position in coordinates relative to the book
      */
     public startUserTouch(pos: Point): void {
         this.mousePosition = pos; // Save touch position
-        this.isUserTouch = true; 
+        this.isUserTouch = true;
         this.isUserMove = false;
     }
 
     /**
      * Called when a finger / mouse moves
-     * 
+     *
      * @param {Point} pos - Touch position in coordinates relative to the book
      * @param {boolean} isTouch - True if there was a touch event, not a mouse click
      */
@@ -353,7 +373,7 @@ export class PageFlip extends EventObject {
 
     /**
      * Сalled when the user has stopped touching
-     * 
+     *
      * @param {Point} pos - Touch end position in coordinates relative to the book
      * @param {boolean} isSwipe - true if there was a mobile swipe event
      */

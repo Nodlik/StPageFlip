@@ -124,11 +124,16 @@ Available events:
 * ```flip: number``` - triggered by page turning
 * ```changeOrientation: ("portrait", "landscape")``` - triggered when page orientation changes
 * ```changeState: ("user_fold", "fold_corner", "flipping", "read")``` - triggered when the state of the book changes
+* ```init: ({page: number, mode: 'portrait', 'landscape'})``` - triggered when the book is init and the start page is loaded. Listen (`on`) this event before using the "loadFrom..." methods
+* ```update: ({page: number, mode: 'portrait', 'landscape'})``` - triggered when the book pages are updated (using the "updateFrom..." methods)
+
 
 Event object has two fields: ```data: number | string``` and ```object: PageFlip```
 
 ### Methods
 * ```getPageCount: number``` - Get number of all pages
+* ```getOrientation: 'portrait', 'landscape'``` - Get the current orientation: portrait or landscape
+* ```getBoundsRect: PageRect``` - Get current book sizes and position
 * ```getCurrentPageIndex: number``` - Get the current page number (starts at 0)
 * ```turnToPage(pageNum: number)``` - Turn to the specified page number (without animation)
 * ```turnToNextPage()``` - Turn to the next page (without animation)
