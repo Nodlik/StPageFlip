@@ -179,4 +179,8 @@ export abstract class Page {
     public getHardAngle(): number {
         return this.state.hardAngle;
     }
+
+    public abstract newTemporaryCopy(): Page;
+    public abstract getTemporaryCopy(): Page;
+    public abstract hideTemporaryCopy(): void;
 }

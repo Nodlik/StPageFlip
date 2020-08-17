@@ -158,7 +158,7 @@ export abstract class PageCollection {
 
         if (this.render.getOrientation() === Orientation.PORTRAIT) {
             return direction === FlipDirection.FORWARD
-                ? this.pages[current]
+                ? this.pages[current].newTemporaryCopy()
                 : this.pages[current - 1];
         } else {
             const spread =

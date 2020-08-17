@@ -11,6 +11,8 @@ export class HTMLPage extends Page {
     private readonly element: HTMLElement;
     private copiedElement: HTMLElement = null;
 
+    private temporaryCopy: Page = null;
+
     private isLoad = false;
 
     constructor(render: Render, element: HTMLElement, density: PageDensity) {
@@ -19,6 +21,37 @@ export class HTMLPage extends Page {
         this.element = element;
         this.element.classList.add('stf__item');
         this.element.classList.add('--' + density);
+    }
+
+    public newTemporaryCopy(): Page {
+        if (this.nowDrawingDensity === PageDensity.HARD) {
+            return this;
+        }
+
+        if (this.temporaryCopy === null) {
+            this.copiedElement = this.element.cloneNode(true) as HTMLElement;
+            this.element.parentElement.appendChild(this.copiedElement);
+
+            this.temporaryCopy = new HTMLPage(
+                this.render,
+                this.copiedElement,
+                this.nowDrawingDensity
+            );
+        }
+
+        return this.getTemporaryCopy();
+    }
+
+    public getTemporaryCopy(): Page {
+        return this.temporaryCopy;
+    }
+
+    public hideTemporaryCopy(): void {
+        if (this.temporaryCopy !== null) {
+            this.copiedElement.remove();
+            this.copiedElement = null;
+            this.temporaryCopy = null;
+        }
     }
 
     public draw(tempDensity?: PageDensity): void {
@@ -49,21 +82,19 @@ export class HTMLPage extends Page {
 
         const angle = this.state.hardDrawingAngle;
 
-        let newStyle =
+        const newStyle =
             commonStyle +
             `
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            clip-path: none;
-            -webkit-clip-path: none;
-        `;
-
-        newStyle +=
-            this.orientation === PageOrientation.LEFT
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+                clip-path: none;
+                -webkit-clip-path: none;
+            ` +
+            (this.orientation === PageOrientation.LEFT
                 ? `transform-origin: ${this.render.getRect().pageWidth}px 0; 
                    transform: translate3d(0, 0, 0) rotateY(${angle}deg);`
                 : `transform-origin: 0 0; 
-                   transform: translate3d(${pos}px, 0, 0) rotateY(${angle}deg);`;
+                   transform: translate3d(${pos}px, 0, 0) rotateY(${angle}deg);`);
 
         this.element.style.cssText = newStyle;
     }
@@ -90,32 +121,17 @@ export class HTMLPage extends Page {
         polygon = polygon.slice(0, -2);
         polygon += ')';
 
-        let newStyle =
+        const newStyle =
             commonStyle +
-            `transform-origin: 0 0; clip-path: ${polygon}; -webkit-clip-path: ${polygon};`;
-
-        newStyle +=
-            this.render.isSafari() && this.state.angle === 0
+            `transform-origin: 0 0; clip-path: ${polygon}; -webkit-clip-path: ${polygon};` +
+            (this.render.isSafari() && this.state.angle === 0
                 ? `transform: translate(${position.x}px, ${position.y}px);`
-                : `transform: translate3d(${position.x}px, ${position.y}px, 0) rotate(${this.state.angle}rad);`;
+                : `transform: translate3d(${position.x}px, ${position.y}px, 0) rotate(${this.state.angle}rad);`);
 
         this.element.style.cssText = newStyle;
     }
 
     public simpleDraw(orient: PageOrientation): void {
-        if (this.element.classList.contains('--simple')) return;
-
-        let staticPage = this.element;
-        if (this.render.getSettings().usePortrait) {
-            if (this.copiedElement === null) {
-                this.copiedElement = this.element.cloneNode(true) as HTMLElement;
-                this.element.parentElement.appendChild(this.copiedElement);
-            }
-
-            staticPage = this.copiedElement;
-            this.element.style.cssText = 'display: none';
-        }
-
         const rect = this.render.getRect();
 
         const pageWidth = rect.pageWidth;
@@ -126,7 +142,7 @@ export class HTMLPage extends Page {
         const y = rect.top;
 
         this.element.classList.add('--simple');
-        staticPage.style.cssText = `
+        this.element.style.cssText = `
             position: absolute; 
             display: block; 
             height: ${pageHeight}px; 
@@ -134,15 +150,6 @@ export class HTMLPage extends Page {
             top: ${y}px; 
             width: ${pageWidth}px; 
             z-index: ${this.render.getSettings().startZIndex + 1};`;
-    }
-
-    public clearSaved(): void {
-        this.element.classList.remove('--simple');
-
-        if (this.copiedElement !== null) {
-            this.copiedElement.remove();
-            this.copiedElement = null;
-        }
     }
 
     public getElement(): HTMLElement {

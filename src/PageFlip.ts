@@ -103,7 +103,7 @@ export class PageFlip extends EventObject {
     public loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void {
         this.ui = new HTMLUI(this.block, this, this.setting, items);
 
-        this.render = new HTMLRender(this, this.setting, this.ui.getDistElement(), items);
+        this.render = new HTMLRender(this, this.setting, this.ui.getDistElement());
 
         this.flipController = new Flip(this.render, this);
 

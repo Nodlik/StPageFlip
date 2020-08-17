@@ -111,4 +111,16 @@ export class ImagePage extends Page {
                 this.isLoad = true;
             };
     }
+
+    public newTemporaryCopy(): Page {
+        return this;
+    }
+
+    public getTemporaryCopy(): Page {
+        return this;
+    }
+
+    public hideTemporaryCopy(): void {
+        return;
+    }
 }

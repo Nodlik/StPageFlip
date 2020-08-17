@@ -1,7 +1,7 @@
 import { Orientation, Render } from './Render';
 import { PageFlip } from '../PageFlip';
 import { FlipDirection } from '../Flip/Flip';
-import { Page, PageDensity, PageOrientation } from '../Page/Page';
+import { PageDensity, PageOrientation } from '../Page/Page';
 import { HTMLPage } from '../Page/HTMLPage';
 import { Helper } from '../Helper';
 import { FlipSetting } from '../Settings';
@@ -12,6 +12,7 @@ import { FlipSetting } from '../Settings';
 export class HTMLRender extends Render {
     /** Parent HTML Element */
     private readonly element: HTMLElement;
+
     /** Pages List as HTMLElements */
     private readonly items: NodeListOf<HTMLElement> | HTMLElement[];
 
@@ -26,18 +27,15 @@ export class HTMLRender extends Render {
      * @param {PageFlip} app - PageFlip object
      * @param {FlipSetting} setting - Configuration object
      * @param {HTMLElement} element - Parent HTML Element
-     * @param {(NodeListOf<HTMLElement>|HTMLElement[])} items - List of pages as HTML Element
      */
     constructor(
         app: PageFlip,
         setting: FlipSetting,
-        element: HTMLElement,
-        items: NodeListOf<HTMLElement> | HTMLElement[]
+        element: HTMLElement
     ) {
         super(app, setting);
 
         this.element = element;
-        this.items = items;
 
         this.createShadows();
     }
@@ -263,12 +261,7 @@ export class HTMLRender extends Render {
      * Draw left static page
      */
     private drawLeftPage(): void {
-        if (this.leftPage === null) return;
-
-        if (this.orientation === Orientation.PORTRAIT) {
-            (this.leftPage as HTMLPage).clearSaved(); // delete page from "cache"
-            return;
-        }
+        if (this.orientation === Orientation.PORTRAIT || this.leftPage === null) return;
 
         if (
             this.direction === FlipDirection.BACK &&
@@ -278,8 +271,6 @@ export class HTMLRender extends Render {
             (this.leftPage as HTMLPage).getElement().style.zIndex = (
                 this.getSettings().startZIndex + 5
             ).toString(10);
-
-            if (this.flippingPage === this.bottomPage) (this.leftPage as HTMLPage).clearSaved();
 
             this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
             this.leftPage.draw(this.flippingPage.getDrawingDensity());
@@ -302,8 +293,6 @@ export class HTMLRender extends Render {
             (this.rightPage as HTMLPage).getElement().style.zIndex = (
                 this.getSettings().startZIndex + 5
             ).toString(10);
-
-            if (this.flippingPage === this.bottomPage) (this.rightPage as HTMLPage).clearSaved();
 
             this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
             this.rightPage.draw(this.flippingPage.getDrawingDensity());
@@ -359,36 +348,20 @@ export class HTMLRender extends Render {
     }
 
     private clear(): void {
-        const workedPages = [];
-        if (this.leftPage) workedPages.push((this.leftPage as HTMLPage).getElement());
+        for (const page of this.app.getPageCollection().getPages()) {
+            if (
+                page !== this.leftPage &&
+                page !== this.rightPage &&
+                page !== this.flippingPage &&
+                page !== this.bottomPage
+            ) {
+                (page as HTMLPage).getElement().style.cssText = 'display: none';
+            }
 
-        if (this.rightPage) workedPages.push((this.rightPage as HTMLPage).getElement());
-
-        if (this.flippingPage) workedPages.push((this.flippingPage as HTMLPage).getElement());
-
-        if (this.bottomPage) workedPages.push((this.bottomPage as HTMLPage).getElement());
-
-        for (const item of this.items) {
-            if (!workedPages.includes(item)) {
-                item.style.display = 'none';
-                item.style.zIndex = (this.getSettings().startZIndex + 1).toString(10);
-                item.style.transform = '';
+            if (page.getTemporaryCopy() !== this.flippingPage) {
+                page.hideTemporaryCopy();
             }
         }
-    }
-
-    public setRightPage(page: Page): void {
-        if (this.rightPage !== null && page !== this.rightPage)
-            (this.rightPage as HTMLPage).clearSaved();
-
-        super.setRightPage(page);
-    }
-
-    public setLeftPage(page: Page): void {
-        if (this.leftPage !== null && page !== this.rightPage)
-            (this.leftPage as HTMLPage).clearSaved();
-
-        super.setLeftPage(page);
     }
 
     public update(): void {
@@ -396,12 +369,10 @@ export class HTMLRender extends Render {
 
         if (this.rightPage !== null) {
             this.rightPage.setOrientation(PageOrientation.RIGHT);
-            (this.rightPage as HTMLPage).clearSaved();
         }
 
         if (this.leftPage !== null) {
             this.leftPage.setOrientation(PageOrientation.LEFT);
-            (this.leftPage as HTMLPage).clearSaved();
         }
     }
 }
