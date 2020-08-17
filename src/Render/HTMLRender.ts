@@ -2,7 +2,6 @@ import { Orientation, Render } from './Render';
 import { PageFlip } from '../PageFlip';
 import { FlipDirection } from '../Flip/Flip';
 import { Page, PageDensity, PageOrientation } from '../Page/Page';
-import { Point } from '../BasicTypes';
 import { HTMLPage } from '../Page/HTMLPage';
 import { Helper } from '../Helper';
 import { FlipSetting } from '../Settings';
@@ -39,53 +38,32 @@ export class HTMLRender extends Render {
 
         this.element = element;
         this.items = items;
+
+        this.createShadows();
+    }
+
+    private createShadows(): void {
+        this.element.insertAdjacentHTML(
+            'beforeend',
+            `<div class="stf__outerShadow"></div>
+             <div class="stf__innerShadow"></div>
+             <div class="stf__hardShadow"></div>
+             <div class="stf__hardInnerShadow"></div>`
+        );
+
+        this.outerShadow = this.element.querySelector('.stf__outerShadow');
+        this.innerShadow = this.element.querySelector('.stf__innerShadow');
+        this.hardShadow = this.element.querySelector('.stf__hardShadow');
+        this.hardInnerShadow = this.element.querySelector('.stf__hardInnerShadow');
     }
 
     public clearShadow(): void {
         super.clearShadow();
 
-        // remove items from DOM and reset pointers to null
-        this.outerShadow.remove();
-        this.innerShadow.remove();
-        this.hardShadow.remove();
-        this.hardInnerShadow.remove();
-
-        this.outerShadow = null;
-        this.innerShadow = null;
-        this.hardShadow = null;
-        this.hardInnerShadow = null;
-    }
-
-    public setShadowData(pos: Point, angle: number, t: number, direction: FlipDirection): void {
-        super.setShadowData(pos, angle, t, direction);
-
-        // Create DOM elements to drop shadow
-        if (this.outerShadow === null) {
-            this.element.insertAdjacentHTML('beforeend', '<div class="stf__outerShadow"></div>');
-            this.outerShadow = this.element.querySelector('.stf__outerShadow');
-            this.outerShadow.style.zIndex = (this.getSettings().startZIndex + 10).toString(10);
-        }
-
-        if (this.innerShadow === null) {
-            this.element.insertAdjacentHTML('beforeend', '<div class="stf__innerShadow"></div>');
-            this.innerShadow = this.element.querySelector('.stf__innerShadow');
-            this.innerShadow.style.zIndex = (this.getSettings().startZIndex + 10).toString(10);
-        }
-
-        if (this.hardShadow === null) {
-            this.element.insertAdjacentHTML('beforeend', '<div class="stf__hardShadow"></div>');
-            this.hardShadow = this.element.querySelector('.stf__hardShadow');
-            this.hardShadow.style.zIndex = (this.getSettings().startZIndex + 4).toString(10);
-        }
-
-        if (this.hardInnerShadow === null) {
-            this.element.insertAdjacentHTML(
-                'beforeend',
-                '<div class="stf__hardInnerShadow"></div>'
-            );
-            this.hardInnerShadow = this.element.querySelector('.stf__hardInnerShadow');
-            this.hardInnerShadow.style.zIndex = (this.getSettings().startZIndex + 4).toString(10);
-        }
+        this.outerShadow.style.cssText = 'display: none';
+        this.innerShadow.style.cssText = 'display: none';
+        this.hardShadow.style.cssText = 'display: none';
+        this.hardInnerShadow.style.cssText = 'display: none';
     }
 
     /**
@@ -100,20 +78,25 @@ export class HTMLRender extends Render {
         let innerShadowSize = ((100 - progress) * (2.5 * rect.pageWidth)) / 100 + 20;
         if (innerShadowSize > rect.pageWidth) innerShadowSize = rect.pageWidth;
 
-        this.hardInnerShadow.style.width = innerShadowSize + 'px';
-        this.hardInnerShadow.style.height = rect.height + 'px';
-        this.hardInnerShadow.style.background = `linear-gradient(to right,
-            rgba(0, 0, 0, ${(this.shadow.opacity * progress) / 100}) 5%,
-            rgba(0, 0, 0, 0) 100%)`;
+        let newStyle = `
+            display: block;
+            z-index: ${(this.getSettings().startZIndex + 5).toString(10)};
+            width: ${innerShadowSize}px;
+            height: ${rect.height}px;
+            background: linear-gradient(to right,
+                rgba(0, 0, 0, ${(this.shadow.opacity * progress) / 100}) 5%,
+                rgba(0, 0, 0, 0) 100%);
+            left: ${rect.left + rect.width / 2}px;
+            transform-origin: 0 0;
+        `;
 
-        this.hardInnerShadow.style.left = rect.left + rect.width / 2 + 'px';
-        this.hardInnerShadow.style.transformOrigin = '0 0';
-
-        this.hardInnerShadow.style.transform =
+        newStyle +=
             (this.getDirection() === FlipDirection.FORWARD && this.shadow.progress > 100) ||
             (this.getDirection() === FlipDirection.BACK && this.shadow.progress <= 100)
-                ? 'translate3d(0, 0, 0)'
-                : 'translate3d(0, 0, 0) rotateY(180deg)';
+                ? `transform: translate3d(0, 0, 0);`
+                : `transform: translate3d(0, 0, 0) rotateY(180deg);`;
+
+        this.hardInnerShadow.style.cssText = newStyle;
     }
 
     /**
@@ -125,22 +108,28 @@ export class HTMLRender extends Render {
         const progress =
             this.shadow.progress > 100 ? 200 - this.shadow.progress : this.shadow.progress;
 
-        let innerShadowSize = ((100 - progress) * (2.5 * rect.pageWidth)) / 100 + 20;
-        if (innerShadowSize > rect.pageWidth) innerShadowSize = rect.pageWidth;
+        let shadowSize = ((100 - progress) * (2.5 * rect.pageWidth)) / 100 + 20;
+        if (shadowSize > rect.pageWidth) shadowSize = rect.pageWidth;
 
-        this.hardShadow.style.width = innerShadowSize + 'px';
-        this.hardShadow.style.height = rect.height + 'px';
-        this.hardShadow.style.background = `linear-gradient(to left,
-            rgba(0, 0, 0, ${this.shadow.opacity}) 5%, rgba(0, 0, 0, 0) 100%)`;
+        let newStyle = `
+            display: block;
+            z-index: ${(this.getSettings().startZIndex + 4).toString(10)};
+            width: ${shadowSize}px;
+            height: ${rect.height}px;
+            background: linear-gradient(to left, rgba(0, 0, 0, ${
+                this.shadow.opacity
+            }) 5%, rgba(0, 0, 0, 0) 100%);
+            left: ${rect.left + rect.width / 2}px;
+            transform-origin: 0 0;
+        `;
 
-        this.hardShadow.style.left = rect.left + rect.width / 2 + 'px';
-        this.hardShadow.style.transformOrigin = '0 0';
-
-        this.hardShadow.style.transform =
+        newStyle +=
             (this.getDirection() === FlipDirection.FORWARD && this.shadow.progress > 100) ||
             (this.getDirection() === FlipDirection.BACK && this.shadow.progress <= 100)
-                ? 'translate3d(0, 0, 0) rotateY(180deg)'
-                : 'translate3d(0, 0, 0)';
+                ? `transform: translate3d(0, 0, 0) rotateY(180deg);`
+                : `transform: translate3d(0, 0, 0);`;
+
+        this.hardShadow.style.cssText = newStyle;
     }
 
     /**
@@ -158,19 +147,6 @@ export class HTMLRender extends Render {
         const shadowPos = this.convertToGlobal(this.shadow.pos);
 
         const angle = this.shadow.angle + (3 * Math.PI) / 2;
-
-        this.innerShadow.style.width = innerShadowSize + 'px';
-        this.innerShadow.style.height = rect.height * 2 + 'px';
-        this.innerShadow.style.background = `linear-gradient(${shadowDirection},
-            rgba(0, 0, 0, ${this.shadow.opacity}) 5%,
-            rgba(0, 0, 0, 0.05) 15%,
-            rgba(0, 0, 0, ${this.shadow.opacity}) 35%,
-            rgba(0, 0, 0, 0) 100%)`;
-
-        this.innerShadow.style.transformOrigin = shadowTranslate + 'px 100px';
-        this.innerShadow.style.transform = `translate3d(${shadowPos.x - shadowTranslate}px, ${
-            shadowPos.y - 100
-        }px, 0) rotate(${angle}rad)`;
 
         const clip = [
             this.pageRect.topLeft,
@@ -199,8 +175,25 @@ export class HTMLRender extends Render {
         polygon = polygon.slice(0, -2);
         polygon += ')';
 
-        this.innerShadow.style.clipPath = polygon;
-        this.innerShadow.style.setProperty('-webkit-clip-path', polygon);
+        const newStyle = `
+            display: block;
+            z-index: ${(this.getSettings().startZIndex + 10).toString(10)};
+            width: ${innerShadowSize}px;
+            height: ${rect.height * 2}px;
+            background: linear-gradient(${shadowDirection},
+                rgba(0, 0, 0, ${this.shadow.opacity}) 5%,
+                rgba(0, 0, 0, 0.05) 15%,
+                rgba(0, 0, 0, ${this.shadow.opacity}) 35%,
+                rgba(0, 0, 0, 0) 100%);
+            transform-origin: ${shadowTranslate}px 100px;
+            transform: translate3d(${shadowPos.x - shadowTranslate}px, ${
+            shadowPos.y - 100
+        }px, 0) rotate(${angle}rad);
+            clip-path: ${polygon};
+            -webkit-clip-path: ${polygon};
+        `;
+
+        this.innerShadow.style.cssText = newStyle;
     }
 
     /**
@@ -217,21 +210,12 @@ export class HTMLRender extends Render {
         const shadowDirection =
             this.getDirection() === FlipDirection.FORWARD ? 'to right' : 'to left';
 
-        this.outerShadow.style.width = this.shadow.width + 'px';
-        this.outerShadow.style.height = rect.height * 2 + 'px';
-        this.outerShadow.style.background = `linear-gradient(${shadowDirection}, rgba(0, 0, 0, ${this.shadow.opacity}), rgba(0, 0, 0, 0))`;
-        this.outerShadow.style.transformOrigin = shadowTranslate + 'px 100px';
-        this.outerShadow.style.transform = `translate3d(${shadowPos.x - shadowTranslate}px, ${
-            shadowPos.y - 100
-        }px, 0) rotate(${angle}rad)`;
-
-        const clip = [];
-        clip.push(
+        const clip = [
             { x: 0, y: 0 },
             { x: rect.pageWidth, y: 0 },
             { x: rect.pageWidth, y: rect.height },
-            { x: 0, y: rect.height }
-        );
+            { x: 0, y: rect.height },
+        ];
 
         let polygon = 'polygon( ';
         for (const p of clip) {
@@ -255,8 +239,24 @@ export class HTMLRender extends Render {
 
         polygon = polygon.slice(0, -2);
         polygon += ')';
-        this.outerShadow.style.clipPath = polygon;
-        this.outerShadow.style.setProperty('-webkit-clip-path', polygon);
+
+        const newStyle = `
+            display: block;
+            z-index: ${(this.getSettings().startZIndex + 10).toString(10)};
+            width: ${this.shadow.width}px;
+            height: ${rect.height * 2}px;
+            background: linear-gradient(${shadowDirection}, rgba(0, 0, 0, ${
+            this.shadow.opacity
+        }), rgba(0, 0, 0, 0));
+            transform-origin: ${shadowTranslate}px 100px;
+            transform: translate3d(${shadowPos.x - shadowTranslate}px, ${
+            shadowPos.y - 100
+        }px, 0) rotate(${angle}rad);
+            clip-path: ${polygon};
+            -webkit-clip-path: ${polygon};
+        `;
+
+        this.outerShadow.style.cssText = newStyle;
     }
 
     /**

@@ -30,40 +30,45 @@ export class HTMLPage extends Page {
 
         this.element.classList.remove('--simple');
 
-        this.element.style.display = 'block';
-        this.element.style.left = '0';
-        this.element.style.top = '0';
+        const commonStyle = `
+            display: block;
+            z-index: ${this.element.style.zIndex};
+            left: 0;
+            top: 0;
+            width: ${pageWidth}px;
+            height: ${pageHeight}px;
+        `;
 
-        this.element.style.width = pageWidth + 'px';
-        this.element.style.height = pageHeight + 'px';
-
-        if (density === PageDensity.HARD) this.drawHard();
-        else this.drawSoft(pagePos);
+        density === PageDensity.HARD
+            ? this.drawHard(commonStyle)
+            : this.drawSoft(pagePos, commonStyle);
     }
 
-    private drawHard(): void {
+    private drawHard(commonStyle = ''): void {
         const pos = this.render.getRect().left + this.render.getRect().width / 2;
-        this.element.style.backfaceVisibility = 'hidden';
-        this.element.style.setProperty('-webkit-backface-visibility', 'hidden');
 
         const angle = this.state.hardDrawingAngle;
 
-        if (this.orientation === PageOrientation.LEFT) {
-            this.element.style.transformOrigin = this.render.getRect().pageWidth + 'px 0';
-            this.element.style.transform =
-                'translate3d(' + 0 + 'px, ' + 0 + 'px, 0) rotateY(' + angle + 'deg)';
-        } else {
-            this.element.style.transformOrigin = '0 0';
-            this.element.style.transform =
-                'translate3d(' + pos + 'px, ' + 0 + 'px, 0) rotateY(' + angle + 'deg)';
-        }
-        this.element.style.clipPath = 'none';
-        this.element.style.setProperty('-webkit-clip-path', 'none');
+        let newStyle =
+            commonStyle +
+            `
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            clip-path: none;
+            -webkit-clip-path: none;
+        `;
+
+        newStyle +=
+            this.orientation === PageOrientation.LEFT
+                ? `transform-origin: ${this.render.getRect().pageWidth}px 0; 
+                   transform: translate3d(0, 0, 0) rotateY(${angle}deg);`
+                : `transform-origin: 0 0; 
+                   transform: translate3d(${pos}px, 0, 0) rotateY(${angle}deg);`;
+
+        this.element.style.cssText = newStyle;
     }
 
-    private drawSoft(position: Point): void {
-        this.element.style.transformOrigin = '0 0';
-
+    private drawSoft(position: Point, commonStyle = ''): void {
         let polygon = 'polygon( ';
         for (const p of this.state.area) {
             if (p !== null) {
@@ -85,21 +90,16 @@ export class HTMLPage extends Page {
         polygon = polygon.slice(0, -2);
         polygon += ')';
 
-        if (this.render.isSafari() && this.state.angle === 0) {
-            this.element.style.transform = 'translate(' + position.x + 'px, ' + position.y + 'px)';
-        } else {
-            this.element.style.transform =
-                'translate3d(' +
-                position.x +
-                'px, ' +
-                position.y +
-                'px, 0) rotate(' +
-                this.state.angle +
-                'rad)';
-        }
+        let newStyle =
+            commonStyle +
+            `transform-origin: 0 0; clip-path: ${polygon}; -webkit-clip-path: ${polygon};`;
 
-        this.element.style.clipPath = polygon;
-        this.element.style.setProperty('-webkit-clip-path', polygon);
+        newStyle +=
+            this.render.isSafari() && this.state.angle === 0
+                ? `transform: translate(${position.x}px, ${position.y}px);`
+                : `transform: translate3d(${position.x}px, ${position.y}px, 0) rotate(${this.state.angle}rad);`;
+
+        this.element.style.cssText = newStyle;
     }
 
     public simpleDraw(orient: PageOrientation): void {
@@ -126,18 +126,14 @@ export class HTMLPage extends Page {
         const y = rect.top;
 
         this.element.classList.add('--simple');
-        staticPage.style.cssText =
-            'position: absolute; display: block; height: ' +
-            pageHeight +
-            'px; left: ' +
-            x +
-            'px; top: ' +
-            y +
-            'px; width: ' +
-            pageWidth +
-            'px; z-index: ' +
-            (this.render.getSettings().startZIndex + 1) +
-            ';';
+        staticPage.style.cssText = `
+            position: absolute; 
+            display: block; 
+            height: ${pageHeight}px; 
+            left: ${x}px; 
+            top: ${y}px; 
+            width: ${pageWidth}px; 
+            z-index: ${this.render.getSettings().startZIndex + 1};`;
     }
 
     public clearSaved(): void {
