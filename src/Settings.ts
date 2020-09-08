@@ -51,6 +51,9 @@ export interface FlipSetting {
     useMouseEvents: boolean;
 
     swipeDistance: number;
+    
+    /** if this value is true, fold the corners of the book when the mouse pointer is over them. */
+    showPageCorners: boolean;
 }
 
 export class Settings {
@@ -73,7 +76,8 @@ export class Settings {
         mobileScrollSupport: true,
         swipeDistance: 30,
         clickEventForward: true,
-        useMouseEvents: true
+        useMouseEvents: true,
+        showPageCorners: true,
     };
 
     /**
