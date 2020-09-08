@@ -361,7 +361,7 @@ export class PageFlip extends EventObject {
      * @param {boolean} isTouch - True if there was a touch event, not a mouse click
      */
     public userMove(pos: Point, isTouch: boolean): void {
-        if (!this.isUserTouch && !isTouch) {
+        if (!this.isUserTouch && !isTouch && this.setting.showPageCorners) {
             this.flipController.showCorner(pos); // fold Page Corner
         } else if (this.isUserTouch) {
             if (Helper.GetDistanceBetweenTwoPoint(this.mousePosition, pos) > 5) {
