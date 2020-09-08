@@ -52,7 +52,7 @@ export interface FlipSetting {
 
     swipeDistance: number;
     
-     /** if this value is true, fold the corners of the book when the mouse pointer is over them. */
+    /** if this value is true, fold the corners of the book when the mouse pointer is over them. */
     showPageCorners: boolean;
 }
 
