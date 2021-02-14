@@ -42,7 +42,7 @@ export class PageFlip extends EventObject {
      * @param {HTMLElement} inBlock - Root HTML Element
      * @param {Object} setting - Configuration object
      */
-    constructor(inBlock: HTMLElement, setting: Record<string, number | string | boolean>) {
+    constructor(inBlock: HTMLElement, setting: Partial<FlipSetting>) {
         super();
 
         this.setting = new Settings().getSettings(setting);
