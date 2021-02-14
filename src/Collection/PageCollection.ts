@@ -83,7 +83,7 @@ export abstract class PageCollection {
 
     /**
      * Get spread index by page number
-     * 
+     *
      * @param {number} pageNum - page index
      */
     public getSpreadIndexByPage(pageNum: number): number {
@@ -111,7 +111,7 @@ export abstract class PageCollection {
 
     /**
      * Get page by index
-     * 
+     *
      * @param {number} pageIndex
      */
     public getPage(pageIndex: number): Page {
@@ -124,8 +124,8 @@ export abstract class PageCollection {
 
     /**
      * Get the next page from the specified
-     * 
-     * @param {Page} current 
+     *
+     * @param {Page} current
      */
     public nextBy(current: Page): Page {
         const idx = this.pages.indexOf(current);
@@ -137,8 +137,8 @@ export abstract class PageCollection {
 
     /**
      * Get previous page from specified
-     * 
-     * @param {Page} current 
+     *
+     * @param {Page} current
      */
     public prevBy(current: Page): Page {
         const idx = this.pages.indexOf(current);
@@ -150,8 +150,8 @@ export abstract class PageCollection {
 
     /**
      * Get flipping page depending on the direction
-     * 
-     * @param {FlipDirection} direction 
+     *
+     * @param {FlipDirection} direction
      */
     public getFlippingPage(direction: FlipDirection): Page {
         const current = this.currentSpreadIndex;
@@ -176,8 +176,8 @@ export abstract class PageCollection {
 
     /**
      * Get Next page at the time of flipping
-     * 
-     * @param {FlipDirection}  direction 
+     *
+     * @param {FlipDirection}  direction
      */
     public getBottomPage(direction: FlipDirection): Page {
         const current = this.currentSpreadIndex;
@@ -252,7 +252,7 @@ export abstract class PageCollection {
 
     /**
      * Set new spread index as current
-     * 
+     *
      * @param {number} newIndex - new spread index
      */
     public setCurrentSpreadIndex(newIndex: number): void {
