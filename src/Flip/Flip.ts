@@ -77,7 +77,7 @@ export class Flip {
      * @param globalPos - Touch Point Coordinates (relative window)
      */
     public flip(globalPos: Point): void {
-        if (this.app.getSettings().disabeFlipByClick && !this.isPointOnCorners(globalPos)) return;
+        if (this.app.getSettings().disableFlipByClick && !this.isPointOnCorners(globalPos)) return;
 
         // the flipiing process is already running
         if (this.calc !== null) this.render.finishAnimation();

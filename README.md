@@ -120,7 +120,7 @@ To set configuration define these parameters when creating an object:
 -   `swipeDistance: number` - default: `30` (px) minimum distance to detect swipe (new on 1.1.0)
 -   `clickEventForward: boolean` - default: `true` forwarding click events to the page children html elements (only for `a` and `button` tags) (new on 1.1.0)
 -   `useMouseEvents: boolean` - default: `true` using mouse and touch events to page flipping (new on 1.2.0)
--   `disabeFlipByClick: boolean` - default: `false` if this value is true, flipping by clicking on the whole book will be locked. Clicking will only work in corners (new on 2.0.3)
+-   `disableFlipByClick: boolean` - default: `false` if this value is true, flipping by clicking on the whole book will be locked. Clicking will only work in corners (new on 2.0.3)
 
 ### Events
 
