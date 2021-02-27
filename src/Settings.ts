@@ -51,9 +51,12 @@ export interface FlipSetting {
     useMouseEvents: boolean;
 
     swipeDistance: number;
-    
+
     /** if this value is true, fold the corners of the book when the mouse pointer is over them. */
     showPageCorners: boolean;
+
+    /** if this value is true, flipping by clicking on the whole book will be locked. Only on corners */
+    disabeFlipByClick: boolean;
 }
 
 export class Settings {
@@ -78,6 +81,7 @@ export class Settings {
         clickEventForward: true,
         useMouseEvents: true,
         showPageCorners: true,
+        disabeFlipByClick: false,
     };
 
     /**
@@ -93,11 +97,9 @@ export class Settings {
         if (result.size !== SizeType.STRETCH && result.size !== SizeType.FIXED)
             throw new Error('Invalid size type. Available only "fixed" and "stretch" value');
 
-        if (result.width <= 0 || result.height <= 0)
-            throw new Error('Invalid width or height');
+        if (result.width <= 0 || result.height <= 0) throw new Error('Invalid width or height');
 
-        if (result.flippingTime <= 0)
-            throw new Error('Invalid flipping time');
+        if (result.flippingTime <= 0) throw new Error('Invalid flipping time');
 
         if (result.size === SizeType.STRETCH) {
             if (result.minWidth <= 0) result.minWidth = 100;
