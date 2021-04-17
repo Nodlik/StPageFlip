@@ -242,7 +242,7 @@ export class Flip {
      */
     public flipNext(corner: FlipCorner): void {
         this.flip({
-            x: this.render.getRect().left + this.render.getRect().pageWidth * 2,
+            x: this.render.getRect().left + this.render.getRect().pageWidth * 2 - 10,
             y: corner === FlipCorner.TOP ? 1 : this.render.getRect().height - 2,
         });
     }

@@ -28,11 +28,7 @@ export class HTMLRender extends Render {
      * @param {FlipSetting} setting - Configuration object
      * @param {HTMLElement} element - Parent HTML Element
      */
-    constructor(
-        app: PageFlip,
-        setting: FlipSetting,
-        element: HTMLElement
-    ) {
+    constructor(app: PageFlip, setting: FlipSetting, element: HTMLElement) {
         super(app, setting);
 
         this.element = element;
@@ -62,6 +58,14 @@ export class HTMLRender extends Render {
         this.innerShadow.style.cssText = 'display: none';
         this.hardShadow.style.cssText = 'display: none';
         this.hardInnerShadow.style.cssText = 'display: none';
+    }
+
+    public reload(): void {
+        const testShadow = this.element.querySelector('.stf__outerShadow');
+
+        if (!testShadow) {
+            this.createShadows();
+        }
     }
 
     /**

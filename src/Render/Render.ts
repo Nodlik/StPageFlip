@@ -105,6 +105,11 @@ export abstract class Render {
     protected abstract drawFrame(): void;
 
     /**
+     * Reload the render area, after update pages
+     */
+    public abstract reload(): void;
+
+    /**
      * Executed when requestAnimationFrame is called. Performs the current animation process and call drawFrame()
      *
      * @param timer

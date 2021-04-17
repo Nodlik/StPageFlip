@@ -155,6 +155,7 @@ export class PageFlip extends EventObject {
         this.pages = new HTMLPageCollection(this, this.render, this.ui.getDistElement(), items);
         this.pages.load();
         (this.ui as HTMLUI).updateItems(items);
+        this.render.reload();
 
         this.pages.show(current);
         this.trigger('update', this, {
