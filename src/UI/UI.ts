@@ -13,6 +13,8 @@ type SwipeData = {
  * UI Class, represents work with DOM
  */
 export abstract class UI {
+    protected readonly parentElement: HTMLElement;
+
     protected readonly app: PageFlip;
     protected readonly wrapper: HTMLElement;
     protected distElement: HTMLElement;
@@ -33,6 +35,8 @@ export abstract class UI {
      * @param {FlipSetting} setting - Configuration object
      */
     protected constructor(inBlock: HTMLElement, app: PageFlip, setting: FlipSetting) {
+        this.parentElement = inBlock;
+
         inBlock.classList.add('stf__parent');
         // Add first wrapper
         inBlock.insertAdjacentHTML('afterbegin', '<div class="stf__wrapper"></div>');
@@ -134,8 +138,9 @@ export abstract class UI {
     }
 
     protected setHandlers(): void {
+        window.addEventListener('resize', this.onResize, false);
         if (!this.app.getSettings().useMouseEvents) return;
-        
+
         this.distElement.addEventListener('mousedown', this.onMouseDown);
         this.distElement.addEventListener('touchstart', this.onTouchStart);
         window.addEventListener('mousemove', this.onMouseMove);

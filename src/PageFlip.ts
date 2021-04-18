@@ -165,6 +165,14 @@ export class PageFlip extends EventObject {
     }
 
     /**
+     * Clear pages from HTML (remove to initinalState)
+     */
+    public clear(): void {
+        this.pages.destroy();
+        (this.ui as HTMLUI).clear();
+    }
+
+    /**
      * Turn to the previous page (without animation)
      */
     public turnToPrevPage(): void {
