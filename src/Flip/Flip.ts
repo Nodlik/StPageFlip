@@ -254,7 +254,7 @@ export class Flip {
      */
     public flipPrev(corner: FlipCorner): void {
         this.flip({
-            x: 10,
+            x: this.render.getRect().left + 10,
             y: corner === FlipCorner.TOP ? 1 : this.render.getRect().height - 2,
         });
     }
