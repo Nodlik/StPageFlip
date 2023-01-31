@@ -12,7 +12,6 @@
   },
   "publishConfig": {},
   "homepage": "https://nodlik.github.io/StPageFlip/",
-  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -28,7 +27,7 @@
     "typedoc": "^0.17.8",
     "typescript": "latest",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
     "eslint": "eslint . --ext .ts",

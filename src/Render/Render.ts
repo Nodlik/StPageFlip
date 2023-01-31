@@ -202,7 +202,7 @@ export abstract class Render {
      * Calculate the size and position of the book depending on the parent element and configuration parameters
      */
     private calculateBoundsRect(): Orientation {
-        let orientation = Orientation.LANDSCAPE;
+        let orientation = this.setting.forceDisplayMode ?? Orientation.LANDSCAPE;
 
         const blockWidth = this.getBlockWidth();
         const middlePoint: Point = {
@@ -219,7 +219,7 @@ export abstract class Render {
 
         if (this.setting.size === SizeType.STRETCH) {
             if (blockWidth < this.setting.minWidth * 2 && this.app.getSettings().usePortrait)
-                orientation = Orientation.PORTRAIT;
+                orientation = this.setting.forceDisplayMode ?? Orientation.PORTRAIT;
 
             pageWidth =
                 orientation === Orientation.PORTRAIT
@@ -241,7 +241,7 @@ export abstract class Render {
         } else {
             if (blockWidth < pageWidth * 2) {
                 if (this.app.getSettings().usePortrait) {
-                    orientation = Orientation.PORTRAIT;
+                    orientation = this.setting.forceDisplayMode ?? Orientation.PORTRAIT;
                     left = middlePoint.x - pageWidth / 2 - pageWidth;
                 }
             }

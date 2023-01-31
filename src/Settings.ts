@@ -1,3 +1,5 @@
+import { Orientation } from "./Render/Render";
+
 /**
  * Book size calculation type
  */
@@ -32,6 +34,7 @@ export interface FlipSetting {
 
     /** Enable switching to portrait mode */
     usePortrait: boolean;
+    forceDisplayMode: Orientation | null;
     /** Initial value to z-index */
     startZIndex: number;
     /** If this value is true, the parent element will be equal to the size of the book */
@@ -82,6 +85,7 @@ export class Settings {
         useMouseEvents: true,
         showPageCorners: true,
         disableFlipByClick: false,
+        forceDisplayMode: null
     };
 
     /**
@@ -96,6 +100,9 @@ export class Settings {
 
         if (result.size !== SizeType.STRETCH && result.size !== SizeType.FIXED)
             throw new Error('Invalid size type. Available only "fixed" and "stretch" value');
+
+        if (result.forceDisplayMode !== null && result.forceDisplayMode !== Orientation.LANDSCAPE && result.forceDisplayMode !== Orientation.PORTRAIT)
+            throw new Error('Invalid force display mode. Available only "landscape" and "portrait" value or null');
 
         if (result.width <= 0 || result.height <= 0) throw new Error('Invalid width or height');
 
