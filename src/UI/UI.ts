@@ -126,6 +126,21 @@ export abstract class UI {
         this.update();
     }
 
+    /**
+     * Updates styles based on book direction
+     *
+     * @param {boolean} rtl - New book direction
+     */
+    public setRTLStyle(rtl: boolean): void {
+        this.wrapper.classList.remove('--rtl');
+
+        if (rtl) {
+            this.wrapper.classList.add('--rtl');
+        }
+
+        this.update();
+    }
+    
     protected removeHandlers(): void {
         window.removeEventListener('resize', this.onResize);
 
@@ -159,9 +174,8 @@ export abstract class UI {
      */
     private getMousePos(x: number, y: number): Point {
         const rect = this.distElement.getBoundingClientRect();
-
         return {
-            x: x - rect.left,
+            x: this.app.getSettings().rtl ? rect.width - (x - rect.left) : x - rect.left,
             y: y - rect.top,
         };
     }

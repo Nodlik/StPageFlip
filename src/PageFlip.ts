@@ -253,6 +253,17 @@ export class PageFlip extends EventObject {
     }
 
     /**
+     * Call a page direction change event trigger. Update UI and rendering area
+     *
+     * @param {boolean} newRTL - New page direction
+     */
+    public updateRTL(newRTL: boolean): void {
+        this.ui.setRTLStyle(newRTL);
+        this.update();
+        this.trigger('changeRTL', this, newRTL);
+    }
+
+    /**
      * Get the total number of pages in a book
      *
      * @returns {number}
