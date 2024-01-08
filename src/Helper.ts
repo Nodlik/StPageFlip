@@ -34,11 +34,11 @@ export class Helper {
      * @param {Segment} line2
      */
     public static GetAngleBetweenTwoLine(line1: Segment, line2: Segment): number {
-        const A1 = line1[0].y - line1[1].y;
-        const A2 = line2[0].y - line2[1].y;
+        const A1 = line1[0].x - line1[1].x;
+        const A2 = line2[0].x - line2[1].x;
 
-        const B1 = line1[1].x - line1[0].x;
-        const B2 = line2[1].x - line2[0].x;
+        const B1 = line1[1].y - line1[0].y;
+        const B2 = line2[1].y - line2[0].y;
 
         return Math.acos((A1 * A2 + B1 * B2) / (Math.sqrt(A1 * A1 + B1 * B1) * Math.sqrt(A2 * A2 + B2 * B2)));
     }

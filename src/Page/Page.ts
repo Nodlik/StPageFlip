@@ -1,5 +1,6 @@
 import { Render } from '../Render/Render';
 import { Point } from '../BasicTypes';
+import { BindingEdge } from '../Settings';
 
 /**
  * State of the page on the basis of which rendering
@@ -27,6 +28,12 @@ export const enum PageOrientation {
 
     /** Right side page */
     RIGHT,
+
+    /** Top page */
+    TOP,
+
+    /** Bottom page */
+    BOTTOM
 }
 
 export const enum PageDensity {
@@ -78,7 +85,7 @@ export abstract class Page {
      * 
      * @param {PageDensity} tempDensity - Density at the time of rendering 
      */
-    public abstract draw(tempDensity?: PageDensity): void;
+    public abstract draw(tempDensity?: PageDensity, bindingEdge?: BindingEdge): void;
 
     /**
      * Page loading

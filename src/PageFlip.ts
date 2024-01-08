@@ -1,7 +1,7 @@
 import { PageCollection } from './Collection/PageCollection';
 import { ImagePageCollection } from './Collection/ImagePageCollection';
 import { HTMLPageCollection } from './Collection/HTMLPageCollection';
-import { PageRect, Point } from './BasicTypes';
+import { PageRect, Point, ImageWithTrimData } from './BasicTypes';
 import { Flip, FlipCorner, FlippingState } from './Flip/Flip';
 import { Orientation, Render } from './Render/Render';
 import { CanvasRender } from './Render/CanvasRender';
@@ -68,9 +68,9 @@ export class PageFlip extends EventObject {
     /**
      * Load pages from images on the Canvas mode
      *
-     * @param {string[]} imagesHref - List of paths to images
+     * @param {ImageWithTrimData[]} images - List of image with trim box data
      */
-    public loadFromImages(imagesHref: string[]): void {
+    public loadFromImages(images: ImageWithTrimData[]): void {
         this.ui = new CanvasUI(this.block, this, this.setting);
 
         const canvas = (this.ui as CanvasUI).getCanvas();
@@ -78,7 +78,7 @@ export class PageFlip extends EventObject {
 
         this.flipController = new Flip(this.render, this);
 
-        this.pages = new ImagePageCollection(this, this.render, imagesHref);
+        this.pages = new ImagePageCollection(this, this.render, images);
         this.pages.load();
 
         this.render.start();
@@ -127,13 +127,13 @@ export class PageFlip extends EventObject {
     /**
      * Update current pages from images
      *
-     * @param {string[]} imagesHref - List of paths to images
+     * @param {ImageWithTrimData[]} images - List of image with trim box data
      */
-    public updateFromImages(imagesHref: string[]): void {
+    public updateFromImages(images: ImageWithTrimData[]): void {
         const current = this.pages.getCurrentPageIndex();
 
         this.pages.destroy();
-        this.pages = new ImagePageCollection(this, this.render, imagesHref);
+        this.pages = new ImagePageCollection(this, this.render, images);
         this.pages.load();
 
         this.pages.show(current);
@@ -251,6 +251,18 @@ export class PageFlip extends EventObject {
         this.update();
         this.trigger('changeOrientation', this, newOrientation);
     }
+
+    /**
+     * Call a page direction change event trigger. Update UI and rendering area
+     *
+     * @param {boolean} newRTL - New page direction
+     */
+    public updateRTL(newRTL: boolean): void {
+        this.ui.setRTLStyle(newRTL);
+        this.update();
+        this.trigger('changeRTL', this, newRTL);
+    }
+
 
     /**
      * Get the total number of pages in a book

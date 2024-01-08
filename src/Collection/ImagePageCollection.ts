@@ -3,22 +3,23 @@ import { Render } from '../Render/Render';
 import { PageCollection } from './PageCollection';
 import { PageFlip } from '../PageFlip';
 import { PageDensity } from '../Page/Page';
+import { ImageWithTrimData } from '../BasicTypes';
 
 /**
  * Сlass representing a collection of pages as images on the canvas
  */
 export class ImagePageCollection extends PageCollection {
-    private readonly imagesHref: string[];
+    private readonly imagesWithTrimData: ImageWithTrimData[];
 
-    constructor(app: PageFlip, render: Render, imagesHref: string[]) {
+    constructor(app: PageFlip, render: Render, images: ImageWithTrimData[]) {
         super(app, render);
 
-        this.imagesHref = imagesHref;
+        this.imagesWithTrimData = images;
     }
 
     public load(): void {
-        for (const href of this.imagesHref) {
-            const page = new ImagePage(this.render, href, PageDensity.SOFT);
+        for (const imageWithTrimData of this.imagesWithTrimData) {
+            const page = new ImagePage(this.render, imageWithTrimData, PageDensity.SOFT);
 
             page.load();
             this.pages.push(page);

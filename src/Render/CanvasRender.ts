@@ -2,7 +2,7 @@ import { Orientation, Render } from './Render';
 import { PageFlip } from '../PageFlip';
 import { FlipDirection } from '../Flip/Flip';
 import { PageOrientation } from '../Page/Page';
-import { FlipSetting } from '../Settings';
+import { BindingEdge, FlipSetting } from '../Settings';
 
 /**
  * Class responsible for rendering the Canvas book
@@ -29,16 +29,23 @@ export class CanvasRender extends Render {
     protected drawFrame(): void {
         this.clear();
 
-        if (this.orientation !== Orientation.PORTRAIT)
-            if (this.leftPage != null) this.leftPage.simpleDraw(PageOrientation.LEFT);
+        if(this.setting.bindingEdge == BindingEdge.TOP_BOTTOM) {
+            if (this.orientation !== Orientation.PORTRAIT)
+                if (this.leftPage != null) this.leftPage.simpleDraw(PageOrientation.TOP);
 
-        if (this.rightPage != null) this.rightPage.simpleDraw(PageOrientation.RIGHT);
+            if (this.rightPage != null) this.rightPage.simpleDraw(PageOrientation.BOTTOM);
+        } else {
+            if (this.orientation !== Orientation.PORTRAIT)
+                if (this.leftPage != null) this.leftPage.simpleDraw(PageOrientation.LEFT);
 
-        if (this.bottomPage != null) this.bottomPage.draw();
+            if (this.rightPage != null) this.rightPage.simpleDraw(PageOrientation.RIGHT);
+        }
 
-        this.drawBookShadow();
+        if (this.bottomPage != null) this.bottomPage.draw(undefined, this.setting.bindingEdge);
 
-        if (this.flippingPage != null) this.flippingPage.draw();
+        if(this.leftPage !== null && this.rightPage !== null) this.drawBookShadow(this.setting.bindingEdge);
+
+        if (this.flippingPage != null) this.flippingPage.draw(undefined, this.setting.bindingEdge);
 
         if (this.shadow != null) {
             this.drawOuterShadow();
@@ -54,19 +61,22 @@ export class CanvasRender extends Render {
         }
     }
 
-    private drawBookShadow(): void {
+    private drawBookShadow(bindingEdge: BindingEdge): void {
         const rect = this.getRect();
 
         this.ctx.save();
         this.ctx.beginPath();
 
-        const shadowSize = rect.width / 20;
+        const shadowSize = bindingEdge == BindingEdge.LEFT_RIGHT ? rect.width / 20 : rect.height / 20;
         this.ctx.rect(rect.left, rect.top, rect.width, rect.height);
 
-        const shadowPos = { x: rect.left + rect.width / 2 - shadowSize / 2, y: 0 };
+        let shadowPos = { x: rect.left + rect.width / 2 - shadowSize / 2, y: 0 };
+        if(bindingEdge == BindingEdge.TOP_BOTTOM) {
+            shadowPos = { y: rect.top + rect.height / 2 - shadowSize / 2, x: rect.left };
+        }
         this.ctx.translate(shadowPos.x, shadowPos.y);
 
-        const outerGradient = this.ctx.createLinearGradient(0, 0, shadowSize, 0);
+        const outerGradient = this.ctx.createLinearGradient(0, 0, bindingEdge == BindingEdge.LEFT_RIGHT ? shadowSize : 0, bindingEdge == BindingEdge.LEFT_RIGHT ? 0 : shadowSize);
 
         outerGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
         outerGradient.addColorStop(0.4, 'rgba(0, 0, 0, 0.2)');
@@ -78,7 +88,11 @@ export class CanvasRender extends Render {
         this.ctx.clip();
 
         this.ctx.fillStyle = outerGradient;
-        this.ctx.fillRect(0, 0, shadowSize, rect.height * 2);
+        if(bindingEdge == BindingEdge.LEFT_RIGHT) {
+            this.ctx.fillRect(0, 0, shadowSize, rect.height * 2);
+        } else {
+            this.ctx.fillRect(0, 0, rect.width * 2, shadowSize);
+        }
 
         this.ctx.restore();
     }
@@ -161,7 +175,6 @@ export class CanvasRender extends Render {
     }
 
     private clear(): void {
-        this.ctx.fillStyle = 'white';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }

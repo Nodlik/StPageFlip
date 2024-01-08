@@ -59,3 +59,11 @@
   left: 0;
   top: 0;
 }
+
+/* rtl */
+.stf__wrapper.--rtl {
+  transform: scaleX(-1);
+}
+.stf__wrapper.--rtl .stf__item > * {
+  transform: scaleX(-1);
+}
