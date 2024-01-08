@@ -1,6 +1,6 @@
 import { PageFlip } from '../PageFlip';
 import { Point } from '../BasicTypes';
-import { FlipSetting, SizeType } from '../Settings';
+import { BindingEdge, FlipSetting, SizeType } from '../Settings';
 import { FlipCorner, FlippingState } from '../Flip/Flip';
 import { Orientation } from '../Render/Render';
 
@@ -46,19 +46,29 @@ export abstract class UI {
         this.app = app;
 
         const k = this.app.getSettings().usePortrait ? 1 : 2;
-
+        
         // Setting block sizes based on configuration
-        inBlock.style.minWidth = setting.minWidth * k + 'px';
-        inBlock.style.minHeight = setting.minHeight + 'px';
-
         if (setting.size === SizeType.FIXED) {
-            inBlock.style.minWidth = setting.width * k + 'px';
-            inBlock.style.minHeight = setting.height + 'px';
+            if(setting.bindingEdge == BindingEdge.TOP_BOTTOM) {
+                inBlock.style.minWidth = setting.width + 'px';
+                inBlock.style.maxWidth = setting.width + 'px';
+                inBlock.style.minHeight = setting.height * k + 'px';
+                inBlock.style.maxHeight = setting.height * k + 'px';
+            } else {
+                inBlock.style.minWidth = setting.width * k + 'px';
+                inBlock.style.minHeight = setting.height + 'px';
+            }
         }
 
         if (setting.autoSize) {
-            inBlock.style.width = '100%';
-            inBlock.style.maxWidth = setting.maxWidth * 2 + 'px';
+            if(setting.bindingEdge == BindingEdge.TOP_BOTTOM) {
+                inBlock.style.height = '100%';
+                inBlock.style.maxHeight = setting.maxHeight * 2 + 'px';
+                inBlock.style.minHeight = '800px'; // Set The Min Height As A Workabkle Number
+            } else {
+                inBlock.style.width = '100%';
+                inBlock.style.maxWidth = setting.maxWidth * 2 + 'px';
+            }
         }
 
         inBlock.style.display = 'block';
@@ -126,6 +136,21 @@ export abstract class UI {
         this.update();
     }
 
+    /**
+     * Updates styles based on book direction
+     *
+     * @param {boolean} rtl - New book direction
+     */
+    public setRTLStyle(rtl: boolean): void {
+        this.wrapper.classList.remove('--rtl');
+
+        if (rtl) {
+            this.wrapper.classList.add('--rtl');
+        }
+
+        this.update();
+    }
+
     protected removeHandlers(): void {
         window.removeEventListener('resize', this.onResize);
 
@@ -161,7 +186,7 @@ export abstract class UI {
         const rect = this.distElement.getBoundingClientRect();
 
         return {
-            x: x - rect.left,
+            x: this.app.getSettings().rtl ? rect.width - (x - rect.left) : x - rect.left,
             y: y - rect.top,
         };
     }

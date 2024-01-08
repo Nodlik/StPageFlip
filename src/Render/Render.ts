@@ -2,7 +2,7 @@ import { PageFlip } from '../PageFlip';
 import { Point, PageRect, RectPoints } from '../BasicTypes';
 import { FlipDirection } from '../Flip/Flip';
 import { Page, PageOrientation } from '../Page/Page';
-import { FlipSetting, SizeType } from '../Settings';
+import { BindingEdge, FlipSetting, SizeType } from '../Settings';
 
 type FrameAction = () => void;
 type AnimationSuccessAction = () => void;
@@ -71,6 +71,7 @@ export abstract class Render {
     protected direction: FlipDirection = null;
     /** Current book orientation */
     protected orientation: Orientation = null;
+    protected rtl: boolean = null;
     /** Сurrent state of the shadows */
     protected shadow: Shadow = null;
     /** Сurrent animation process */
@@ -191,10 +192,16 @@ export abstract class Render {
     public update(): void {
         this.boundsRect = null;
         const orientation = this.calculateBoundsRect();
+        const rtl = this.app.getSettings().rtl;
 
         if (this.orientation !== orientation) {
             this.orientation = orientation;
             this.app.updateOrientation(orientation);
+        }
+
+        if (this.rtl !== rtl) {
+            this.rtl = rtl;
+            this.app.updateRTL(rtl);
         }
     }
 
@@ -205,12 +212,13 @@ export abstract class Render {
         let orientation = Orientation.LANDSCAPE;
 
         const blockWidth = this.getBlockWidth();
+        const blockHeight = this.getBlockHeight();
         const middlePoint: Point = {
             x: blockWidth / 2,
             y: this.getBlockHeight() / 2,
         };
 
-        const ratio = this.setting.width / this.setting.height;
+        let ratio = this.setting.width / this.setting.height;
 
         let pageWidth = this.setting.width;
         let pageHeight = this.setting.height;
@@ -218,26 +226,54 @@ export abstract class Render {
         let left = middlePoint.x - pageWidth;
 
         if (this.setting.size === SizeType.STRETCH) {
-            if (blockWidth < this.setting.minWidth * 2 && this.app.getSettings().usePortrait)
-                orientation = Orientation.PORTRAIT;
+            if(this.app.getSettings().bindingEdge == BindingEdge.TOP_BOTTOM) {
 
-            pageWidth =
-                orientation === Orientation.PORTRAIT
-                    ? this.getBlockWidth()
-                    : this.getBlockWidth() / 2;
+                ratio = this.setting.height / this.setting.width;
 
-            if (pageWidth > this.setting.maxWidth) pageWidth = this.setting.maxWidth;
+                if (blockHeight< this.setting.minHeight * 2 && this.app.getSettings().usePortrait)
+                    orientation = Orientation.PORTRAIT;
 
-            pageHeight = pageWidth / ratio;
-            if (pageHeight > this.getBlockHeight()) {
-                pageHeight = this.getBlockHeight();
-                pageWidth = pageHeight * ratio;
+                pageHeight =
+                    orientation === Orientation.PORTRAIT
+                        ? this.getBlockHeight()
+                        : this.getBlockHeight() / 2;
+
+                if (pageHeight > this.setting.maxHeight) pageHeight = this.setting.maxHeight;
+
+                pageWidth = pageHeight / ratio;
+                if (pageWidth > this.getBlockWidth()) {
+                    pageHeight = this.getBlockWidth();
+                    pageHeight= pageWidth * ratio;
+                }
+
+                left =
+                    orientation === Orientation.PORTRAIT
+                        ? middlePoint.x - pageHeight / 2 - pageHeight
+                        : middlePoint.x - pageHeight;
+
+            } else {
+                if (blockWidth < this.setting.minWidth * 2 && this.app.getSettings().usePortrait)
+                    orientation = Orientation.PORTRAIT;
+
+                pageWidth =
+                    orientation === Orientation.PORTRAIT
+                        ? this.getBlockWidth()
+                        : this.getBlockWidth() / 2;
+
+                if (pageWidth > this.setting.maxWidth) pageWidth = this.setting.maxWidth;
+
+                pageHeight = pageWidth / ratio;
+                if (pageHeight > this.getBlockHeight()) {
+                    pageHeight = this.getBlockHeight();
+                    pageWidth = pageHeight * ratio;
+                }
+
+                left =
+                    orientation === Orientation.PORTRAIT
+                        ? middlePoint.x - pageWidth / 2 - pageWidth
+                        : middlePoint.x - pageWidth;
             }
-
-            left =
-                orientation === Orientation.PORTRAIT
-                    ? middlePoint.x - pageWidth / 2 - pageWidth
-                    : middlePoint.x - pageWidth;
+            
         } else {
             if (blockWidth < pageWidth * 2) {
                 if (this.app.getSettings().usePortrait) {
@@ -247,13 +283,25 @@ export abstract class Render {
             }
         }
 
-        this.boundsRect = {
-            left,
-            top: middlePoint.y - pageHeight / 2,
-            width: pageWidth * 2,
-            height: pageHeight,
-            pageWidth: pageWidth,
-        };
+        if(this.app.getSettings().bindingEdge == BindingEdge.TOP_BOTTOM) {
+            this.boundsRect = {
+                left: middlePoint.x - pageWidth / 2,
+                top: middlePoint.y - pageHeight,
+                width: pageWidth,
+                height: pageHeight * 2,
+                pageWidth: pageWidth,
+                pageHeight: pageHeight
+            };
+        } else {
+            this.boundsRect = {
+                left,
+                top: middlePoint.y - pageHeight / 2,
+                width: pageWidth * 2,
+                height: pageHeight,
+                pageWidth: pageWidth,
+                pageHeight: pageHeight
+            };
+        }
 
         return orientation;
     }
@@ -335,6 +383,13 @@ export abstract class Render {
      */
     public getOrientation(): Orientation {
         return this.orientation;
+    }
+
+    /**
+     * Get current book rtl direction
+     */
+    public getRTL(): boolean {
+        return this.rtl;
     }
 
     /**
@@ -462,6 +517,8 @@ export abstract class Render {
         if (pos == null) return null;
 
         const rect = this.getRect();
+
+        this.getOrientation
 
         const x =
             direction === FlipDirection.FORWARD

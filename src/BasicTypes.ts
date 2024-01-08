@@ -40,9 +40,23 @@ export interface PageRect {
     height: number;
     /** Page width. If portrait mode is equal to the width of the book. In landscape mode - half of the total width. */
     pageWidth: number;
+    pageHeight: number;
 }
 
 /**
  * Type representing a line segment contains two points: start and end
  */
 export type Segment = [Point, Point];
+
+export interface Box {
+    left: number;
+    top: number;
+    bottom: number;
+    right: number;
+}
+
+export interface ImageWithTrimData {
+    href: string;
+    trimBox: Box;
+    cropBox: Box;
+}

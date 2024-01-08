@@ -1,5 +1,5 @@
 {
-  "name": "page-flip",
+  "name": "@mixam-platform/page-flip",
   "version": "2.0.7",
   "main": "dist/js/page-flip.browser.js",
   "browser": "dist/js/page-flip.browser.js",
@@ -12,10 +12,12 @@
   },
   "publishConfig": {},
   "homepage": "https://nodlik.github.io/StPageFlip/",
-  "dependencies": {},
+  "dependencies": {
+    "core-js": "^3.35.0"
+  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
+    "@typescript-eslint/eslint-plugin": "5.25.0",
+    "@typescript-eslint/parser": "5.25.0",
     "css-loader": "^3.5.3",
     "eslint": "^7.0.0",
     "eslint-plugin-typescript": "^0.14.0",

@@ -9,6 +9,16 @@ export const enum SizeType {
 }
 
 /**
+ * Binding Edge
+ */
+export const enum BindingEdge {
+    /** Binding on the top/bottom axis */
+    TOP_BOTTOM = 'TOP_BOTTOM',
+    /** Binding on the left/right axis */
+    LEFT_RIGHT = 'LEFT_RIGHT',
+}
+
+/**
  * Configuration object
  */
 export interface FlipSetting {
@@ -57,6 +67,10 @@ export interface FlipSetting {
 
     /** if this value is true, flipping by clicking on the whole book will be locked. Only on corners */
     disableFlipByClick: boolean;
+
+    rtl: boolean;
+
+    bindingEdge: BindingEdge;
 }
 
 export class Settings {
@@ -82,6 +96,8 @@ export class Settings {
         useMouseEvents: true,
         showPageCorners: true,
         disableFlipByClick: false,
+        bindingEdge: BindingEdge.LEFT_RIGHT,
+        rtl: false
     };
 
     /**
