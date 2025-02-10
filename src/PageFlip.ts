@@ -33,7 +33,7 @@ export class PageFlip extends EventObject {
     private flipController: Flip;
     private render: Render;
 
-    private ui: UI;
+    public ui: UI;
 
     /**
      * Create a new PageFlip instance
@@ -47,6 +47,10 @@ export class PageFlip extends EventObject {
 
         this.setting = new Settings().getSettings(setting);
         this.block = inBlock;
+    }
+
+    public updateMinWidth(minWidth: number): void {
+        this.setting.minWidth = minWidth;
     }
 
     /**

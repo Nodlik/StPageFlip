@@ -283,4 +283,7 @@ export abstract class UI {
             this.app.userStop(pos, isSwipe);
         }
     };
+    public firstPageCenter(): void {}
+    public firstPageEndCenter(): void {}
+    public firstPageCenterReverse(): void {}
 }

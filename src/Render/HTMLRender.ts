@@ -118,9 +118,11 @@ export class HTMLRender extends Render {
             z-index: ${(this.getSettings().startZIndex + 4).toString(10)};
             width: ${shadowSize}px;
             height: ${rect.height}px;
-            background: linear-gradient(to left, rgba(0, 0, 0, ${
+            background: linear-gradient(to left,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${
                 this.shadow.opacity
-            }) 5%, rgba(0, 0, 0, 0) 100%);
+            }) 8%,rgba(0, 0, 0, ${
+                this.shadow.opacity
+            }) 12%, rgba(0, 0, 0, 0) 100%);
             left: ${rect.left + rect.width / 2}px;
             transform-origin: 0 0;
         `;
@@ -184,7 +186,7 @@ export class HTMLRender extends Render {
             height: ${rect.height * 2}px;
             background: linear-gradient(${shadowDirection},
                 rgba(0, 0, 0, ${this.shadow.opacity}) 5%,
-                rgba(0, 0, 0, 0.05) 15%,
+                rgba(255, 255, 255, ${this.shadow.opacity * 2}) 15%,
                 rgba(0, 0, 0, ${this.shadow.opacity}) 35%,
                 rgba(0, 0, 0, 0) 100%);
             transform-origin: ${shadowTranslate}px 100px;
@@ -278,6 +280,8 @@ export class HTMLRender extends Render {
 
             this.leftPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
             this.leftPage.draw(this.flippingPage.getDrawingDensity());
+        } else if (this.direction === FlipDirection.BACK && this.flippingPage !== null) {
+            this.leftPage.draw(this.flippingPage.getDrawingDensity()); // left page clip
         } else {
             this.leftPage.simpleDraw(PageOrientation.LEFT);
         }
@@ -300,6 +304,8 @@ export class HTMLRender extends Render {
 
             this.rightPage.setHardDrawingAngle(180 + this.flippingPage.getHardAngle());
             this.rightPage.draw(this.flippingPage.getDrawingDensity());
+        } else if (this.direction === FlipDirection.FORWARD && this.orientation === Orientation.LANDSCAPE && this.flippingPage !== null) {
+            this.rightPage.draw(this.flippingPage.getDrawingDensity()); 
         } else {
             this.rightPage.simpleDraw(PageOrientation.RIGHT);
         }
@@ -342,11 +348,19 @@ export class HTMLRender extends Render {
 
         if (this.shadow != null && this.flippingPage !== null) {
             if (this.flippingPage.getDrawingDensity() === PageDensity.SOFT) {
-                this.drawOuterShadow();
-                this.drawInnerShadow();
+                if((this.app.getCurrentPageIndex() === 1 && this.direction === FlipDirection.BACK) || (this.app.getCurrentPageIndex() === (this.app.getPageCount() - 3) && this.direction === FlipDirection.FORWARD)) {
+                    this.drawInnerShadow(); return;
+                } else {
+                    this.drawOuterShadow();
+                    this.drawInnerShadow();
+                }
             } else {
-                this.drawHardOuterShadow();
-                this.drawHardInnerShadow();
+                if(((this.app.getCurrentPageIndex() === 1 || this.app.getCurrentPageIndex() === (this.app.getPageCount() - 2)) && this.direction === FlipDirection.BACK) || ((this.app.getCurrentPageIndex() === (this.app.getPageCount() - 3) || this.app.getCurrentPageIndex() === 0 ) && this.direction === FlipDirection.FORWARD)) {
+                    this.drawHardOuterShadow(); return;
+                } else {
+                    this.drawHardOuterShadow();
+                    this.drawHardInnerShadow();
+                }
             }
         }
     }

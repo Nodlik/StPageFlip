@@ -1,7 +1,7 @@
-import { Orientation, Render } from '../Render/Render';
-import { Page, PageDensity } from '../Page/Page';
-import { PageFlip } from '../PageFlip';
 import { FlipDirection } from '../Flip/Flip';
+import { Page, PageDensity, PageOrientation } from '../Page/Page';
+import { PageFlip } from '../PageFlip';
+import { Orientation, Render } from '../Render/Render';
 
 type NumberArray = number[];
 
@@ -12,6 +12,8 @@ export abstract class PageCollection {
     protected readonly app: PageFlip;
     protected readonly render: Render;
     protected readonly isShowCover: boolean;
+    protected readonly disableHardPages: boolean;
+    protected readonly firstCoverStartLeft: boolean;
 
     /** Pages List */
     protected pages: Page[] = [];
@@ -31,6 +33,8 @@ export abstract class PageCollection {
 
         this.currentPageIndex = 0;
         this.isShowCover = this.app.getSettings().showCover;
+        this.disableHardPages = this.app.getSettings().disableHardPages;
+        this.firstCoverStartLeft = this.app.getSettings().firstCoverStartLeft;
     }
 
     /**
@@ -58,7 +62,14 @@ export abstract class PageCollection {
 
         let start = 0;
         if (this.isShowCover) {
-            this.pages[0].setDensity(PageDensity.HARD);
+            if (!this.disableHardPages) {
+                this.pages[0].setDensity(PageDensity.HARD);
+            }
+            if (this.firstCoverStartLeft) {
+                this.pages[0].setOrientation(PageOrientation.LEFT);
+            } else {
+                this.pages[0].setOrientation(PageOrientation.RIGHT);
+            }
             this.landscapeSpread.push([start]);
             start++;
         }
@@ -67,7 +78,9 @@ export abstract class PageCollection {
             if (i < this.pages.length - 1) this.landscapeSpread.push([i, i + 1]);
             else {
                 this.landscapeSpread.push([i]);
-                this.pages[i].setDensity(PageDensity.HARD);
+                if (!this.disableHardPages) {
+                    this.pages[i].setDensity(PageDensity.HARD);
+                }
             }
         }
     }
@@ -197,6 +210,20 @@ export abstract class PageCollection {
             return direction === FlipDirection.FORWARD
                 ? this.pages[spread[1]]
                 : this.pages[spread[0]];
+        }
+    }
+
+    public getFlippingCoverPage(direction: FlipDirection): Page {
+        const current = this.currentSpreadIndex;
+
+        if (this.render.getOrientation() === Orientation.PORTRAIT) {
+            return null;
+        } else {
+            return direction === FlipDirection.FORWARD
+                ? this.currentPageIndex === 0
+                    ? this.pages[0]
+                    : this.pages[this.landscapeSpread[current][1]] // 处理首页特殊情况 要取 spread[0]
+                : this.pages[this.landscapeSpread[current][0]];
         }
     }
 

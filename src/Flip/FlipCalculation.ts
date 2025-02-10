@@ -128,6 +128,47 @@ export class FlipCalculation {
         return result;
     }
 
+    public getFlippingCoverClipArea(): Point[] {
+        const result = [];
+
+        result.push(this.topIntersectPoint);
+
+        if (this.corner === FlipCorner.TOP) {
+            result.push(this.topIntersectPoint);
+        } else {
+            result.push({ x: this.pageWidth, y: 0 });
+            if (this.topIntersectPoint !== null) {
+                result.push(this.topIntersectPoint);
+            }
+        }
+
+        if (this.sideIntersectPoint !== null) {
+            if (
+                Helper.GetDistanceBetweenTwoPoint(
+                    this.sideIntersectPoint,
+                    this.topIntersectPoint
+                ) >= 10
+            ) {
+                result.push(this.sideIntersectPoint);
+            }
+            if(this.corner === FlipCorner.BOTTOM) {
+                result.push(this.bottomIntersectPoint);
+            }
+        } else {
+            // if (this.corner === FlipCorner.TOP) {
+                result.push(this.bottomIntersectPoint);
+            // } else {
+                // result.push({ x: this.pageWidth, y: 0 });
+            // }
+        }
+
+        result.push({ x: this.pageWidth, y: this.pageHeight });
+        result.push({ x: 0, y: this.pageHeight });
+        result.push({ x: 0, y: 0 });
+
+        return result;
+    }
+
     /**
      * Get page rotation angle
      */

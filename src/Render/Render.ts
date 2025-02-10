@@ -83,6 +83,8 @@ export abstract class Render {
     /** Timer started from start of rendering */
     protected timer = 0;
 
+    protected isAnimationRenderLoopRunning: boolean = false;
+
     /**
      * Safari browser definitions for resolving a bug with a css property clip-area
      *
@@ -138,13 +140,29 @@ export abstract class Render {
      */
     public start(): void {
         this.update();
+    }
 
+    public startAnimationRenderLoop(fn: () => void = null): void {
+        if (this.isAnimationRenderLoopRunning) {
+            fn && fn();
+            return;
+        }
+        this.isAnimationRenderLoopRunning = true;
+        let callbackCalled = false;
         const loop = (timer: number): void => {
+            if (!this.isAnimationRenderLoopRunning) return;
             this.render(timer);
+            if (!callbackCalled) {
+                callbackCalled = true;
+                fn && fn();
+            }
             requestAnimationFrame(loop);
         };
-
         requestAnimationFrame(loop);
+    }
+
+    public stopAnimationRenderLoop(): void {
+        this.isAnimationRenderLoopRunning = false;
     }
 
     /**
@@ -160,14 +178,18 @@ export abstract class Render {
         onAnimateEnd: AnimationSuccessAction
     ): void {
         this.finishAnimation(); // finish the previous animation process
-
-        this.animation = {
-            frames,
-            duration,
-            durationFrame: duration / frames.length,
-            onAnimateEnd,
-            startedAt: this.timer,
-        };
+        this.startAnimationRenderLoop(() => {
+            this.animation = {
+                frames,
+                duration,
+                durationFrame: duration / frames.length,
+                onAnimateEnd: () => {
+                    this.stopAnimationRenderLoop();
+                    onAnimateEnd();
+                },
+                startedAt: this.timer
+            };
+        });
     }
 
     /**
@@ -180,6 +202,10 @@ export abstract class Render {
             if (this.animation.onAnimateEnd !== null) {
                 this.animation.onAnimateEnd();
             }
+
+            requestAnimationFrame((timer: number): void => {
+                this.render(timer);
+            });
         }
 
         this.animation = null;
@@ -196,6 +222,10 @@ export abstract class Render {
             this.orientation = orientation;
             this.app.updateOrientation(orientation);
         }
+
+        requestAnimationFrame((timer: number): void => {
+            this.render(timer);
+        });
     }
 
     /**
@@ -440,7 +470,7 @@ export abstract class Render {
         const x =
             direction === FlipDirection.FORWARD
                 ? pos.x - rect.left - rect.width / 2
-                : rect.width / 2 - pos.x + rect.left;
+                : rect.width / 2 - pos.x + rect.left; // rect.width / 2 - (pos.x - rect.left) : left page relative 0,0 is right top corner
 
         return {
             x,

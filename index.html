@@ -1,0 +1,247 @@
+<html>
+<head>
+    <title>Examples</title>
+    <style>
+        .container{
+            margin:0px auto;
+            max-width: 960px;
+            padding: 10px 100px;
+        }
+        .flip-book {
+            /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5); */
+            display: none;
+            background-size: cover;
+        }
+
+        .page {
+            padding: 0px;
+            background-color: hsl(35, 55%, 98%);
+            color: hsl(35, 35%, 35%);
+            /* border: solid 1px hsl(35, 20%, 70%); */
+            /* overflow: hidden; */
+        }
+        .page .page-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+        .page .page-content .page-header {
+            height: 30px;
+            font-size: 100%;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .page .page-content .page-image {
+            height: 100%;
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        .page .page-content .page-text {
+            height: 100%;
+            flex-grow: 1;
+            font-size: 80%;
+            text-align: justify;
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            box-sizing: border-box;
+            /* border-top: solid 1px hsl(35, 55%, 90%); */
+        }
+        .page .page-content .page-footer {
+            height: 30px;
+            /* border-top: solid 1px hsl(35, 55%, 90%); */
+            font-size: 80%;
+            color: hsl(35, 20%, 50%);
+        }
+        /* .page.--left {
+            border-right: 0;
+            box-shadow: inset -7px 0 30px -7px rgba(0, 0, 0, 0.4);
+        }
+        .page.--right {
+            border-left: 0;
+            box-shadow: inset 7px 0 30px -7px rgba(0, 0, 0, 0.4);
+        } */
+        .page.--right .page-footer {
+            text-align: right;
+        }
+        .page.hard {
+            background-color: hsl(35, 50%, 90%);
+            /* border: solid 1px hsl(35, 20%, 50%); */
+        }
+        .page.page-cover {
+            background-color: hsl(35, 45%, 80%);
+            color: hsl(35, 35%, 35%);
+            /* border: solid 1px hsl(35, 20%, 50%); */
+        }
+        .page.page-cover h2 {
+            text-align: center;
+            padding-top: 50%;
+            font-size: 210%;
+        }
+        /* .page.page-cover.page-cover-top {
+            box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), -2px 0 5px 2px rgba(0, 0, 0, 0.4);
+        }
+        .page.page-cover.page-cover-bottom {
+            box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), 10px 0 8px 0px rgba(0, 0, 0, 0.4);
+        } */
+        .page.--left::after{
+            content: '';
+            width: 128px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10000;
+            overflow: hidden;
+            pointer-events: none;
+            /* 46px */
+            /* -webkit-linear-gradient(left,rgba(53,53,53,0.5) 0,rgba(53,53,53,0.2) 40%,rgba(53,53,53,0.1) 60%,rgba(200,200,200,0) 100%) */
+            /* background-image: linear-gradient(right,rgba(60,60,60,0.4) 0,rgba(50,50,50,0.1) 54%,rgba(200,200,200,0) 100%); */
+            background-image: linear-gradient(right,rgba(60,60,60,0.3) 0,rgba(50,50,50,0.1) 54%,rgba(200,200,200,0) 100%);
+            background-image: -webkit-linear-gradient(right,rgba(60,60,60,0.3) 0,rgba(50,50,50,0.1) 54%,rgba(200,200,200,0) 100%);
+        }
+        .page.--right::after{
+            content: '';
+            width: 51px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 10000;
+            overflow: hidden;
+            pointer-events: none;
+            /* background-image: linear-gradient(left,rgba(53,53,53,0.5) 0,rgba(53,53,53,0.2) 40%,rgba(53,53,53,0.1) 60%,rgba(200,200,200,0) 100%); */
+            background-image: linear-gradient(left,rgba(53,53,53,0.4) 0,rgba(53,53,53,0.2) 40%,rgba(53,53,53,0.1) 60%,rgba(200,200,200,0) 100%);
+            background-image: -webkit-linear-gradient(left,rgba(53,53,53,0.4) 0,rgba(53,53,53,0.2) 40%,rgba(53,53,53,0.1) 60%,rgba(200,200,200,0) 100%);
+        }
+
+        .page.--left::before{
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 10000;
+            overflow: hidden;
+            pointer-events: none;
+            background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 20%);
+            transform: rotateX(180deg); /* 沿 X 轴翻转 180 度 */
+        }
+        .flipping-copy::after{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.75);  /* 半透明白色 */
+            pointer-events: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <button type="button" class="btn-prev">Previous page</button>
+            [<span class="page-current">1</span> of <span class="page-total">-</span>]
+            <button type="button" class="btn-next">Next page</button>
+        </div>
+    
+        <div>
+            State: <i class="page-state">read</i>, orientation: <i class="page-orientation">landscape</i>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="flip-book" id="demoBookExample" >
+            <!-- <div class="page page-cover page-cover-top" data-density="hard"> -->
+            <div class="page page-cover page-cover-top">
+                <div class="page-content">
+                    <h2>BOOK TITLE</h2>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header 1</h2>
+                    <div class="page-image" style="background-image: url(images/html/1.jpg)"></div>
+                    <div class="page-text">1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">2</div>
+                </div>
+            </div>
+            <!-- PAGES .... -->
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">16</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">16</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">16</div>
+                </div>
+            </div>
+            <div class="page" data-density="hard">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 3</h2>
+                    <div class="page-image" style="background-image: url(images/html/8.jpg)"></div>
+                    <div class="page-text">3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">17</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">16</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 4</h2>
+                    <div class="page-image" style="background-image: url(images/html/8.jpg)"></div>
+                    <div class="page-text">4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">18</div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="page-content">
+                    <h2 class="page-header">Page header - 2</h2>
+                    <div class="page-image" style="background-image: url(images/html/7.jpg)"></div>
+                    <div class="page-text">2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna. Aliquam ac nulla rhoncus, accumsan eros sed, viverra enim. Pellentesque non justo vel nibh sollicitudin pharetra suscipit ut ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus mollis nibh, non convallis ex convallis eu. Suspendisse potenti. Aenean vitae pellentesque erat. Integer non tristique quam. Suspendisse rutrum, augue ac sollicitudin mollis, eros velit viverra metus, a venenatis tellus tellus id magna.</div>
+                    <div class="page-footer">16</div>
+                </div>
+            </div>
+            <div class="page page-cover page-cover-bottom">
+                <!-- <div class="page page-cover page-cover-bottom" data-density="hard"> -->
+                <div class="page-content">
+                    <h2>THE END 5</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="page-flip.browser.js1"></script> -->
+    <script type="module" src="/main.ts">
+    </script>
+</body>
+</html>

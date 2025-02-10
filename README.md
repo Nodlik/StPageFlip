@@ -6,6 +6,12 @@ Powerful, simple, and flexible JS Library for creating realistic and beautiful p
 
 ![](video.gif)
 
+## CHANGES
+
+- v2.1.0
+    - Added flag disableHardPages (default: false). If true, then the library will ignore hard pages even showCover is activated. It is recommended that you use this flag only for complex HTML.
+
+
 ### Features
 
 -   Works with simple images on canvas and complex HTML blocks

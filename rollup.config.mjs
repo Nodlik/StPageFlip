@@ -1,6 +1,6 @@
-import typescript from 'rollup-plugin-typescript2';
+import terser from '@rollup/plugin-terser';
 import postcss from 'rollup-plugin-postcss';
-import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
 
 export default [
     {
