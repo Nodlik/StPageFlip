@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StPageFlip — live playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #78716c;
+            --color-on-primary: #ffffff;
+            --color-secondary: #92400e;
+            --color-accent: #d97706;
+            --color-background: #fffbeb;
+            --color-foreground: #0f172a;
+            --color-border: #eeeded;
+            --color-surface: #fffdf6;
+            --font-heading: "Cormorant Garamond", "Times New Roman", serif;
+            --font-body: "Libre Baskerville", Georgia, serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--color-background);
+            color: var(--color-foreground);
+            font-family: var(--font-body);
+            line-height: 1.6;
+        }
+
+        a { color: var(--color-secondary); }
+
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: -40px;
+            background: var(--color-foreground);
+            color: var(--color-on-primary);
+            padding: 8px 12px;
+            z-index: 10;
+        }
+
+        .skip-link:focus { top: 12px; }
+
+        .layout {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 32px 0 64px;
+            display: grid;
+            gap: 32px;
+        }
+
+        header h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin: 0 0 12px;
+        }
+
+        header p {
+            margin: 0;
+            max-width: 62ch;
+            color: #334155;
+        }
+
+        .stage { display: grid; gap: 20px; }
+
+        .book-shell {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 24px;
+            min-height: 520px;
+        }
+
+        #book {
+            margin: 0 auto;
+            max-width: 920px;
+        }
+
+        .page {
+            background: #fffaf0;
+            color: var(--color-foreground);
+            padding: 36px 40px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(146, 64, 14, 0.08);
+        }
+
+        .page.cover {
+            background: #1c1917;
+            color: #fef3c7;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .page.cover h2,
+        .page h2 {
+            font-family: var(--font-heading);
+            font-size: 2.4rem;
+            margin: 0 0 16px;
+        }
+
+        .page p { margin: 0 0 14px; }
+
+        .kicker {
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            margin-bottom: 12px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button, select {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid var(--color-primary);
+            background: var(--color-on-primary);
+            color: var(--color-foreground);
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            color: #1c1917;
+            font-weight: 700;
+        }
+
+        button:hover, select:hover { filter: brightness(0.97); }
+
+        button:focus-visible, select:focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .status {
+            min-height: 1.5em;
+            color: #44403c;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .features article {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 18px 20px;
+        }
+
+        .features h2 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            margin: 0 0 8px;
+        }
+
+        .features p { margin: 0; color: #44403c; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#book">Skip to book</a>
+    <div class="layout">
+        <header>
+            <h1>StPageFlip playground</h1>
+            <p>
+                Realistic HTML page turns with keyboard support, RTL reading order,
+                pointer events, and reduced-motion respect. Use the arrows, swipe,
+                or the controls below.
+            </p>
+        </header>
+
+        <section class="stage" aria-labelledby="demo-heading">
+            <h2 id="demo-heading" class="visually-hidden" style="position:absolute;left:-9999px;">Interactive book</h2>
+            <div class="book-shell">
+                <div id="book">
+                    <div class="page cover" data-density="hard">
+                        <p class="kicker">StPageFlip 2.1</p>
+                        <h2>The fold that still feels like paper</h2>
+                        <p>A zero-dependency library for HTML and canvas books.</p>
+                    </div>
+                    <div class="page">
+                        <h2>Turn by keyboard</h2>
+                        <p>Focus the book, then use Left and Right arrows. Home and End jump to the covers.</p>
+                        <p>Nested buttons and links no longer steal the whole page-turn gesture.</p>
+                        <p><a href="https://github.com/Nodlik/StPageFlip">Source on GitHub</a></p>
+                    </div>
+                    <div class="page">
+                        <h2>RTL is a first-class setting</h2>
+                        <p>Set direction to rtl and hit zones, swipes, and arrow keys reverse together.</p>
+                        <p>The root element also receives dir so page content inherits the reading order.</p>
+                    </div>
+                    <div class="page">
+                        <h2>Pointer events</h2>
+                        <p>Mice, pens, and touch share one path. Capture keeps a fold alive when the pointer leaves the book.</p>
+                        <p>Canvas books now respect devicePixelRatio, so folds stay sharp on retina screens.</p>
+                    </div>
+                    <div class="page">
+                        <h2>Reduced motion</h2>
+                        <p>If the user prefers reduced motion, flips snap without the fold animation.</p>
+                        <p>Destroy cancels the render loop and leaves your host element in the document.</p>
+                    </div>
+                    <div class="page cover" data-density="hard">
+                        <p class="kicker">End matter</p>
+                        <h2>Ready for apps, not only demos</h2>
+                        <p>ESM, CJS, types, and a published browser bundle.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <button type="button" id="prev" class="primary">Previous</button>
+                <button type="button" id="next" class="primary">Next</button>
+                <label>
+                    Direction
+                    <select id="direction">
+                        <option value="ltr" selected>LTR</option>
+                        <option value="rtl">RTL</option>
+                    </select>
+                </label>
+                <p class="status" id="status" aria-live="polite">Page 1</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <article>
+                <h2>Package</h2>
+                <p>Named ESM, CJS, and UMD builds with generated TypeScript declarations.</p>
+            </article>
+            <article>
+                <h2>Lifecycle</h2>
+                <p>Safe destroy, isolated settings, and a cancelled animation frame loop.</p>
+            </article>
+            <article>
+                <h2>Adoption</h2>
+                <p>ARIA live page numbers, keyboard, RTL, and interactive child elements.</p>
+            </article>
+        </section>
+    </div>
+    <script src="../dist/js/page-flip.browser.js"></script>
+    <script>
+        const root = document.getElementById('book');
+        const statusEl = document.getElementById('status');
+        const directionEl = document.getElementById('direction');
+        let pageFlip = null;
+
+        function pageNodes() {
+            return Array.from(root.querySelectorAll('.page'));
+        }
+
+        function createBook(direction) {
+            if (pageFlip) pageFlip.destroy();
+
+            pageFlip = new St.PageFlip(root, {
+                width: 420,
+                height: 560,
+                size: 'stretch',
+                minWidth: 280,
+                maxWidth: 460,
+                minHeight: 380,
+                maxHeight: 640,
+                showCover: true,
+                maxShadowOpacity: 0.45,
+                mobileScrollSupport: true,
+                usePortrait: true,
+                direction: direction,
+                ariaLabel: 'StPageFlip demonstration book'
+            });
+
+            pageFlip.loadFromHTML(pageNodes());
+            pageFlip.on('flip', function (e) {
+                statusEl.textContent = 'Page ' + (Number(e.data) + 1) + ' of ' + pageFlip.getPageCount();
+            });
+            pageFlip.on('init', function () {
+                statusEl.textContent = 'Page ' + (pageFlip.getCurrentPageIndex() + 1) + ' of ' + pageFlip.getPageCount();
+            });
+        }
+
+        document.getElementById('prev').addEventListener('click', function () {
+            pageFlip.flipPrev();
+        });
+        document.getElementById('next').addEventListener('click', function () {
+            pageFlip.flipNext();
+        });
+        directionEl.addEventListener('change', function () {
+            createBook(directionEl.value);
+        });
+
+        createBook('ltr');
+    </script>
+</body>
+</html>

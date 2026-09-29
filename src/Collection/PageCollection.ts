@@ -2,6 +2,7 @@ import { Orientation, Render } from '../Render/Render';
 import { Page, PageDensity } from '../Page/Page';
 import { PageFlip } from '../PageFlip';
 import { FlipDirection } from '../Flip/Flip';
+import { canAdvanceSpread, canRewindSpread } from './spreadBounds';
 
 type NumberArray = number[];
 
@@ -204,7 +205,7 @@ export abstract class PageCollection {
      * Show next spread
      */
     public showNext(): void {
-        if (this.currentSpreadIndex < this.getSpread().length) {
+        if (canAdvanceSpread(this.currentSpreadIndex, this.getSpread().length)) {
             this.currentSpreadIndex++;
             this.showSpread();
         }
@@ -214,7 +215,7 @@ export abstract class PageCollection {
      * Show prev spread
      */
     public showPrev(): void {
-        if (this.currentSpreadIndex > 0) {
+        if (canRewindSpread(this.currentSpreadIndex)) {
             this.currentSpreadIndex--;
             this.showSpread();
         }

@@ -3,12 +3,20 @@
   display: block;
   box-sizing: border-box;
   transform: translateZ(0);
-
   -ms-touch-action: pan-y;
   touch-action: pan-y;
 }
 
-.sft__wrapper {
+.stf__parent:focus {
+  outline: none;
+}
+
+.stf__parent:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 4px;
+}
+
+.stf__wrapper {
   position: relative;
   width: 100%;
   box-sizing: border-box;

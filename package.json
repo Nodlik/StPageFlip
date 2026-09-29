@@ -3,30 +3,65 @@
   "version": "2.0.7",
   "main": "dist/js/page-flip.browser.js",
   "browser": "dist/js/page-flip.browser.js",
+  "version": "2.1.0",
+  "description": "Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect",
   "author": "oleg.litovski9@gmail.com",
   "license": "MIT",
   "description": "Powerful, simple and flexible JS Library for creating realistic and beautiful page turning effect",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/js/page-flip.cjs.js",
+  "module": "./dist/js/page-flip.module.js",
+  "browser": "./dist/js/page-flip.browser.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/js/page-flip.module.js",
+      "require": "./dist/js/page-flip.cjs.js",
+      "default": "./dist/js/page-flip.module.js"
+    },
+    "./dist/js/page-flip.browser.js": "./dist/js/page-flip.browser.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Nodlik/StPageFlip.git"
   },
   "publishConfig": {},
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://nodlik.github.io/StPageFlip/",
   "dependencies": {},
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "css-loader": "^3.5.3",
     "eslint": "^7.0.0",
     "eslint-plugin-typescript": "^0.14.0",
+    "jsdom": "^24.1.3",
     "prettier": "^2.0.5",
+    "rollup": "^4.63.5",
     "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.4",
+    "tslib": "^2.8.1",
     "typedoc": "^0.17.8",
     "typescript": "latest",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
@@ -34,6 +69,12 @@
     "eslint": "eslint . --ext .ts",
     "build-global": "npx webpack",
     "build": "rollup -c"
+    "eslint": "eslint src --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build-global": "webpack",
+    "build": "rollup -c rollup.config.mjs && tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm test && npm run build"
   },
   "keywords": [
     "typescript",
@@ -45,5 +86,9 @@
     "fold",
     "frontend",
     "javascript"
+    "javascript",
+    "rtl",
+    "a11y"
   ]
 }
+ 

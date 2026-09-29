@@ -5,24 +5,26 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist/js'),
         filename: 'pageFlip.browser.js',
-        library: 'St'
+        library: 'St',
     },
-    mode: 'development',
+    mode: 'production',
     module: {
         rules: [
             {
                 test: /\.css/,
-                use: [{
-                        loader: "style-loader"
-                    }, {
-                        loader: "css-loader"
-                    }]
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+                    },
+                ],
             },
             { test: /\.ts$/, use: 'ts-loader' },
         ],
     },
     resolve: {
-        extensions: ['.ts']
+        extensions: ['.ts', '.js'],
     },
-    watch: true
 };

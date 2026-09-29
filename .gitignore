@@ -3,3 +3,7 @@ dist/*
 .idea/*
 .vscode/*
 package-lock.json
+\ No newline at end of file
+*.log
+.DS_Store
+ 

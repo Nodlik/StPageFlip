@@ -106,10 +106,15 @@ export class ImagePage extends Page {
     }
 
     public load(): void {
-        if (!this.isLoad)
-            this.image.onload = (): void => {
-                this.isLoad = true;
-            };
+        if (this.isLoad) return;
+
+        this.image.onload = (): void => {
+            this.isLoad = true;
+        };
+
+        this.image.onerror = (): void => {
+            this.isLoad = true;
+        };
     }
 
     public newTemporaryCopy(): Page {

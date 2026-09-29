@@ -4,6 +4,7 @@ import { Helper } from '../Helper';
 import { PageRect, Point } from '../BasicTypes';
 import { FlipCalculation } from './FlipCalculation';
 import { Page, PageDensity } from '../Page/Page';
+import { getFlipDirectionByPoint } from './direction';
 
 /**
  * Flipping direction
@@ -333,7 +334,9 @@ export class Flip {
         isTurned: boolean,
         needReset = true
     ): void {
-        const points = Helper.GetCordsFromTwoPoint(start, dest);
+        const points = this.app.shouldSkipAnimation()
+            ? [dest]
+            : Helper.GetInterpolatedPoints(start, dest, 45);
 
         // Create frames
         const frames = [];
@@ -384,24 +387,27 @@ export class Flip {
 
     private getDirectionByPoint(touchPos: Point): FlipDirection {
         const rect = this.getBoundsRect();
+        const rtl = this.app.getSettings().direction === 'rtl';
 
         if (this.render.getOrientation() === Orientation.PORTRAIT) {
             if (touchPos.x - rect.pageWidth <= rect.width / 5) {
-                return FlipDirection.BACK;
+                return rtl ? FlipDirection.FORWARD : FlipDirection.BACK;
             }
-        } else if (touchPos.x < rect.width / 2) {
-            return FlipDirection.BACK;
+
+            return rtl ? FlipDirection.BACK : FlipDirection.FORWARD;
         }
 
-        return FlipDirection.FORWARD;
+        return getFlipDirectionByPoint(touchPos.x, rect.width, rtl);
     }
 
     private getAnimationDuration(size: number): number {
+        if (this.app.shouldSkipAnimation()) return 0;
+
         const defaultTime = this.app.getSettings().flippingTime;
 
-        if (size >= 1000) return defaultTime;
+        if (size >= 45) return defaultTime;
 
-        return (size / 1000) * defaultTime;
+        return (size / 45) * defaultTime;
     }
 
     private checkDirection(direction: FlipDirection): boolean {
